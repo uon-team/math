@@ -15,8 +15,7 @@ class Vector2 {
 	/**
 	 * @constructs
 	 */
-	constructor(x, y)
-	{
+	constructor(x, y) {
 		
 		this.x = 0;
 		this.y = 0;
@@ -24,8 +23,8 @@ class Vector2 {
 		var v = this;
 		if (x instanceof Array)
 		{
-			v.x = x[0] || 0;
-			v.y = x[1] || 0;
+			v.x = x[0];
+			v.y = x[1];
 		}
 		else if (x instanceof Vector2)
 		{
@@ -49,15 +48,13 @@ class Vector2 {
 
 	}
 
-	equals (v)
-	{
+	equals (v) {
 
 		return ((v.x === this.x) && (v.y === this.y));
 
 	}
 
-	negate ()
-	{
+	negate () {
 
 		this.x = -this.x;
 		this.y = -this.y;
@@ -66,29 +63,25 @@ class Vector2 {
 
 	}
 
-	add (vec2)
-	{
+	add (vec2) {
 		this.x += vec2.x;
 		this.y += vec2.y;
 		return this;
 	}
 
-	subtract (vec2)
-	{
+	subtract (vec2) {
 		this.x -= vec2.x;
 		this.y -= vec2.y;
 		return this;
 	}
 
-	multiply (vec2)
-	{
+	multiply (vec2) {
 		this.x *= vec2.x;
 		this.y *= vec2.y;
 		return this;
 	}
 
-	multiplyScalar (s)
-	{
+	multiplyScalar (s) {
 
 		this.x *= s;
 		this.y *= s;
@@ -97,8 +90,7 @@ class Vector2 {
 
 	}
 
-	divide (v)
-	{
+	divide (v) {
 
 		this.x /= v.x;
 		this.y /= v.y;
@@ -107,20 +99,16 @@ class Vector2 {
 
 	}
 
-	divideScalar (scalar)
-	{
+	divideScalar (scalar) {
 
-		if (scalar !== 0)
-		{
+		if (scalar !== 0) {
 
 			var inv = 1 / scalar;
 
 			this.x *= inv;
 			this.y *= inv;
 
-		}
-		else
-		{
+		} else {
 
 			this.x = 0;
 			this.y = 0;
@@ -131,48 +119,40 @@ class Vector2 {
 
 	}
 
-	dot (vec2)
-	{
+	dot (vec2) {
 		return this.x * vec2.x + this.y * vec2.y;
 	}
 
-	length ()
-	{
+	length () {
 		return Math.sqrt(this.lengthSq());
 	}
 
-	lengthSq ()
-	{
+	lengthSq () {
 		var a = this;
 		return a.x * a.x + a.y * a.y;
 	}
 
-	normalize ()
-	{
+	normalize () {
 		var len = this.length();
 		return this.divideScalar(len);
 	}
 
-	lerp (v, alpha)
-	{
+	lerp (v, alpha) {
 		this.x += (v.x - this.x) * alpha;
 		this.y += (v.y - this.y) * alpha;
 
 		return this;
 	}
 
-	min (v)
-	{
+	min (v) {
 
-		if (this.x > v.x)
-		{
+		if (this.x > v.x) {
 
 			this.x = v.x;
 
 		}
 
-		if (this.y > v.y)
-		{
+		if (this.y > v.y) {
 
 			this.y = v.y;
 
@@ -182,16 +162,13 @@ class Vector2 {
 
 	}
 
-	max (v)
-	{
+	max (v) {
 
-		if (this.x < v.x)
-		{
+		if (this.x < v.x) {
 			this.x = v.x;
 		}
 
-		if (this.y < v.y)
-		{
+		if (this.y < v.y) {
 			this.y = v.y;
 		}
 
@@ -199,21 +176,18 @@ class Vector2 {
 
 	}
 
-	clone ()
-	{
+	clone () {
 		return new Vector2(this);
 	}
 	
-	copy (x)
-	{
+	copy (x) {
 		this.x = x.x;
 		this.y = x.y;
 		
 		return this;
 	}
 
-	fromArray (array, offset)
-	{
+	fromArray (array, offset) {
 
 		if (offset === undefined)
 			offset = 0;
@@ -225,8 +199,7 @@ class Vector2 {
 
 	}
 
-	toArray (array, offset)
-	{
+	toArray (array, offset) {
 
 		if (array === undefined)
 			array = [];
@@ -240,10 +213,8 @@ class Vector2 {
 
 	}
 	
-	toFloatArray ()
-	{
-		if(this._cache == null)
-		{
+	toFloatArray () {
+		if(this._cache == null) {
 			this._cache = new Float32Array(2);
 		}
 		

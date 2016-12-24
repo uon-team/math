@@ -46,11 +46,11 @@ class AABB {
 	 */
 	setFromPoints(points) {
 
-		this.makeEmpty();
+		this.empty();
 
 		for (var i = 0, il = points.length; i < il; i++) {
 
-			this.expandByPoint(points[i]);
+			this.expand(points[i]);
 
 		}
 

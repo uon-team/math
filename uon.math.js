@@ -7,14 +7,14 @@
  */
 
 
-var uon = require('uon.core');
+const uon = require('uon.core');
 
 /**
  * The Base namespace for UON Math framework
  * @namespace uon.math
  * 
  */
-var math = {
+const math = {
 		
 		Vector2 : require('./src/Vector2'),
 		Vector3 : require('./src/Vector3'),
