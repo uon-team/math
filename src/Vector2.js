@@ -21,20 +21,15 @@ class Vector2 {
 		this.y = 0;
 		
 		var v = this;
-		if (x instanceof Array)
-		{
+        if (arguments.length == 2) {
+            v.x = x;
+            v.y = y;
+        } else if (x instanceof Array) {
 			v.x = x[0];
 			v.y = x[1];
-		}
-		else if (x instanceof Vector2)
-		{
+		} else if (x instanceof Vector2) {
 			v.x = x.x;
 			v.y = x.y;
-		}
-		else if (arguments.length == 2)
-		{
-			v.x = x;
-			v.y = y;
 		}
 
 	}

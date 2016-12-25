@@ -22,8 +22,10 @@ class Matrix3 {
 	 */
 	constructor () {
 
-		this.elements = new Float32Array([ 1, 0, 0, 0, 1, 0, 0,
-				0, 1 ]);
+        this.elements = new Float32Array([
+            1, 0, 0,
+            0, 1, 0,
+            0, 0, 1 ]);
 	}
 
 	set (n11, n12, n13, n21, n22, n23, n31, n32, n33) {

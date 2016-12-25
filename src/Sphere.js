@@ -26,8 +26,7 @@ class Sphere {
 	 * @param {Number}
 	 *            radius The radius of the sphere
 	 */
-	constructor(center, radius)
-	{
+	constructor(center, radius) {
 		
 		this.center = ( center !== undefined ) ? center : new Vector3();
 		this.radius = ( radius !== undefined ) ? radius : 0;

@@ -25,7 +25,12 @@ class Vector4 {
 		this.w = 0;
 
 		var v = this;
-		if (x instanceof Array) {
+        if (arguments.length >= 3) {
+            v.x = x;
+            v.y = y;
+            v.z = z;
+            v.w = w !== undefined ? w : 1;
+        } else if (x instanceof Array) {
 			v.x = x[0];
 			v.y = x[1];
 			v.z = x[2];
@@ -35,11 +40,6 @@ class Vector4 {
 			v.y = x.y;
 			v.z = x.z;
 			v.z = x.w;
-		} else if (arguments.length >= 3) {
-			v.x = x;
-			v.y = y;
-			v.z = z;
-			v.w = w !== undefined ? w : 1;
 		}
 
 	}

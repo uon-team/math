@@ -22,7 +22,11 @@ class Vector3 {
 		this.z = 0;
 
 		var v = this;
-		if (x instanceof Array) {
+        if (arguments.length == 3) {
+            v.x = x;
+            v.y = y;
+            v.z = z;
+        } else if (x instanceof Array) {
 			v.x = x[0];
 			v.y = x[1];
 			v.z = x[2];
@@ -30,11 +34,7 @@ class Vector3 {
 			v.x = x.x;
 			v.y = x.y;
 			v.z = x.z;
-		} else if (arguments.length == 3) {
-			v.x = x;
-			v.y = y;
-			v.z = z;
-		}
+		} 
 
 	}
 

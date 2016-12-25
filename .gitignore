@@ -3,3 +3,4 @@
 *.settings
 /docs
 /node_modules
+/typings

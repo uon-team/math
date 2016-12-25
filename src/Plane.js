@@ -11,9 +11,9 @@ const Vector3 = require('./Vector3'),
 	Matrix3 = require('./Matrix3');
 
 
-var TEMP_VEC30 = new Vector3();
-var TEMP_VEC31 = new Vector3();
-var TEMP_MAT30 = new Matrix3();
+const TEMP_VEC30 = new Vector3();
+const TEMP_VEC31 = new Vector3();
+const TEMP_MAT30 = new Matrix3();
 
 /**
  * @memberOf uon.math

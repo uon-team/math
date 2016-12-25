@@ -27,7 +27,12 @@ class Quaternion {
 		this.w = 1;
 
 		var v = this;
-		if (x instanceof Array) {
+        if (arguments.length >= 3) {
+            v.x = x;
+            v.y = y;
+            v.z = z;
+            v.w = w !== undefined ? w : 1;
+        } else if (x instanceof Array) {
 			v.x = x[0] || 0;
 			v.y = x[1] || 0;
 			v.z = x[2] || 0;
@@ -37,11 +42,6 @@ class Quaternion {
 			v.y = x.y;
 			v.z = x.z;
 			v.z = x.w;
-		} else if (arguments.length >= 3) {
-			v.x = x;
-			v.y = y;
-			v.z = z;
-			v.w = w !== undefined ? w : 1;
 		}
 
 	}
