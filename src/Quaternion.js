@@ -10,6 +10,7 @@
 const Vector3 = require('./Vector3'), 
 	Matrix4 = require('./Matrix4');
 
+const TEMP_VEC3 = new Vector3();
 
 /**
  * @memberOf uon.math
@@ -176,7 +177,7 @@ class Quaternion {
 		// assumes direction vectors vFrom and vTo are
 		// normalized
 
-		var v1 = Quaternion.TempVec3, r;
+		var v1 = TEMP_VEC3, r;
 
 		var EPS = 0.000001;
 
@@ -296,6 +297,5 @@ class Quaternion {
 
 };
 
-Quaternion.TempVec3 = new Vector3();
 
 module.exports = Quaternion;

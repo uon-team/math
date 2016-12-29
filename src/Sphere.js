@@ -78,15 +78,15 @@ class Sphere {
 
 		}
 
-		var maxRadiusSq = 0;
+		var max_radius_sq = 0;
 
 		for ( var i = 0, il = points.length; i < il; i ++ ) {
 
-			maxRadiusSq = Math.max( maxRadiusSq, center.distanceToSquared( points[ i ] ) );
+			max_radius_sq = Math.max( max_radius_sq, center.distanceToSquared( points[ i ] ) );
 
 		}
 
-		this.radius = Math.sqrt( maxRadiusSq );
+		this.radius = Math.sqrt( max_radius_sq );
 
 		return this;
 
@@ -156,9 +156,9 @@ class Sphere {
 	 */
 	intersectsSphere ( sphere ) {
 
-		var radiusSum = this.radius + sphere.radius;
+		var radius_sum = this.radius + sphere.radius;
 
-		return sphere.center.distanceToSquared( this.center ) <= ( radiusSum * radiusSum );
+		return sphere.center.distanceToSquared( this.center ) <= ( radius_sum * radius_sum );
 
 	}
 
@@ -167,15 +167,17 @@ class Sphere {
 	 */
 	clampPoint ( point, output ) {
 
-		var deltaLengthSq = this.center.distanceToSquared( point );
+        var radius = this.radius,
+            center = this.center,
+		    delta_length_sq = this.center.distanceToSquared( point );
 
 		var result = output || new Vector3();
 		result.copy( point );
 
-		if ( deltaLengthSq > ( this.radius * this.radius ) ) {
+		if ( delta_length_sq > ( radius * radius ) ) {
 
-			result.subtract( this.center ).normalize();
-			result.multiplyScalar( this.radius ).add( this.center );
+			result.subtract( center ).normalize();
+			result.multiplyScalar( radius ).add( center );
 
 		}
 

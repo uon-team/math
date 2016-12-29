@@ -10,6 +10,9 @@
 const Vector3 = require('./Vector3');
 
 
+const TEMP_VEC3 = new Vector3(); 
+
+
 /**
  * @memberOf uon.math
  */
@@ -153,7 +156,7 @@ class Ray {
 	 */
 	intersectSphere ( sphere , output ) {
 
-		var v1 = Ray.TempVec3;
+        var v1 = TEMP_VEC3;
 		
 		
 		v1.copy( sphere.center).subtract(this.origin);
@@ -247,7 +250,6 @@ class Ray {
 	
 };
 
-Ray.TempVec3 = new Vector3();
 
 module.exports = Ray;
 

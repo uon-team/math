@@ -9,7 +9,7 @@
 
 const Vector3 = require('./Vector3');
 
-var TEMP_VEC3 = new Vector3();
+const TEMP_VEC3 = new Vector3();
 
 
 /**
