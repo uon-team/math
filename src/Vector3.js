@@ -26,7 +26,7 @@ class Vector3 {
             v.x = x;
             v.y = y;
             v.z = z;
-        } else if (x instanceof Array) {
+        } else if (Array.isArray(x)) {
 			v.x = x[0];
 			v.y = x[1];
 			v.z = x[2];

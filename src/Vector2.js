@@ -24,7 +24,7 @@ class Vector2 {
         if (arguments.length == 2) {
             v.x = x;
             v.y = y;
-        } else if (x instanceof Array) {
+        } else if (Array.isArray(x)) {
 			v.x = x[0];
 			v.y = x[1];
 		} else if (x instanceof Vector2) {

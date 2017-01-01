@@ -33,7 +33,7 @@ class Quaternion {
             v.y = y;
             v.z = z;
             v.w = w !== undefined ? w : 1;
-        } else if (x instanceof Array) {
+        } else if (Array.isArray(x)) {
 			v.x = x[0] || 0;
 			v.y = x[1] || 0;
 			v.z = x[2] || 0;

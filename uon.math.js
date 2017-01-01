@@ -6,9 +6,6 @@
  * @ignore
  */
 
-
-const uon = require('uon.core');
-
 /**
  * The Base namespace for UON Math framework
  * @namespace uon.math
