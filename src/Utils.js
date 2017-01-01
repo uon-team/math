@@ -74,8 +74,8 @@ var utils = {
 		},
 		
 		/**
-		 * Checks is val is n^2
-		 * @param val
+		 * Checks if val is 2^x
+		 * @param {Number} val
 		 * @returns {boolean}
 		 */
 		isPowerOfTwo : function(val) {
