@@ -8,7 +8,8 @@
 "use strict";
 
 const Vector3 = require('./Vector3'),
-	AABB = require('./AABB');
+    AABB = require('./AABB'),
+    f32 = Math.fround;
 
 var TEMP_AABB = new AABB();
 
@@ -16,7 +17,7 @@ var TEMP_AABB = new AABB();
  * @memberOf uon.math
  */
 class Sphere {
-	
+
 	/**
 	 * A sphere is defined by a point and a radius
 	 * 
@@ -26,13 +27,13 @@ class Sphere {
 	 * @param {Number}
 	 *            radius The radius of the sphere
 	 */
-	constructor(center, radius) {
-		
-		this.center = ( center !== undefined ) ? center : new Vector3();
-		this.radius = ( radius !== undefined ) ? radius : 0;
-	}
-	
-	
+    constructor(center, radius) {
+
+        this.center = (center !== undefined) ? center : new Vector3();
+        this.radius = (radius !== undefined) ? f32(radius) : f32(0);
+    }
+
+
 	/**
 	 * Assign values on this sphere object
 	 * 
@@ -42,15 +43,15 @@ class Sphere {
 	 *            radius The radius of the sphere
 	 * @returns {this}
 	 */
-	set ( center, radius ) {
+    set(center, radius) {
 
-		this.center.copy( center );
-		this.radius = radius;
+        this.center.copy(center);
+        this.radius = f32(radius);
 
-		return this;
+        return this;
 
-	}
-	
+    }
+
 	/**
 	 * Reset the sphere values and encapsulate all the points
 	 * 
@@ -60,39 +61,39 @@ class Sphere {
 	 *            [optionalCenter] If defined the origin of the sphere will be
 	 *            set with this value
 	 */
-	setFromPoints (points, optionalCenter) {
+    setFromPoints(points, optionalCenter) {
 
-		var box = TEMP_AABB;
+        var box = TEMP_AABB;
 
 
 
-		var center = this.center;
+        var center = this.center;
 
-		if ( optionalCenter !== undefined ) {
+        if (optionalCenter !== undefined) {
 
-			center.copy( optionalCenter );
+            center.copy(optionalCenter);
 
-		} else {
+        } else {
 
-			box.setFromPoints( points ).center( center );
+            box.setFromPoints(points).center(center);
 
-		}
+        }
 
-		var max_radius_sq = 0;
+        var max_radius_sq = 0;
 
-		for ( var i = 0, il = points.length; i < il; i ++ ) {
+        for (var i = 0, il = points.length; i < il; i++) {
 
-			max_radius_sq = Math.max( max_radius_sq, center.distanceToSquared( points[ i ] ) );
+            max_radius_sq = Math.max(max_radius_sq, center.distanceToSquared(points[i]));
 
-		}
+        }
 
-		this.radius = Math.sqrt( max_radius_sq );
+        this.radius = Math.sqrt(max_radius_sq);
 
-		return this;
+        return this;
 
- 		
 
-	}
+
+    }
 
 	/**
 	 * Copy values from another Sphere
@@ -100,25 +101,25 @@ class Sphere {
 	 * @param {uon.math.Sphere}
 	 *            sphere The Sphere to copy values from
 	 */
-	copy ( sphere ) {
+    copy(sphere) {
 
-		this.center.copy( sphere.center );
-		this.radius = sphere.radius;
+        this.center.copy(sphere.center);
+        this.radius = sphere.radius;
 
-		return this;
+        return this;
 
-	}
+    }
 
 	/**
 	 * Determines if this sphere is empty (ie. the radius is 0)
 	 * 
 	 * @returns {Boolean}
 	 */
-	empty () {
+    empty() {
 
-		return ( this.radius <= 0 );
+        return (this.radius <= 0);
 
-	}
+    }
 
 	/**
 	 * Test for containment
@@ -128,11 +129,11 @@ class Sphere {
 	 * @returns {Boolean} True if the point is inside the sphere, false
 	 *          otherwise
 	 */
-	containsPoint ( point ) {
+    containsPoint(point) {
 
-		return ( point.distanceToSquared( this.center ) <= ( this.radius * this.radius ) );
+        return (point.distanceToSquared(this.center) <= (this.radius * this.radius));
 
-	}
+    }
 
 	/**
 	 * Computes the distance from a point to the outside of the sphere
@@ -141,11 +142,11 @@ class Sphere {
 	 *            point
 	 * @returns {Number}
 	 */
-	distanceToPoint ( point ) {
+    distanceToPoint(point) {
 
-		return ( point.distanceTo( this.center ) - this.radius );
+        return (point.distanceTo(this.center) - this.radius);
 
-	}
+    }
 
 	/**
 	 * Determines if a sphere intersects this one
@@ -154,62 +155,62 @@ class Sphere {
 	 *            sphere The sphere to test against
 	 * @returns {Boolean} True if the spheres intersect, false otherwise
 	 */
-	intersectsSphere ( sphere ) {
+    intersectsSphere(sphere) {
 
-		var radius_sum = this.radius + sphere.radius;
+        var radius_sum = this.radius + sphere.radius;
 
-		return sphere.center.distanceToSquared( this.center ) <= ( radius_sum * radius_sum );
+        return sphere.center.distanceToSquared(this.center) <= (radius_sum * radius_sum);
 
-	}
+    }
 
 	/**
 	 * Clamp a point to the surface of the sphere
 	 */
-	clampPoint ( point, output ) {
+    clampPoint(point, output) {
 
         var radius = this.radius,
             center = this.center,
-		    delta_length_sq = this.center.distanceToSquared( point );
+            delta_length_sq = this.center.distanceToSquared(point);
 
-		var result = output || new Vector3();
-		result.copy( point );
+        var result = output || new Vector3();
+        result.copy(point);
 
-		if ( delta_length_sq > ( radius * radius ) ) {
+        if (delta_length_sq > (radius * radius)) {
 
-			result.subtract( center ).normalize();
-			result.multiplyScalar( radius ).add( center );
+            result.subtract(center).normalize();
+            result.multiplyScalar(radius).add(center);
 
-		}
+        }
 
-		return result;
+        return result;
 
-	}
+    }
 
 	/**
 	 * Computes an axis-aligned bounding-box around this sphere
 	 */
-	getBoundingBox ( output ) {
+    getBoundingBox(output) {
 
-		var box = output || new AABB();
+        var box = output || new AABB();
 
-		box.set( this.center, this.center );
-		box.expandByScalar( this.radius );
+        box.set(this.center, this.center);
+        box.expandByScalar(this.radius);
 
-		return box;
+        return box;
 
-	}
+    }
 
 	/**
 	 * Transforms the sphere with a Matrix4
 	 */
-	applyMatrix4 ( matrix ) {
+    applyMatrix4(matrix) {
 
-		this.center.applyMatrix4( matrix );
-		this.radius = this.radius * matrix.getMaxScaleOnAxis();
+        this.center.applyMatrix4(matrix);
+        this.radius = this.radius * matrix.getMaxScaleOnAxis();
 
-		return this;
+        return this;
 
-	}
+    }
 
 	/**
 	 * Translate this sphere by adding an position offset to the center
@@ -217,34 +218,34 @@ class Sphere {
 	 * @param {uon.math.Vector3}
 	 *            offset
 	 */
-	translate ( offset ) {
+    translate(offset) {
 
-		this.center.add( offset );
+        this.center.add(offset);
 
-		return this;
+        return this;
 
-	}
+    }
 
 	/**
 	 * Test for equality
 	 */
-	equals ( sphere ) {
+    equals(sphere) {
 
-		return sphere.center.equals( this.center ) && ( sphere.radius === this.radius );
+        return sphere.center.equals(this.center) && (sphere.radius === this.radius);
 
-	}
+    }
 
 	/**
 	 * Make a copy of this sphere
 	 * 
 	 * @returns {uon.math.Sphere} The copy
 	 */
-	clone () {
+    clone() {
 
-		return new Sphere().copy( this );
+        return new Sphere().copy(this);
 
-	}
-	
+    }
+
 };
 
 module.exports = Sphere;

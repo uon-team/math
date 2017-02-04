@@ -3,8 +3,7 @@
   "version": "0.1.1",
   "description": "A 3D math library",
   "main": "uon.math.js",
-  
-   "browserify": {
+  "browserify": {
     "transform": [
       [
         "babelify",
@@ -16,11 +15,11 @@
       ]
     ]
   },
-  
-  "dependencies": {
-
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/uon-team/uon.math.git"

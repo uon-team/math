@@ -7,217 +7,223 @@
 
 "use strict";
 
+
+const ZERO_F32 = Math.fround(0);
+const ONE_F32 = Math.fround(0);
+const f32 = Math.fround;
+
+
 /**
  * @memberOf uon.math
  */
 class Vector2 {
-	
+
 	/**
 	 * @constructs
 	 */
-	constructor(x, y) {
-		
-		this.x = 0;
-		this.y = 0;
-		
-		var v = this;
+    constructor(x, y) {
+
+        this.x = ZERO_F32;
+        this.y = ZERO_F32;
+
+        var v = this;
         if (arguments.length == 2) {
-            v.x = x;
-            v.y = y;
+            v.x = f32(x);
+            v.y = f32(y);
         } else if (Array.isArray(x)) {
-			v.x = x[0];
-			v.y = x[1];
-		} else if (x instanceof Vector2) {
-			v.x = x.x;
-			v.y = x.y;
-		}
+            v.x = f32(x[0]);
+            v.y = f32(x[1]);
+        } else if (x instanceof Vector2) {
+            v.x = x.x;
+            v.y = x.y;
+        }
 
-	}
-	
-	set ( x, y ) {
+    }
 
-		this.x = x;
-		this.y = y;
-		
-		return this;
+    set(x, y) {
 
-	}
+        this.x = f32(x);
+        this.y = f32(y);
 
-	equals (v) {
+        return this;
 
-		return ((v.x === this.x) && (v.y === this.y));
+    }
 
-	}
+    equals(v) {
 
-	negate () {
+        return ((v.x === this.x) && (v.y === this.y));
 
-		this.x = -this.x;
-		this.y = -this.y;
+    }
 
-		return this;
+    negate() {
 
-	}
+        this.x = -this.x;
+        this.y = -this.y;
 
-	add (vec2) {
-		this.x += vec2.x;
-		this.y += vec2.y;
-		return this;
-	}
+        return this;
 
-	subtract (vec2) {
-		this.x -= vec2.x;
-		this.y -= vec2.y;
-		return this;
-	}
+    }
 
-	multiply (vec2) {
-		this.x *= vec2.x;
-		this.y *= vec2.y;
-		return this;
-	}
+    add(vec2) {
+        this.x += vec2.x;
+        this.y += vec2.y;
+        return this;
+    }
 
-	multiplyScalar (s) {
+    subtract(vec2) {
+        this.x -= vec2.x;
+        this.y -= vec2.y;
+        return this;
+    }
 
-		this.x *= s;
-		this.y *= s;
+    multiply(vec2) {
+        this.x *= vec2.x;
+        this.y *= vec2.y;
+        return this;
+    }
 
-		return this;
+    multiplyScalar(s) {
 
-	}
+        this.x *= s;
+        this.y *= s;
 
-	divide (v) {
+        return this;
 
-		this.x /= v.x;
-		this.y /= v.y;
+    }
 
-		return this;
+    divide(v) {
 
-	}
+        this.x /= v.x;
+        this.y /= v.y;
 
-	divideScalar (scalar) {
+        return this;
 
-		if (scalar !== 0) {
+    }
 
-			var inv = 1 / scalar;
+    divideScalar(scalar) {
 
-			this.x *= inv;
-			this.y *= inv;
+        if (scalar !== 0) {
 
-		} else {
+            var inv = 1 / scalar;
 
-			this.x = 0;
-			this.y = 0;
+            this.x *= inv;
+            this.y *= inv;
 
-		}
+        } else {
 
-		return this;
+            this.x = 0;
+            this.y = 0;
 
-	}
+        }
 
-	dot (vec2) {
-		return this.x * vec2.x + this.y * vec2.y;
-	}
+        return this;
 
-	length () {
-		return Math.sqrt(this.lengthSq());
-	}
+    }
 
-	lengthSq () {
-		var a = this;
-		return a.x * a.x + a.y * a.y;
-	}
+    dot(vec2) {
+        return this.x * vec2.x + this.y * vec2.y;
+    }
 
-	normalize () {
-		var len = this.length();
-		return this.divideScalar(len);
-	}
+    length() {
+        return Math.sqrt(this.lengthSq());
+    }
 
-	lerp (v, alpha) {
-		this.x += (v.x - this.x) * alpha;
-		this.y += (v.y - this.y) * alpha;
+    lengthSq() {
+        var a = this;
+        return a.x * a.x + a.y * a.y;
+    }
 
-		return this;
-	}
+    normalize() {
+        var len = this.length();
+        return this.divideScalar(len);
+    }
 
-	min (v) {
+    lerp(v, alpha) {
+        this.x += (v.x - this.x) * alpha;
+        this.y += (v.y - this.y) * alpha;
 
-		if (this.x > v.x) {
+        return this;
+    }
 
-			this.x = v.x;
+    min(v) {
 
-		}
+        if (this.x > v.x) {
 
-		if (this.y > v.y) {
+            this.x = v.x;
 
-			this.y = v.y;
+        }
 
-		}
+        if (this.y > v.y) {
 
-		return this;
+            this.y = v.y;
 
-	}
+        }
 
-	max (v) {
+        return this;
 
-		if (this.x < v.x) {
-			this.x = v.x;
-		}
+    }
 
-		if (this.y < v.y) {
-			this.y = v.y;
-		}
+    max(v) {
 
-		return this;
+        if (this.x < v.x) {
+            this.x = v.x;
+        }
 
-	}
+        if (this.y < v.y) {
+            this.y = v.y;
+        }
 
-	clone () {
-		return new Vector2(this);
-	}
-	
-	copy (x) {
-		this.x = x.x;
-		this.y = x.y;
-		
-		return this;
-	}
+        return this;
 
-	fromArray (array, offset) {
+    }
 
-		if (offset === undefined)
-			offset = 0;
+    clone() {
+        return new Vector2(this);
+    }
 
-		this.x = array[offset];
-		this.y = array[offset + 1];
+    copy(x) {
+        this.x = x.x;
+        this.y = x.y;
 
-		return this;
+        return this;
+    }
 
-	}
+    fromArray(array, offset) {
 
-	toArray (array, offset) {
+        if (offset === undefined)
+            offset = 0;
 
-		if (array === undefined)
-			array = [];
-		if (offset === undefined)
-			offset = 0;
+        this.x = array[offset];
+        this.y = array[offset + 1];
 
-		array[offset] = this.x;
-		array[offset + 1] = this.y;
+        return this;
 
-		return array;
+    }
 
-	}
-	
-	toFloatArray () {
-		if(this._cache == null) {
-			this._cache = new Float32Array(2);
-		}
-		
-		this.toArray(this._cache);
-		
-		return this._cache;
-		
-	}
+    toArray(array, offset) {
+
+        if (array === undefined)
+            array = [];
+        if (offset === undefined)
+            offset = 0;
+
+        array[offset] = this.x;
+        array[offset + 1] = this.y;
+
+        return array;
+
+    }
+
+    toFloatArray() {
+        if (this._cache == null) {
+            this._cache = new Float32Array(2);
+        }
+
+        this.toArray(this._cache);
+
+        return this._cache;
+
+    }
 
 };
 

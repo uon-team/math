@@ -7,6 +7,14 @@
 
 "use strict";
 
+
+
+const ZERO_F32 = Math.fround(0);
+const ONE_F32 = Math.fround(0);
+const f32 = Math.fround;
+
+
+
 /**
  * @memberOf uon.math
  */
@@ -15,320 +23,320 @@ class Vector3 {
 	/**
 	 * @constructs
 	 */
-	constructor(x, y, z) {
+    constructor(x, y, z) {
 
-		this.x = 0;
-		this.y = 0;
-		this.z = 0;
+        this.x = ZERO_F32;
+        this.y = ZERO_F32;
+        this.z = ZERO_F32;
 
-		var v = this;
+        var v = this;
         if (arguments.length == 3) {
-            v.x = x;
-            v.y = y;
-            v.z = z;
+            v.x = f32(x);
+            v.y = f32(y);
+            v.z = f32(z);
         } else if (Array.isArray(x)) {
-			v.x = x[0];
-			v.y = x[1];
-			v.z = x[2];
-		} else if (x instanceof Vector3) {
-			v.x = x.x;
-			v.y = x.y;
-			v.z = x.z;
-		} 
+            v.x = f32(x[0]);
+            v.y = f32(x[1]);
+            v.z = f32(x[2]);
+        } else if (x instanceof Vector3) {
+            v.x = x.x;
+            v.y = x.y;
+            v.z = x.z;
+        }
 
-	}
+    }
 
-	set (x, y, z) {
+    set(x, y, z) {
 
-		this.x = x;
-		this.y = y;
-		this.z = z;
+        this.x = f32(x);
+        this.y = f32(y);
+        this.z = f32(z);
 
-		return this;
+        return this;
 
-	}
+    }
 
-	equals (v) {
+    equals(v) {
 
-		return ((v.x === this.x) && (v.y === this.y) && (v.z === this.z));
-	}
+        return ((v.x === this.x) && (v.y === this.y) && (v.z === this.z));
+    }
 
-	negate () {
+    negate() {
 
-		this.x = -this.x;
-		this.y = -this.y;
-		this.z = -this.z;
-		return this;
+        this.x = -this.x;
+        this.y = -this.y;
+        this.z = -this.z;
+        return this;
 
-	}
+    }
 
-	add (v) {
+    add(v) {
 
-		this.x += v.x;
-		this.y += v.y;
-		this.z += v.z;
-		return this;
-	}
+        this.x += v.x;
+        this.y += v.y;
+        this.z += v.z;
+        return this;
+    }
 
-	subtract (v) {
+    subtract(v) {
 
-		this.x -= v.x;
-		this.y -= v.y;
-		this.z -= v.z;
-		return this;
-	}
+        this.x -= v.x;
+        this.y -= v.y;
+        this.z -= v.z;
+        return this;
+    }
 
-	multiply (v) {
+    multiply(v) {
 
-		this.x *= v.x;
-		this.y *= v.y;
-		this.z *= v.z;
-		return this;
-	}
+        this.x *= v.x;
+        this.y *= v.y;
+        this.z *= v.z;
+        return this;
+    }
 
-	multiplyScalar (s) {
+    multiplyScalar(s) {
 
-		this.x *= s;
-		this.y *= s;
-		this.z *= s;
-		return this;
+        this.x *= s;
+        this.y *= s;
+        this.z *= s;
+        return this;
 
-	}
+    }
 
-	divide (v) {
+    divide(v) {
 
-		this.x /= v.x;
-		this.y /= v.y;
-		this.z /= v.z;
-		return this;
+        this.x /= v.x;
+        this.y /= v.y;
+        this.z /= v.z;
+        return this;
 
-	}
+    }
 
-	divideScalar (scalar) {
+    divideScalar(scalar) {
 
-		if (scalar !== 0) {
-			var inv = 1 / scalar;
-			this.x *= inv;
-			this.y *= inv;
-			this.z *= inv;
-		} else {
-			this.x = 0;
-			this.y = 0;
-			this.z = 0;
-		}
+        if (scalar !== 0) {
+            var inv = 1 / scalar;
+            this.x *= inv;
+            this.y *= inv;
+            this.z *= inv;
+        } else {
+            this.x = 0;
+            this.y = 0;
+            this.z = 0;
+        }
 
-		return this;
+        return this;
 
-	}
+    }
 
-	dot (v) {
+    dot(v) {
 
-		return this.x * v.x + this.y * v.y + this.z * v.z;
-	}
+        return this.x * v.x + this.y * v.y + this.z * v.z;
+    }
 
-	cross (v) {
+    cross(v) {
 
-		var x = this.x, y = this.y, z = this.z;
+        var x = this.x, y = this.y, z = this.z;
 
-		this.x = y * v.z - z * v.y;
-		this.y = z * v.x - x * v.z;
-		this.z = x * v.y - y * v.x;
+        this.x = y * v.z - z * v.y;
+        this.y = z * v.x - x * v.z;
+        this.z = x * v.y - y * v.x;
 
-		return this;
+        return this;
 
-	}
+    }
 
-	applyMatrix3 (m) {
+    applyMatrix3(m) {
 
-		var x = this.x;
-		var y = this.y;
-		var z = this.z;
+        var x = this.x;
+        var y = this.y;
+        var z = this.z;
 
-		var e = m.elements;
+        var e = m.elements;
 
-		this.x = e[0] * x + e[3] * y + e[6] * z;
-		this.y = e[1] * x + e[4] * y + e[7] * z;
-		this.z = e[2] * x + e[5] * y + e[8] * z;
+        this.x = e[0] * x + e[3] * y + e[6] * z;
+        this.y = e[1] * x + e[4] * y + e[7] * z;
+        this.z = e[2] * x + e[5] * y + e[8] * z;
 
-		return this;
+        return this;
 
-	}
+    }
 
-	applyMatrix4 (m) {
+    applyMatrix4(m) {
 
-		var x = this.x, y = this.y, z = this.z;
+        var x = this.x, y = this.y, z = this.z;
 
-		var e = m.elements;
+        var e = m.elements;
 
-		this.x = e[0] * x + e[4] * y + e[8] * z + e[12];
-		this.y = e[1] * x + e[5] * y + e[9] * z + e[13];
-		this.z = e[2] * x + e[6] * y + e[10] * z + e[14];
+        this.x = e[0] * x + e[4] * y + e[8] * z + e[12];
+        this.y = e[1] * x + e[5] * y + e[9] * z + e[13];
+        this.z = e[2] * x + e[6] * y + e[10] * z + e[14];
 
-		return this;
+        return this;
 
-	}
+    }
 
-	applyMatrix4Proj (m) {
+    applyMatrix4Proj(m) {
 
-		var x = this.x, y = this.y, z = this.z;
+        var x = this.x, y = this.y, z = this.z;
 
-		var e = m.elements;
-		var d = 1 / (e[3] * x + e[7] * y + e[11] * z + e[15]); // perspective
-																// divide
+        var e = m.elements;
+        var d = 1 / (e[3] * x + e[7] * y + e[11] * z + e[15]); // perspective
+        // divide
 
-		this.x = (e[0] * x + e[4] * y + e[8] * z + e[12]) * d;
-		this.y = (e[1] * x + e[5] * y + e[9] * z + e[13]) * d;
-		this.z = (e[2] * x + e[6] * y + e[10] * z + e[14]) * d;
+        this.x = (e[0] * x + e[4] * y + e[8] * z + e[12]) * d;
+        this.y = (e[1] * x + e[5] * y + e[9] * z + e[13]) * d;
+        this.z = (e[2] * x + e[6] * y + e[10] * z + e[14]) * d;
 
-		return this;
+        return this;
 
-	}
+    }
 
-	applyQuaternion (q) {
+    applyQuaternion(q) {
 
-		var x = this.x;
-		var y = this.y;
-		var z = this.z;
+        var x = this.x;
+        var y = this.y;
+        var z = this.z;
 
-		var qx = q.x;
-		var qy = q.y;
-		var qz = q.z;
-		var qw = q.w;
+        var qx = q.x;
+        var qy = q.y;
+        var qz = q.z;
+        var qw = q.w;
 
-		// calculate quat * vector
+        // calculate quat * vector
 
-		var ix = qw * x + qy * z - qz * y;
-		var iy = qw * y + qz * x - qx * z;
-		var iz = qw * z + qx * y - qy * x;
-		var iw = -qx * x - qy * y - qz * z;
+        var ix = qw * x + qy * z - qz * y;
+        var iy = qw * y + qz * x - qx * z;
+        var iz = qw * z + qx * y - qy * x;
+        var iw = -qx * x - qy * y - qz * z;
 
-		// calculate result * inverse quat
+        // calculate result * inverse quat
 
-		this.x = ix * qw + iw * -qx + iy * -qz - iz * -qy;
-		this.y = iy * qw + iw * -qy + iz * -qx - ix * -qz;
-		this.z = iz * qw + iw * -qz + ix * -qy - iy * -qx;
+        this.x = ix * qw + iw * -qx + iy * -qz - iz * -qy;
+        this.y = iy * qw + iw * -qy + iz * -qx - ix * -qz;
+        this.z = iz * qw + iw * -qz + ix * -qy - iy * -qx;
 
-		return this;
+        return this;
 
-	}
+    }
 
-	distanceTo (v) {
+    distanceTo(v) {
 
-		return Math.sqrt(this.distanceToSquared(v));
+        return Math.sqrt(this.distanceToSquared(v));
 
-	}
+    }
 
-	distanceToSquared (v) {
+    distanceToSquared(v) {
 
-		var dx = this.x - v.x;
-		var dy = this.y - v.y;
-		var dz = this.z - v.z;
+        var dx = this.x - v.x;
+        var dy = this.y - v.y;
+        var dz = this.z - v.z;
 
-		return dx * dx + dy * dy + dz * dz;
+        return dx * dx + dy * dy + dz * dz;
 
-	}
+    }
 
-	length () {
+    length() {
 
-		return Math.sqrt(this.lengthSq());
-	}
+        return Math.sqrt(this.lengthSq());
+    }
 
-	lengthSq () {
+    lengthSq() {
 
-		var a = this;
-		return a.x * a.x + a.y * a.y + a.z * a.z;
-	}
+        var a = this;
+        return a.x * a.x + a.y * a.y + a.z * a.z;
+    }
 
-	normalize () {
+    normalize() {
 
-		var len = this.length();
-		return this.divideScalar(len);
-	}
+        var len = this.length();
+        return this.divideScalar(len);
+    }
 
-	lerp (v, alpha) {
+    lerp(v, alpha) {
 
-		this.x += (v.x - this.x) * alpha;
-		this.y += (v.y - this.y) * alpha;
-		this.z += (v.z - this.z) * alpha;
-		return this;
-	}
+        this.x += (v.x - this.x) * alpha;
+        this.y += (v.y - this.y) * alpha;
+        this.z += (v.z - this.z) * alpha;
+        return this;
+    }
 
-	min (v) {
+    min(v) {
 
-		if (this.x > v.x)
-			this.x = v.x;
-		if (this.y > v.y)
-			this.y = v.y;
-		if (this.z > v.z)
-			this.z = v.z;
-		return this;
+        if (this.x > v.x)
+            this.x = v.x;
+        if (this.y > v.y)
+            this.y = v.y;
+        if (this.z > v.z)
+            this.z = v.z;
+        return this;
 
-	}
+    }
 
-	max (v) {
+    max(v) {
 
-		if (this.x < v.x)
-			this.x = v.x;
-		if (this.y < v.y)
-			this.y = v.y;
-		if (this.z < v.z)
-			this.z = v.z;
+        if (this.x < v.x)
+            this.x = v.x;
+        if (this.y < v.y)
+            this.y = v.y;
+        if (this.z < v.z)
+            this.z = v.z;
 
-		return this;
+        return this;
 
-	}
+    }
 
-	clone () {
+    clone() {
 
-		return new Vector3(this);
-	}
+        return new Vector3(this);
+    }
 
-	copy (x) {
+    copy(x) {
 
-		this.x = x.x;
-		this.y = x.y;
-		this.z = x.z;
+        this.x = x.x;
+        this.y = x.y;
+        this.z = x.z;
 
-		return this;
-	}
+        return this;
+    }
 
-	fromArray (array, offset) {
+    fromArray(array, offset) {
 
-		if (offset === undefined)
-			offset = 0;
+        if (offset === undefined)
+            offset = 0;
 
-		this.x = array[offset];
-		this.y = array[offset + 1];
-		this.z = array[offset + 2];
-		return this;
+        this.x = array[offset];
+        this.y = array[offset + 1];
+        this.z = array[offset + 2];
+        return this;
 
-	}
+    }
 
-	toArray (array, offset) {
+    toArray(array, offset) {
 
-		if (array === undefined)
-			array = [];
-		if (offset === undefined)
-			offset = 0;
+        if (array === undefined)
+            array = [];
+        if (offset === undefined)
+            offset = 0;
 
-		array[offset] = this.x;
-		array[offset + 1] = this.y;
-		array[offset + 2] = this.z;
-		return array;
+        array[offset] = this.x;
+        array[offset + 1] = this.y;
+        array[offset + 2] = this.z;
+        return array;
 
-	}
+    }
 
-	toFloatArray () {
+    toFloatArray() {
 
-		if (this._cache == null) {
-			this._cache = new Float32Array(3);
-		}
+        if (this._cache == null) {
+            this._cache = new Float32Array(3);
+        }
 
-		this.toArray(this._cache);
+        this.toArray(this._cache);
 
-		return this._cache;
+        return this._cache;
 
-	}
+    }
 
 };
 
