@@ -11,22 +11,19 @@
  * @namespace uon.math
  * 
  */
-const math = {
-		
-		Vector2 : require('./src/Vector2'),
-		Vector3 : require('./src/Vector3'),
-		Vector4 : require('./src/Vector4'),
-		AABB : require('./src/AABB'),
-		Frustum : require('./src/Frustum'),
-		Matrix3 : require('./src/Matrix3'),
-		Matrix4 : require('./src/Matrix4'),
-		Plane : require('./src/Plane'),
-		Ray : require('./src/Ray'),
-		Sphere : require('./src/Sphere'),
-		Quaternion : require('./src/Quaternion'),
-};
+const math = require('./src/Utils');
 
-uon.object.extend(math, require('./src/Utils'));
+math.Vector2 = require('./src/Vector2');
+math.Vector3 = require('./src/Vector3');
+math.Vector4 = require('./src/Vector4');
+math.AABB = require('./src/AABB');
+math.Frustum = require('./src/Frustum');
+math.Matrix3 = require('./src/Matrix3');
+math.Matrix4 = require('./src/Matrix4');
+math.Plane = require('./src/Plane');
+math.Ray = require('./src/Ray');
+math.Sphere = require('./src/Sphere');
+math.Quaternion = require('./src/Quaternion');
 
 
 module.exports = math;
