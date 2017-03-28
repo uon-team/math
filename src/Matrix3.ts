@@ -5,9 +5,8 @@
  * @ignore
  */
 
-"use strict";
-
-const Vector3 = require('./Vector3');
+import {Vector3} from './Vector3';
+import {Matrix4} from './Matrix4';
 
 const TEMP_VEC3 = new Vector3();
 
@@ -15,8 +14,10 @@ const TEMP_VEC3 = new Vector3();
 /**
  * @memberOf uon.math
  */
-class Matrix3 {
+export class Matrix3 {
 
+
+    public elements: Float32Array;
 	/**
 	 * @constructs
 	 */
@@ -28,7 +29,9 @@ class Matrix3 {
             0, 0, 1]);
     }
 
-    set(n11, n12, n13, n21, n22, n23, n31, n32, n33) {
+    set(n11: number, n12: number, n13: number,
+        n21: number, n22: number, n23: number,
+        n31: number, n32: number, n33: number) {
 
         var te = this.elements;
 
@@ -58,7 +61,7 @@ class Matrix3 {
 
     }
 
-    copy(m) {
+    copy(m: Matrix3) {
 
         this.elements.set(m.elements);
 
@@ -77,7 +80,11 @@ class Matrix3 {
 
     }
 
-    inverse(matrix) {
+    /**
+     * Copy the inverse of a Matrix4 into this one
+     * @param matrix
+     */
+    inverse(matrix: Matrix4) {
 
         var me = matrix.elements;
         var te = this.elements;
@@ -110,9 +117,13 @@ class Matrix3 {
         return this;
     }
 
-    getNormalMatrix(m) {
+    /**
+     * Get a Normal matrix from a matrix 4
+     * @param m
+     */
+    getNormalMatrix(m: Matrix4) {
 
-        this.getInverse(m).transpose();
+        this.inverse(m).transpose();
 
         return this;
 
@@ -120,7 +131,8 @@ class Matrix3 {
 
     transpose() {
 
-        var tmp, m = this.elements;
+        let tmp: number,
+            m = this.elements;
 
         tmp = m[1];
         m[1] = m[3];
@@ -135,7 +147,7 @@ class Matrix3 {
         return this;
     }
 
-    multiplyScalar(s) {
+    multiplyScalar(s: number) {
 
         var te = this.elements;
 
@@ -153,7 +165,7 @@ class Matrix3 {
 
     }
 
-    fromArray(array) {
+    fromArray(array: ArrayLike<number>) {
 
         this.elements.set(array);
 
@@ -163,10 +175,7 @@ class Matrix3 {
 
     toArray() {
 
-        var te = this.elements;
-
-        return [te[0], te[1], te[2], te[3], te[4], te[5],
-            te[6], te[7], te[8]];
+        return Array.from(this.elements);
 
     }
 
@@ -177,5 +186,3 @@ class Matrix3 {
     }
 
 };
-
-module.exports = Matrix3;

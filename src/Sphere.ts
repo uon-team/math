@@ -5,18 +5,21 @@
  * @ignore
  */
 
-"use strict";
+import {Vector3} from './Vector3';
+import {AABB} from './AABB';
+import {Matrix4} from './Matrix4';
 
-const Vector3 = require('./Vector3'),
-    AABB = require('./AABB'),
-    f32 = Math.fround;
-
-var TEMP_AABB = new AABB();
+const f32 = Math.fround;
+const TEMP_AABB = new AABB();
 
 /**
- * @memberOf uon.math
+ * A sphere is defined by a point and a radius
  */
-class Sphere {
+export class Sphere {
+
+
+    public center: Vector3;
+    public radius: number;
 
 	/**
 	 * A sphere is defined by a point and a radius
@@ -27,7 +30,7 @@ class Sphere {
 	 * @param {Number}
 	 *            radius The radius of the sphere
 	 */
-    constructor(center, radius) {
+    constructor(center?: Vector3, radius?: number) {
 
         this.center = (center !== undefined) ? center : new Vector3();
         this.radius = (radius !== undefined) ? f32(radius) : f32(0);
@@ -43,7 +46,7 @@ class Sphere {
 	 *            radius The radius of the sphere
 	 * @returns {this}
 	 */
-    set(center, radius) {
+    set(center: Vector3, radius: number) {
 
         this.center.copy(center);
         this.radius = f32(radius);
@@ -61,21 +64,21 @@ class Sphere {
 	 *            [optionalCenter] If defined the origin of the sphere will be
 	 *            set with this value
 	 */
-    setFromPoints(points, optionalCenter) {
+    setFromPoints(points: Vector3[], center?: Vector3) {
 
         var box = TEMP_AABB;
 
 
 
-        var center = this.center;
+        this.center;
 
-        if (optionalCenter !== undefined) {
+        if (center !== undefined) {
 
-            center.copy(optionalCenter);
+            this.center.copy(center);
 
         } else {
 
-            box.setFromPoints(points).center(center);
+            box.setFromPoints(points).getCenter(this.center);
 
         }
 
@@ -101,7 +104,7 @@ class Sphere {
 	 * @param {uon.math.Sphere}
 	 *            sphere The Sphere to copy values from
 	 */
-    copy(sphere) {
+    copy(sphere: Sphere) {
 
         this.center.copy(sphere.center);
         this.radius = sphere.radius;
@@ -129,7 +132,7 @@ class Sphere {
 	 * @returns {Boolean} True if the point is inside the sphere, false
 	 *          otherwise
 	 */
-    containsPoint(point) {
+    containsPoint(point: Vector3) {
 
         return (point.distanceToSquared(this.center) <= (this.radius * this.radius));
 
@@ -142,7 +145,7 @@ class Sphere {
 	 *            point
 	 * @returns {Number}
 	 */
-    distanceToPoint(point) {
+    distanceToPoint(point: Vector3) {
 
         return (point.distanceTo(this.center) - this.radius);
 
@@ -151,11 +154,10 @@ class Sphere {
 	/**
 	 * Determines if a sphere intersects this one
 	 * 
-	 * @param {uon.math.Sphere}
-	 *            sphere The sphere to test against
+	 * @param {Sphere} sphere The sphere to test against
 	 * @returns {Boolean} True if the spheres intersect, false otherwise
 	 */
-    intersectsSphere(sphere) {
+    intersectsSphere(sphere: Sphere): boolean {
 
         var radius_sum = this.radius + sphere.radius;
 
@@ -166,7 +168,7 @@ class Sphere {
 	/**
 	 * Clamp a point to the surface of the sphere
 	 */
-    clampPoint(point, output) {
+    clampPoint(point: Vector3, output?: Vector3) {
 
         var radius = this.radius,
             center = this.center,
@@ -189,12 +191,12 @@ class Sphere {
 	/**
 	 * Computes an axis-aligned bounding-box around this sphere
 	 */
-    getBoundingBox(output) {
+    getBoundingBox(output: AABB) {
 
         var box = output || new AABB();
 
         box.set(this.center, this.center);
-        box.expandByScalar(this.radius);
+        box.scale(this.radius);
 
         return box;
 
@@ -203,10 +205,13 @@ class Sphere {
 	/**
 	 * Transforms the sphere with a Matrix4
 	 */
-    applyMatrix4(matrix) {
+    applyMatrix4(matrix: Matrix4) {
+
+
+        let scale = matrix.getScale();
 
         this.center.applyMatrix4(matrix);
-        this.radius = this.radius * matrix.getMaxScaleOnAxis();
+        this.radius = this.radius * Math.max(scale.x, scale.y, scale.z);
 
         return this;
 
@@ -218,7 +223,7 @@ class Sphere {
 	 * @param {uon.math.Vector3}
 	 *            offset
 	 */
-    translate(offset) {
+    translate(offset: Vector3) {
 
         this.center.add(offset);
 
@@ -229,7 +234,7 @@ class Sphere {
 	/**
 	 * Test for equality
 	 */
-    equals(sphere) {
+    equals(sphere: Sphere) {
 
         return sphere.center.equals(this.center) && (sphere.radius === this.radius);
 
@@ -247,9 +252,6 @@ class Sphere {
     }
 
 };
-
-module.exports = Sphere;
-
 
 
 

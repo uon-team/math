@@ -5,9 +5,9 @@
  * @ignore
  */
 
-"use strict";
-
-
+import {Matrix3} from './Matrix3';
+import {Matrix4} from './Matrix4';
+import {Quaternion} from './Quaternion';
 
 const ZERO_F32 = Math.fround(0);
 const ONE_F32 = Math.fround(0);
@@ -16,18 +16,30 @@ const f32 = Math.fround;
 
 
 /**
- * @memberOf uon.math
+ * A representation of a 3D vector
  */
-class Vector3 {
+export class Vector3 {
+
+    // members
+    public x: number = ZERO_F32;
+    public y: number = ZERO_F32;
+    public z: number = ZERO_F32;
+
+    private _cache: Float32Array;
+
+
+    public static UnitX: Vector3 = new Vector3(1, 0, 0);
+    public static UnitY: Vector3 = new Vector3(0, 1, 0);
+    public static UnitZ: Vector3 = new Vector3(0, 0, 1);
+    public static One: Vector3 = new Vector3(1, 1, 1);
+    public static Zero: Vector3 = new Vector3(0, 0, 0);
+
 
 	/**
 	 * @constructs
 	 */
-    constructor(x, y, z) {
+    constructor(x?: any, y?: number, z?: number) {
 
-        this.x = ZERO_F32;
-        this.y = ZERO_F32;
-        this.z = ZERO_F32;
 
         var v = this;
         if (arguments.length == 3) {
@@ -46,7 +58,7 @@ class Vector3 {
 
     }
 
-    set(x, y, z) {
+    set(x: number, y: number, z: number) {
 
         this.x = f32(x);
         this.y = f32(y);
@@ -56,7 +68,7 @@ class Vector3 {
 
     }
 
-    equals(v) {
+    equals(v: Vector3) {
 
         return ((v.x === this.x) && (v.y === this.y) && (v.z === this.z));
     }
@@ -70,7 +82,7 @@ class Vector3 {
 
     }
 
-    add(v) {
+    add(v: Vector3) {
 
         this.x += v.x;
         this.y += v.y;
@@ -78,7 +90,7 @@ class Vector3 {
         return this;
     }
 
-    subtract(v) {
+    subtract(v: Vector3) {
 
         this.x -= v.x;
         this.y -= v.y;
@@ -86,7 +98,7 @@ class Vector3 {
         return this;
     }
 
-    multiply(v) {
+    multiply(v: Vector3) {
 
         this.x *= v.x;
         this.y *= v.y;
@@ -94,7 +106,7 @@ class Vector3 {
         return this;
     }
 
-    multiplyScalar(s) {
+    multiplyScalar(s: number) {
 
         this.x *= s;
         this.y *= s;
@@ -103,7 +115,7 @@ class Vector3 {
 
     }
 
-    divide(v) {
+    divide(v: Vector3) {
 
         this.x /= v.x;
         this.y /= v.y;
@@ -112,7 +124,7 @@ class Vector3 {
 
     }
 
-    divideScalar(scalar) {
+    divideScalar(scalar: number) {
 
         if (scalar !== 0) {
             var inv = 1 / scalar;
@@ -129,12 +141,12 @@ class Vector3 {
 
     }
 
-    dot(v) {
+    dot(v: Vector3) {
 
         return this.x * v.x + this.y * v.y + this.z * v.z;
     }
 
-    cross(v) {
+    cross(v: Vector3) {
 
         var x = this.x, y = this.y, z = this.z;
 
@@ -146,7 +158,7 @@ class Vector3 {
 
     }
 
-    applyMatrix3(m) {
+    applyMatrix3(m: Matrix3) {
 
         var x = this.x;
         var y = this.y;
@@ -162,7 +174,7 @@ class Vector3 {
 
     }
 
-    applyMatrix4(m) {
+    applyMatrix4(m: Matrix4) {
 
         var x = this.x, y = this.y, z = this.z;
 
@@ -176,7 +188,7 @@ class Vector3 {
 
     }
 
-    applyMatrix4Proj(m) {
+    applyMatrix4Proj(m: Matrix4) {
 
         var x = this.x, y = this.y, z = this.z;
 
@@ -192,7 +204,7 @@ class Vector3 {
 
     }
 
-    applyQuaternion(q) {
+    applyQuaternion(q: Quaternion) {
 
         var x = this.x;
         var y = this.y;
@@ -220,13 +232,13 @@ class Vector3 {
 
     }
 
-    distanceTo(v) {
+    distanceTo(v: Vector3) {
 
         return Math.sqrt(this.distanceToSquared(v));
 
     }
 
-    distanceToSquared(v) {
+    distanceToSquared(v: Vector3) {
 
         var dx = this.x - v.x;
         var dy = this.y - v.y;
@@ -253,7 +265,7 @@ class Vector3 {
         return this.divideScalar(len);
     }
 
-    lerp(v, alpha) {
+    lerp(v: Vector3, alpha: number) {
 
         this.x += (v.x - this.x) * alpha;
         this.y += (v.y - this.y) * alpha;
@@ -261,7 +273,7 @@ class Vector3 {
         return this;
     }
 
-    min(v) {
+    min(v: Vector3) {
 
         if (this.x > v.x)
             this.x = v.x;
@@ -273,7 +285,7 @@ class Vector3 {
 
     }
 
-    max(v) {
+    max(v: Vector3) {
 
         if (this.x < v.x)
             this.x = v.x;
@@ -291,7 +303,7 @@ class Vector3 {
         return new Vector3(this);
     }
 
-    copy(x) {
+    copy(x: Vector3) {
 
         this.x = x.x;
         this.y = x.y;
@@ -300,7 +312,7 @@ class Vector3 {
         return this;
     }
 
-    fromArray(array, offset) {
+    fromArray(array: number[], offset?: number) {
 
         if (offset === undefined)
             offset = 0;
@@ -312,7 +324,7 @@ class Vector3 {
 
     }
 
-    toArray(array, offset) {
+    toArray(array?: any[], offset?: number) {
 
         if (array === undefined)
             array = [];
@@ -332,18 +344,13 @@ class Vector3 {
             this._cache = new Float32Array(3);
         }
 
-        this.toArray(this._cache);
+
+        this._cache[0] = this.x;
+        this._cache[1] = this.y;
+        this._cache[2] = this.z;
 
         return this._cache;
 
     }
 
 };
-
-Vector3.UnitX = new Vector3(1, 0, 0);
-Vector3.UnitY = new Vector3(0, 1, 0);
-Vector3.UnitZ = new Vector3(0, 0, 1);
-Vector3.One = new Vector3(1, 1, 1);
-Vector3.Zero = new Vector3(0, 0, 0);
-
-module.exports = Vector3;

@@ -4,255 +4,169 @@
  * @author Gabriel Roy <gab@uon.io>
  * @ignore
  */
-
-"use strict";
-
-const Vector3 = require('./Vector3');
-
-
+import { Vector3 } from './Vector3';
 const TEMP_VEC3 = new Vector3();
-
-
 /**
  * @memberOf uon.math
  */
-class Ray {
-
-	/**
-	 * @constructs
-	 */
+export class Ray {
+    /**
+     * @constructs
+     */
     constructor(origin, dir) {
         this.origin = (origin !== undefined) ? origin : new Vector3();
         this.dir = (dir !== undefined) ? dir : new Vector3();
-
     }
-
-	/**
-	 * Assign new values to this Ray
-	 */
+    /**
+     * Assign new values to this Ray
+     */
     set(origin, dir) {
-
         this.origin.copy(origin);
         this.dir.copy(dir);
-
         return this;
-
     }
-
-	/**
-	 * Computes the position of a point along the Ray
-	 */
+    /**
+     * Computes the position of a point along the Ray
+     */
     at(t, output) {
-
         var result = output || new Vector3();
-
         return result.copy(this.dir).multiplyScalar(t).add(this.origin);
-
     }
-
-	/**
-	 * Test for equaity
-	 */
+    /**
+     * Test for equaity
+     */
     equals(ray) {
-
         return ray.origin.equals(this.origin) && ray.dir.equals(this.dir);
-
     }
-
-	/**
-	 * Make a copy of this ray
-	 */
+    /**
+     * Make a copy of this ray
+     */
     clone() {
-
         return new Ray().copy(this);
-
     }
-
-	/**
-	 * Copy values from another Ray
-	 */
+    /**
+     * Copy values from another Ray
+     */
     copy(ray) {
-
         this.origin.copy(ray.origin);
         this.dir.copy(ray.dir);
-
         return this;
-
     }
-
-	/**
-	 * Test for intersection with an aabb
-	 */
+    /**
+     * Test for intersection with an aabb
+     */
     intersectBox(box, output) {
-
         // http://www.scratchapixel.com/lessons/3d-basic-lessons/lesson-7-intersecting-simple-shapes/ray-box-intersection/
-
-        var tmin, tmax, tymin, tymax, tzmin, tzmax;
-
-        var invdirx = 1 / this.dir.x,
-            invdiry = 1 / this.dir.y,
-            invdirz = 1 / this.dir.z;
-
+        let tmin, tmax, tymin, tymax, tzmin, tzmax;
+        var invdirx = 1 / this.dir.x, invdiry = 1 / this.dir.y, invdirz = 1 / this.dir.z;
         var origin = this.origin;
-
         if (invdirx >= 0) {
-
             tmin = (box.min.x - origin.x) * invdirx;
             tmax = (box.max.x - origin.x) * invdirx;
-
-        } else {
-
+        }
+        else {
             tmin = (box.max.x - origin.x) * invdirx;
             tmax = (box.min.x - origin.x) * invdirx;
         }
-
         if (invdiry >= 0) {
-
             tymin = (box.min.y - origin.y) * invdiry;
             tymax = (box.max.y - origin.y) * invdiry;
-
-        } else {
-
+        }
+        else {
             tymin = (box.max.y - origin.y) * invdiry;
             tymax = (box.min.y - origin.y) * invdiry;
         }
-
-        if ((tmin > tymax) || (tymin > tmax)) return null;
-
+        if ((tmin > tymax) || (tymin > tmax))
+            return null;
         // These lines also handle the case where tmin or tmax is NaN
         // (result of 0 * Infinity). x !== x returns true if x is NaN
-
-        if (tymin > tmin || tmin !== tmin) tmin = tymin;
-
-        if (tymax < tmax || tmax !== tmax) tmax = tymax;
-
+        if (tymin > tmin || tmin !== tmin)
+            tmin = tymin;
+        if (tymax < tmax || tmax !== tmax)
+            tmax = tymax;
         if (invdirz >= 0) {
-
             tzmin = (box.min.z - origin.z) * invdirz;
             tzmax = (box.max.z - origin.z) * invdirz;
-
-        } else {
-
+        }
+        else {
             tzmin = (box.max.z - origin.z) * invdirz;
             tzmax = (box.min.z - origin.z) * invdirz;
         }
-
-        if ((tmin > tzmax) || (tzmin > tmax)) return null;
-
-        if (tzmin > tmin || tmin !== tmin) tmin = tzmin;
-
-        if (tzmax < tmax || tmax !== tmax) tmax = tzmax;
-
+        if ((tmin > tzmax) || (tzmin > tmax))
+            return null;
+        if (tzmin > tmin || tmin !== tmin)
+            tmin = tzmin;
+        if (tzmax < tmax || tmax !== tmax)
+            tmax = tzmax;
         //return point closest to the ray (positive side)
-
-        if (tmax < 0) return null;
-
+        if (tmax < 0)
+            return null;
         return this.at(tmin >= 0 ? tmin : tmax, output);
-
     }
-
-	/**
-	 * Test for intersection with a sphere
-	 */
+    /**
+     * Test for intersection with a sphere
+     */
     intersectSphere(sphere, output) {
-
         var v1 = TEMP_VEC3;
-
-
         v1.copy(sphere.center).subtract(this.origin);
-
         var tca = v1.dot(this.dir);
-
         var d2 = v1.dot(v1) - tca * tca;
-
         var radius2 = sphere.radius * sphere.radius;
-
-        if (d2 > radius2) return null;
-
+        if (d2 > radius2)
+            return null;
         var thc = Math.sqrt(radius2 - d2);
-
         // t0 = first intersect point - entrance on front of sphere
         var t0 = tca - thc;
-
         // t1 = second intersect point - exit point on back of sphere
         var t1 = tca + thc;
-
         // test to see if both t0 and t1 are behind the ray - if so, return null
-        if (t0 < 0 && t1 < 0) return null;
-
+        if (t0 < 0 && t1 < 0)
+            return null;
         // test to see if t0 is behind the ray:
         // if it is, the ray is inside the sphere, so return the second exit point scaled by t1,
         // in order to always return an intersect point that is in front of the ray.
-        if (t0 < 0) return this.at(t1, output);
-
+        if (t0 < 0)
+            return this.at(t1, output);
         // else t0 is in front of the ray, so return the first collision point scaled by t0 
         return this.at(t0, output);
-
     }
-
-	/**
-	 * Compute the distance from a plane
-	 */
+    /**
+     * Compute the distance from a plane
+     */
     distanceToPlane(plane) {
-
         var denominator = plane.normal.dot(this.dir);
         if (denominator == 0) {
-
             // line is coplanar, return origin
             if (plane.distanceToPoint(this.origin) == 0) {
-
                 return 0;
-
             }
-
             // Null is preferable to undefined since undefined means.... it is undefined
-
             return null;
-
         }
-
-        var t = - (this.origin.dot(plane.normal) + plane.constant) / denominator;
-
+        var t = -(this.origin.dot(plane.normal) + plane.constant) / denominator;
         // Return if the ray never intersects the plane
-
         return t >= 0 ? t : null;
-
     }
-
-	/**
-	 * Test for plane intersection
-	 */
+    /**
+     * Test for plane intersection
+     */
     intersectPlane(plane, output) {
-
         var t = this.distanceToPlane(plane);
-
         if (t === null) {
-
             return null;
         }
-
         return this.at(t, output);
-
     }
-
-	/**
-	 * Transforms the ray with a Matrix4
-	 */
+    /**
+     * Transforms the ray with a Matrix4
+     */
     applyMatrix4(matrix4) {
-
         this.dir.add(this.origin).applyMatrix4(matrix4);
         this.origin.applyMatrix4(matrix4);
         this.dir.subtract(this.origin);
         this.dir.normalize();
-
         return this;
     }
-
-};
-
-
-module.exports = Ray;
-
-
-
-
+}
+;
+//# sourceMappingURL=Ray.js.map
