@@ -90,6 +90,10 @@ export declare class Vector2 {
     */
     max(v: Vector2): this;
     /**
+     * Transform this vector into it's perpendicular
+     */
+    perpendicular(): this;
+    /**
      * Clone this vector
      */
     clone(): Vector2;
@@ -109,11 +113,15 @@ export declare class Vector2 {
      * @param array
      * @param offset
      */
-    toArray(array?: any[], offset?: number): any[];
+    toArray(array?: Array<number> | Float32Array, offset?: number): Float32Array | number[];
     /**
      * Return values in a Float32Array
      */
     toFloatArray(): Float32Array;
+    static Add(p1: Vector2, p2: Vector2): Vector2;
+    static Sub(p1: Vector2, p2: Vector2): Vector2;
+    static Middle(p1: Vector2, p2: Vector2): Vector2;
+    static Angle(p1: Vector2, p2: Vector2): number;
     static ComputeCentroid(points: Vector2[]): Vector2;
     static ComputeCenterOfMass(points: Vector2[]): Vector2;
     static ComputeArea(points: Vector2[]): number;

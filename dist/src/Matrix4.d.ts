@@ -67,6 +67,7 @@ export declare class Matrix4 {
     compose(translation: Vector3, quaternion: Quaternion, scale: Vector3): this;
     decompose(translation: Vector3, quaternion: Quaternion, scale: Vector3): this;
     fromArray(array: ArrayLike<number>): this;
-    toArray(): number[];
+    toArray(): any;
     clone(): Matrix4;
+    static Multiply(a: Matrix4, b: Matrix4): Matrix4;
 }

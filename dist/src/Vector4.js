@@ -5,17 +5,17 @@
  * @ignore
  */
 //const Matrix4 = require('./Matrix4');
-const ZERO_F32 = Math.fround(0);
-const ONE_F32 = Math.fround(0);
-const f32 = Math.fround;
+var ZERO_F32 = Math.fround(0);
+var ONE_F32 = Math.fround(1);
+var f32 = Math.fround;
 /**
  * An representation of a 4D vector
  */
-export class Vector4 {
+var Vector4 = (function () {
     /**
      * @constructs
      */
-    constructor(x, y, z, w) {
+    function Vector4(x, y, z, w) {
         this.x = ZERO_F32;
         this.y = ZERO_F32;
         this.z = ZERO_F32;
@@ -39,59 +39,59 @@ export class Vector4 {
             this.z = x.w;
         }
     }
-    set(x, y, z, w) {
+    Vector4.prototype.set = function (x, y, z, w) {
         this.x = f32(x);
         this.y = f32(y);
         this.z = f32(z);
         this.w = f32(w);
         return this;
-    }
-    equals(v) {
+    };
+    Vector4.prototype.equals = function (v) {
         return ((v.x === this.x) && (v.y === this.y) && (v.z === this.z) && (v.w === this.w));
-    }
-    negate() {
+    };
+    Vector4.prototype.negate = function () {
         this.x = -this.x;
         this.y = -this.y;
         this.z = -this.z;
         this.w = -this.w;
         return this;
-    }
-    add(v) {
+    };
+    Vector4.prototype.add = function (v) {
         this.x += v.x;
         this.y += v.y;
         this.z += v.z;
         this.w += v.w;
         return this;
-    }
-    subtract(v) {
+    };
+    Vector4.prototype.subtract = function (v) {
         this.x -= v.x;
         this.y -= v.y;
         this.z -= v.z;
         this.w -= v.w;
         return this;
-    }
-    multiply(v) {
+    };
+    Vector4.prototype.multiply = function (v) {
         this.x *= v.x;
         this.y *= v.y;
         this.z *= v.z;
         this.w *= v.w;
         return this;
-    }
-    multiplyScalar(s) {
+    };
+    Vector4.prototype.multiplyScalar = function (s) {
         this.x *= s;
         this.y *= s;
         this.z *= s;
         this.w *= s;
         return this;
-    }
-    divide(v) {
+    };
+    Vector4.prototype.divide = function (v) {
         this.x /= v.x;
         this.y /= v.y;
         this.z /= v.z;
         this.w /= v.w;
         return this;
-    }
-    divideScalar(scalar) {
+    };
+    Vector4.prototype.divideScalar = function (scalar) {
         if (scalar !== 0) {
             var inv = 1 / scalar;
             this.x *= inv;
@@ -106,29 +106,29 @@ export class Vector4 {
             this.w = 1;
         }
         return this;
-    }
-    dot(v) {
+    };
+    Vector4.prototype.dot = function (v) {
         return this.x * v.x + this.y * v.y + this.z * v.z + this.w * v.w;
-    }
-    length() {
+    };
+    Vector4.prototype.length = function () {
         return Math.sqrt(this.lengthSq());
-    }
-    lengthSq() {
+    };
+    Vector4.prototype.lengthSq = function () {
         var a = this;
         return a.x * a.x + a.y * a.y + a.z * a.z + a.w * a.w;
-    }
-    normalize() {
+    };
+    Vector4.prototype.normalize = function () {
         var len = this.length();
         return this.divideScalar(len);
-    }
-    lerp(v, alpha) {
+    };
+    Vector4.prototype.lerp = function (v, alpha) {
         this.x += (v.x - this.x) * alpha;
         this.y += (v.y - this.y) * alpha;
         this.z += (v.z - this.z) * alpha;
         this.w += (v.w - this.w) * alpha;
         return this;
-    }
-    min(v) {
+    };
+    Vector4.prototype.min = function (v) {
         if (this.x > v.x)
             this.x = v.x;
         if (this.y > v.y)
@@ -138,8 +138,8 @@ export class Vector4 {
         if (this.w > v.w)
             this.w = v.w;
         return this;
-    }
-    max(v) {
+    };
+    Vector4.prototype.max = function (v) {
         if (this.x < v.x)
             this.x = v.x;
         if (this.y < v.y)
@@ -149,18 +149,18 @@ export class Vector4 {
         if (this.w < v.w)
             this.w = v.w;
         return this;
-    }
-    clone() {
+    };
+    Vector4.prototype.clone = function () {
         return new Vector4(this);
-    }
-    copy(x) {
+    };
+    Vector4.prototype.copy = function (x) {
         this.x = x.x;
         this.y = x.y;
         this.z = x.z;
         this.w = x.w;
         return this;
-    }
-    fromArray(array, offset) {
+    };
+    Vector4.prototype.fromArray = function (array, offset) {
         if (offset === undefined)
             offset = 0;
         this.x = array[offset];
@@ -168,8 +168,8 @@ export class Vector4 {
         this.z = array[offset + 2];
         this.w = array[offset + 3];
         return this;
-    }
-    toArray(array, offset) {
+    };
+    Vector4.prototype.toArray = function (array, offset) {
         if (array === undefined)
             array = [];
         if (offset === undefined)
@@ -179,8 +179,8 @@ export class Vector4 {
         array[offset + 2] = this.z;
         array[offset + 3] = this.w;
         return array;
-    }
-    toFloatArray() {
+    };
+    Vector4.prototype.toFloatArray = function () {
         if (this._cache == null) {
             this._cache = new Float32Array(4);
         }
@@ -189,8 +189,10 @@ export class Vector4 {
         this._cache[2] = this.z;
         this._cache[3] = this.w;
         return this._cache;
-    }
-}
+    };
+    return Vector4;
+}());
+export { Vector4 };
 // static 
 Vector4.UnitX = new Vector4(1, 0, 0);
 Vector4.UnitY = new Vector4(0, 1, 0);

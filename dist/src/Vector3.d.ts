@@ -50,6 +50,7 @@ export declare class Vector3 {
     clone(): Vector3;
     copy(x: Vector3): this;
     fromArray(array: number[], offset?: number): this;
-    toArray(array?: any[], offset?: number): any[];
+    toArray(array?: Array<number> | Float32Array, offset?: number): Float32Array | number[];
     toFloatArray(): Float32Array;
+    static Lerp(v0: Vector3, v1: Vector3, t: number, out: Vector3): void;
 }

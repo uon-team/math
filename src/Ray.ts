@@ -5,11 +5,11 @@
  * @ignore
  */
 
-import {Vector3} from './Vector3';
-import {AABB} from './AABB';
-import {Plane} from './Plane';
-import {Sphere} from './Sphere';
-import {Matrix4} from './Matrix4';
+import { Vector3 } from './Vector3';
+import { AABB } from './AABB';
+import { Plane } from './Plane';
+import { Sphere } from './Sphere';
+import { Matrix4 } from './Matrix4';
 
 const TEMP_VEC3 = new Vector3();
 

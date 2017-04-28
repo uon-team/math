@@ -25,6 +25,6 @@ export declare class Matrix3 {
     transpose(): this;
     multiplyScalar(s: number): this;
     fromArray(array: ArrayLike<number>): this;
-    toArray(): number[];
+    toArray(): any;
     clone(): Matrix3;
 }

@@ -8,7 +8,7 @@
 
 
 const ZERO_F32 = Math.fround(0);
-const ONE_F32 = Math.fround(0);
+const ONE_F32 = Math.fround(1);
 const f32 = Math.fround;
 
 

@@ -4,8 +4,8 @@
  * @author Gabriel Roy <gab@uon.io>
  * @ignore
  */
-const RAD_TO_DEG = 180 / Math.PI;
-const DEG_TO_RAD = Math.PI / 180;
+var RAD_TO_DEG = 180 / Math.PI;
+var DEG_TO_RAD = Math.PI / 180;
 /**
 * Converts a degree angle to radians
 * @param {Number} deg

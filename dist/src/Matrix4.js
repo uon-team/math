@@ -13,11 +13,11 @@ var TEMP_VEC33 = new Vector3();
 /**
  * @memberOf uon.math
  */
-export class Matrix4 {
+var Matrix4 = (function () {
     /**
      * @constructs
      */
-    constructor() {
+    function Matrix4() {
         this.elements = new Float32Array([
             1, 0, 0, 0,
             0, 1, 0, 0,
@@ -25,7 +25,7 @@ export class Matrix4 {
             0, 0, 0, 1
         ]);
     }
-    set(n11, n12, n13, n14, n21, n22, n23, n24, n31, n32, n33, n34, n41, n42, n43, n44) {
+    Matrix4.prototype.set = function (n11, n12, n13, n14, n21, n22, n23, n24, n31, n32, n33, n34, n41, n42, n43, n44) {
         var te = this.elements;
         te[0] = n11;
         te[4] = n12;
@@ -44,19 +44,19 @@ export class Matrix4 {
         te[11] = n43;
         te[15] = n44;
         return this;
-    }
-    identity() {
+    };
+    Matrix4.prototype.identity = function () {
         this.set(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
         return this;
-    }
-    copy(m) {
+    };
+    Matrix4.prototype.copy = function (m) {
         this.elements.set(m.elements);
         return this;
-    }
+    };
     /**
      * Compute determinant
      */
-    determinant() {
+    Matrix4.prototype.determinant = function () {
         var te = this.elements;
         var n11 = te[0], n12 = te[4], n13 = te[8], n14 = te[12];
         var n21 = te[1], n22 = te[5], n23 = te[9], n24 = te[13];
@@ -81,20 +81,20 @@ export class Matrix4 {
             * (-n13 * n22 * n31 - n11 * n23 * n32 + n11 * n22 * n33
                 + n13 * n21 * n32 - n12 * n21 * n33 + n12 * n23
                 * n31));
-    }
+    };
     /**
      * Copy the inverse of m into this
      * @param m
      */
-    inverse(m) {
+    Matrix4.prototype.inverse = function (m) {
         // based on
         // http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/fourD/index.htm
-        let te = this.elements;
-        let me = m.elements;
-        let n11 = me[0], n12 = me[4], n13 = me[8], n14 = me[12];
-        let n21 = me[1], n22 = me[5], n23 = me[9], n24 = me[13];
-        let n31 = me[2], n32 = me[6], n33 = me[10], n34 = me[14];
-        let n41 = me[3], n42 = me[7], n43 = me[11], n44 = me[15];
+        var te = this.elements;
+        var me = m.elements;
+        var n11 = me[0], n12 = me[4], n13 = me[8], n14 = me[12];
+        var n21 = me[1], n22 = me[5], n23 = me[9], n24 = me[13];
+        var n31 = me[2], n32 = me[6], n33 = me[10], n34 = me[14];
+        var n41 = me[3], n42 = me[7], n43 = me[11], n44 = me[15];
         te[0] = n23 * n34 * n42 - n24 * n33 * n42 + n24 * n32 * n43
             - n22 * n34 * n43 - n23 * n32 * n44 + n22 * n33 * n44;
         te[4] = n14 * n33 * n42 - n13 * n34 * n42 - n14 * n32 * n43
@@ -137,13 +137,13 @@ export class Matrix4 {
         }
         this.multiplyScalar(1 / det);
         return this;
-    }
+    };
     /**
      * Transpose this matrix in place
      */
-    transpose() {
-        let te = this.elements;
-        let tmp;
+    Matrix4.prototype.transpose = function () {
+        var te = this.elements;
+        var tmp;
         tmp = te[1];
         te[1] = te[4];
         te[4] = tmp;
@@ -163,12 +163,12 @@ export class Matrix4 {
         te[11] = te[14];
         te[14] = tmp;
         return this;
-    }
+    };
     /**
      * Multiply this matrix by another
      * @param mat
      */
-    multiply(mat) {
+    Matrix4.prototype.multiply = function (mat) {
         var mat2 = this.elements;
         var mat1 = mat.elements;
         var a00 = mat1[0], a01 = mat1[1], a02 = mat1[2], a03 = mat1[3];
@@ -198,12 +198,12 @@ export class Matrix4 {
             * a12 + b32 * a22 + b33 * a32, mat2[15] = b30
             * a03 + b31 * a13 + b32 * a23 + b33 * a33;
         return this;
-    }
+    };
     /**
      * Scale the matrix uniformly by value s
      * @param s
      */
-    multiplyScalar(s) {
+    Matrix4.prototype.multiplyScalar = function (s) {
         var te = this.elements;
         te[0] *= s;
         te[4] *= s;
@@ -222,12 +222,12 @@ export class Matrix4 {
         te[11] *= s;
         te[15] *= s;
         return this;
-    }
+    };
     /**
      * Scale the matrix with Vector3
      * @param v
      */
-    scale(v) {
+    Matrix4.prototype.scale = function (v) {
         var te = this.elements;
         var x = v.x, y = v.y, z = v.z;
         te[0] *= x;
@@ -243,14 +243,14 @@ export class Matrix4 {
         te[7] *= y;
         te[11] *= z;
         return this;
-    }
+    };
     /**
      * Apply a look at transformation
      * @param eye
      * @param target
      * @param up
      */
-    lookAt(eye, target, up) {
+    Matrix4.prototype.lookAt = function (eye, target, up) {
         var x = TEMP_VEC31.copy(up);
         var y = TEMP_VEC32.set(0, 0, 0);
         var z = TEMP_VEC33.copy(eye);
@@ -275,8 +275,8 @@ export class Matrix4 {
         te[6] = y.z;
         te[10] = z.z;
         return this;
-    }
-    makeFrustum(left, right, bottom, top, near, far) {
+    };
+    Matrix4.prototype.makeFrustum = function (left, right, bottom, top, near, far) {
         var te = this.elements;
         var x = 2 * near / (right - left);
         var y = 2 * near / (top - bottom);
@@ -301,15 +301,15 @@ export class Matrix4 {
         te[11] = -1;
         te[15] = 0;
         return this;
-    }
-    makePerspective(fov, aspect, near, far) {
+    };
+    Matrix4.prototype.makePerspective = function (fov, aspect, near, far) {
         var ymax = near * Math.tan(ToRadians(fov * 0.5));
         var ymin = -ymax;
         var xmin = ymin * aspect;
         var xmax = ymax * aspect;
         return this.makeFrustum(xmin, xmax, ymin, ymax, near, far);
-    }
-    makeOrthographic(left, right, top, bottom, near, far) {
+    };
+    Matrix4.prototype.makeOrthographic = function (left, right, top, bottom, near, far) {
         var te = this.elements;
         var w = right - left;
         var h = top - bottom;
@@ -334,8 +334,8 @@ export class Matrix4 {
         te[11] = 0;
         te[15] = 1;
         return this;
-    }
-    makeRotationFromQuaternion(q) {
+    };
+    Matrix4.prototype.makeRotationFromQuaternion = function (q) {
         var te = this.elements;
         var x = q.x, y = q.y, z = q.z, w = q.w;
         var x2 = x + x, y2 = y + y, z2 = z + z;
@@ -361,8 +361,8 @@ export class Matrix4 {
         te[14] = 0;
         te[15] = 1;
         return this;
-    }
-    makeRotationAxis(axis, angle) {
+    };
+    Matrix4.prototype.makeRotationAxis = function (axis, angle) {
         // Based on
         // http://www.gamedev.net/reference/articles/article1199.asp
         var c = Math.cos(angle);
@@ -373,45 +373,45 @@ export class Matrix4 {
         this.set(tx * x + c, tx * y - s * z, tx * z + s * y, 0, tx * y + s * z, ty * y + c, ty * z - s * x, 0, tx * z - s * y, ty * z
             + s * x, t * z * z + c, 0, 0, 0, 0, 1);
         return this;
-    }
-    makeTranslation(x, y, z) {
+    };
+    Matrix4.prototype.makeTranslation = function (x, y, z) {
         this.set(1, 0, 0, x, 0, 1, 0, y, 0, 0, 1, z, 0, 0, 0, 1);
         return this;
-    }
-    makeScale(x, y, z) {
+    };
+    Matrix4.prototype.makeScale = function (x, y, z) {
         this.set(x, 0, 0, 0, 0, y, 0, 0, 0, 0, z, 0, 0, 0, 0, 1);
         return this;
-    }
-    getScale() {
-        let vector = TEMP_VEC30;
-        let te = this.elements;
-        let sx = vector.set(te[0], te[1], te[2]).length();
-        let sy = vector.set(te[4], te[5], te[6]).length();
-        let sz = vector.set(te[8], te[9], te[10]).length();
+    };
+    Matrix4.prototype.getScale = function () {
+        var vector = TEMP_VEC30;
+        var te = this.elements;
+        var sx = vector.set(te[0], te[1], te[2]).length();
+        var sy = vector.set(te[4], te[5], te[6]).length();
+        var sz = vector.set(te[8], te[9], te[10]).length();
         return new Vector3(sx, sy, sz);
-    }
-    setTranslation(v) {
+    };
+    Matrix4.prototype.setTranslation = function (v) {
         var te = this.elements;
         te[12] = v.x;
         te[13] = v.y;
         te[14] = v.z;
         return this;
-    }
-    getTranslation(v) {
+    };
+    Matrix4.prototype.getTranslation = function (v) {
         var te = this.elements;
         v = v || new Vector3();
         v.x = te[12];
         v.y = te[13];
         v.z = te[14];
         return v;
-    }
-    compose(translation, quaternion, scale) {
+    };
+    Matrix4.prototype.compose = function (translation, quaternion, scale) {
         this.makeRotationFromQuaternion(quaternion);
         this.scale(scale);
         this.setTranslation(translation);
         return this;
-    }
-    decompose(translation, quaternion, scale) {
+    };
+    Matrix4.prototype.decompose = function (translation, quaternion, scale) {
         var vector = TEMP_VEC30;
         var matrix = Matrix4.TEMP;
         var te = this.elements;
@@ -448,18 +448,51 @@ export class Matrix4 {
         scale.y = sy;
         scale.z = sz;
         return this;
-    }
-    fromArray(array) {
+    };
+    Matrix4.prototype.fromArray = function (array) {
         this.elements.set(array);
         return this;
-    }
-    toArray() {
+    };
+    Matrix4.prototype.toArray = function () {
         return Array.from(this.elements);
-    }
-    clone() {
+    };
+    Matrix4.prototype.clone = function () {
         return new Matrix4().fromArray(this.elements);
-    }
-}
+    };
+    Matrix4.Multiply = function (a, b) {
+        var result = new Matrix4();
+        var ae = a.elements;
+        var be = b.elements;
+        var te = result.elements;
+        var a11 = ae[0], a12 = ae[4], a13 = ae[8], a14 = ae[12];
+        var a21 = ae[1], a22 = ae[5], a23 = ae[9], a24 = ae[13];
+        var a31 = ae[2], a32 = ae[6], a33 = ae[10], a34 = ae[14];
+        var a41 = ae[3], a42 = ae[7], a43 = ae[11], a44 = ae[15];
+        var b11 = be[0], b12 = be[4], b13 = be[8], b14 = be[12];
+        var b21 = be[1], b22 = be[5], b23 = be[9], b24 = be[13];
+        var b31 = be[2], b32 = be[6], b33 = be[10], b34 = be[14];
+        var b41 = be[3], b42 = be[7], b43 = be[11], b44 = be[15];
+        te[0] = a11 * b11 + a12 * b21 + a13 * b31 + a14 * b41;
+        te[4] = a11 * b12 + a12 * b22 + a13 * b32 + a14 * b42;
+        te[8] = a11 * b13 + a12 * b23 + a13 * b33 + a14 * b43;
+        te[12] = a11 * b14 + a12 * b24 + a13 * b34 + a14 * b44;
+        te[1] = a21 * b11 + a22 * b21 + a23 * b31 + a24 * b41;
+        te[5] = a21 * b12 + a22 * b22 + a23 * b32 + a24 * b42;
+        te[9] = a21 * b13 + a22 * b23 + a23 * b33 + a24 * b43;
+        te[13] = a21 * b14 + a22 * b24 + a23 * b34 + a24 * b44;
+        te[2] = a31 * b11 + a32 * b21 + a33 * b31 + a34 * b41;
+        te[6] = a31 * b12 + a32 * b22 + a33 * b32 + a34 * b42;
+        te[10] = a31 * b13 + a32 * b23 + a33 * b33 + a34 * b43;
+        te[14] = a31 * b14 + a32 * b24 + a33 * b34 + a34 * b44;
+        te[3] = a41 * b11 + a42 * b21 + a43 * b31 + a44 * b41;
+        te[7] = a41 * b12 + a42 * b22 + a43 * b32 + a44 * b42;
+        te[11] = a41 * b13 + a42 * b23 + a43 * b33 + a44 * b43;
+        te[15] = a41 * b14 + a42 * b24 + a43 * b34 + a44 * b44;
+        return result;
+    };
+    return Matrix4;
+}());
+export { Matrix4 };
 Matrix4.TEMP = new Matrix4();
 ;
 //# sourceMappingURL=Matrix4.js.map

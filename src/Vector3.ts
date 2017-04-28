@@ -10,7 +10,7 @@ import {Matrix4} from './Matrix4';
 import {Quaternion} from './Quaternion';
 
 const ZERO_F32 = Math.fround(0);
-const ONE_F32 = Math.fround(0);
+const ONE_F32 = Math.fround(1);
 const f32 = Math.fround;
 
 
@@ -183,8 +183,9 @@ export class Vector3 {
         this.x = e[0] * x + e[4] * y + e[8] * z + e[12];
         this.y = e[1] * x + e[5] * y + e[9] * z + e[13];
         this.z = e[2] * x + e[6] * y + e[10] * z + e[14];
+        var w = e[3] * x + e[7] * y + e[11] * z + e[15];
 
-        return this;
+        return this.divideScalar(w);
 
     }
 
@@ -215,14 +216,10 @@ export class Vector3 {
         var qz = q.z;
         var qw = q.w;
 
-        // calculate quat * vector
-
         var ix = qw * x + qy * z - qz * y;
         var iy = qw * y + qz * x - qx * z;
         var iz = qw * z + qx * y - qy * x;
         var iw = -qx * x - qy * y - qz * z;
-
-        // calculate result * inverse quat
 
         this.x = ix * qw + iw * -qx + iy * -qz - iz * -qy;
         this.y = iy * qw + iw * -qy + iz * -qx - ix * -qz;
@@ -270,6 +267,9 @@ export class Vector3 {
         this.x += (v.x - this.x) * alpha;
         this.y += (v.y - this.y) * alpha;
         this.z += (v.z - this.z) * alpha;
+
+
+
         return this;
     }
 
@@ -324,7 +324,7 @@ export class Vector3 {
 
     }
 
-    toArray(array?: any[], offset?: number) {
+    toArray(array?: Array<number> | Float32Array, offset?: number) {
 
         if (array === undefined)
             array = [];
@@ -350,6 +350,17 @@ export class Vector3 {
         this._cache[2] = this.z;
 
         return this._cache;
+
+    }
+
+    static Lerp(v0: Vector3, v1: Vector3, t: number, out: Vector3) {
+
+        let x = (1 - t) * v0.x + t * v1.x;
+        let y = (1 - t) * v0.y + t * v1.y;
+        let z = (1 - t) * v0.z + t * v1.z;
+
+        out.set(x, y, z);
+
 
     }
 

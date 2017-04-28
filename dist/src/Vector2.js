@@ -4,17 +4,17 @@
  * @author Gabriel Roy <gab@uon.io>
  * @ignore
  */
-const ZERO_F32 = Math.fround(0.0);
-const ONE_F32 = Math.fround(1.0);
-const f32 = Math.fround;
+var ZERO_F32 = Math.fround(0.0);
+var ONE_F32 = Math.fround(1.0);
+var f32 = Math.fround;
 /**
  *  A representation of a 2D vector
  */
-export class Vector2 {
+var Vector2 = (function () {
     /**
      * @constructs
      */
-    constructor(x, y) {
+    function Vector2(x, y) {
         // memeber
         this.x = ZERO_F32;
         this.y = ZERO_F32;
@@ -37,73 +37,73 @@ export class Vector2 {
      * @param x
      * @param y
      */
-    set(x, y) {
+    Vector2.prototype.set = function (x, y) {
         this.x = f32(x);
         this.y = f32(y);
         return this;
-    }
+    };
     /**
      * Equality test
      * @param v
      */
-    equals(v) {
+    Vector2.prototype.equals = function (v) {
         return ((v.x === this.x) && (v.y === this.y));
-    }
-    negate() {
+    };
+    Vector2.prototype.negate = function () {
         this.x = -this.x;
         this.y = -this.y;
         return this;
-    }
+    };
     /**
      * Adds a vector2 to this one
      * @param vec2
      */
-    add(vec2) {
+    Vector2.prototype.add = function (vec2) {
         this.x += vec2.x;
         this.y += vec2.y;
         return this;
-    }
+    };
     /**
      * Substract a vector2 from this one
      * @param vec2
      */
-    subtract(vec2) {
+    Vector2.prototype.subtract = function (vec2) {
         this.x -= vec2.x;
         this.y -= vec2.y;
         return this;
-    }
+    };
     /**
      * Multiply this vector with another
      * @param vec2
      */
-    multiply(vec2) {
+    Vector2.prototype.multiply = function (vec2) {
         this.x *= vec2.x;
         this.y *= vec2.y;
         return this;
-    }
+    };
     /**
      * Multiply this vector by a scalar value
      * @param s
      */
-    multiplyScalar(s) {
+    Vector2.prototype.multiplyScalar = function (s) {
         this.x *= s;
         this.y *= s;
         return this;
-    }
+    };
     /**
      * Divide this vector by another
      * @param v
      */
-    divide(v) {
+    Vector2.prototype.divide = function (v) {
         this.x /= v.x;
         this.y /= v.y;
         return this;
-    }
+    };
     /**
      * Divide this vector by a scalar value
      * @param scalar
      */
-    divideScalar(scalar) {
+    Vector2.prototype.divideScalar = function (scalar) {
         if (scalar !== 0) {
             var inv = 1 / scalar;
             this.x *= inv;
@@ -114,59 +114,61 @@ export class Vector2 {
             this.y = 0;
         }
         return this;
-    }
+    };
     /**
      * Compute a dot product
      * @param vec2
      */
-    dot(vec2) {
+    Vector2.prototype.dot = function (vec2) {
         return this.x * vec2.x + this.y * vec2.y;
-    }
+    };
     /**
      * Computes the vector length
      */
-    length() {
+    Vector2.prototype.length = function () {
         return Math.sqrt(this.lengthSq());
-    }
+    };
     /**
      * Computes the vector squared length
      */
-    lengthSq() {
+    Vector2.prototype.lengthSq = function () {
         var a = this;
         return a.x * a.x + a.y * a.y;
-    }
+    };
     /**
      * Normalizes this vector
      */
-    normalize() {
+    Vector2.prototype.normalize = function () {
         var len = this.length();
         return this.divideScalar(len);
-    }
+    };
     /**
      * Linear interpolation between this vector an another
      * @param v
      * @param alpha
      */
-    lerp(v, alpha) {
-        this.x += (v.x - this.x) * alpha;
-        this.y += (v.y - this.y) * alpha;
+    Vector2.prototype.lerp = function (v, alpha) {
+        //this.x += (v.x - this.x) * alpha;
+        //this.y += (v.y - this.y) * alpha;
+        this.x = (1 - alpha) * this.x + alpha * v.x;
+        this.y = (1 - alpha) * this.y + alpha * v.y;
         return this;
-    }
-    rotate(angle, origin) {
-        let rot_sin = Math.sin(angle);
-        let rot_cos = Math.cos(angle);
+    };
+    Vector2.prototype.rotate = function (angle, origin) {
+        var rot_sin = Math.sin(angle);
+        var rot_cos = Math.cos(angle);
         this.subtract(origin);
-        let new_x = rot_cos * this.x - rot_sin * this.y;
-        let new_y = rot_sin * this.x + rot_cos * this.y;
+        var new_x = rot_cos * this.x - rot_sin * this.y;
+        var new_y = rot_sin * this.x + rot_cos * this.y;
         this.set(new_x, new_y);
         this.add(origin);
         return this;
-    }
+    };
     /**
      * Get the minimum value between this vector and another
      * @param v
      */
-    min(v) {
+    Vector2.prototype.min = function (v) {
         if (this.x > v.x) {
             this.x = v.x;
         }
@@ -174,12 +176,12 @@ export class Vector2 {
             this.y = v.y;
         }
         return this;
-    }
+    };
     /**
     * Get the maximum value between this vector and another
     * @param v
     */
-    max(v) {
+    Vector2.prototype.max = function (v) {
         if (this.x < v.x) {
             this.x = v.x;
         }
@@ -187,40 +189,49 @@ export class Vector2 {
             this.y = v.y;
         }
         return this;
-    }
+    };
+    /**
+     * Transform this vector into it's perpendicular
+     */
+    Vector2.prototype.perpendicular = function () {
+        var x = this.x;
+        this.x = -this.y;
+        this.y = x;
+        return this;
+    };
     /**
      * Clone this vector
      */
-    clone() {
+    Vector2.prototype.clone = function () {
         return new Vector2(this);
-    }
+    };
     /**
      * Copy values from another vector
      * @param x
      */
-    copy(x) {
+    Vector2.prototype.copy = function (x) {
         this.x = x.x;
         this.y = x.y;
         return this;
-    }
+    };
     /**
      * Assign values from an array
      * @param array
      * @param offset
      */
-    fromArray(array, offset) {
+    Vector2.prototype.fromArray = function (array, offset) {
         if (offset === undefined)
             offset = 0;
         this.x = array[offset];
         this.y = array[offset + 1];
         return this;
-    }
+    };
     /**
      * Write values to an array
      * @param array
      * @param offset
      */
-    toArray(array, offset) {
+    Vector2.prototype.toArray = function (array, offset) {
         if (array === undefined)
             array = [];
         if (offset === undefined)
@@ -228,29 +239,41 @@ export class Vector2 {
         array[offset] = this.x;
         array[offset + 1] = this.y;
         return array;
-    }
+    };
     /**
      * Return values in a Float32Array
      */
-    toFloatArray() {
+    Vector2.prototype.toFloatArray = function () {
         if (this._cache == null) {
             this._cache = new Float32Array(2);
         }
         this._cache[0] = this.x;
         this._cache[1] = this.y;
         return this._cache;
-    }
-    static ComputeCentroid(points) {
-        let centroid = new Vector2(0, 0);
-        let signedArea = 0.0;
-        let x0 = 0.0; // Current vertex X
-        let y0 = 0.0; // Current vertex Y
-        let x1 = 0.0; // Next vertex X
-        let y1 = 0.0; // Next vertex Y
-        let a = 0.0; // Partial signed area
+    };
+    Vector2.Add = function (p1, p2) {
+        return p1.clone().add(p2);
+    };
+    Vector2.Sub = function (p1, p2) {
+        return p1.clone().subtract(p2);
+    };
+    Vector2.Middle = function (p1, p2) {
+        return this.Add(p1, p2).multiplyScalar(0.5);
+    };
+    Vector2.Angle = function (p1, p2) {
+        return Math.atan2(p2.x - p1.x, p2.y - p1.y);
+    };
+    Vector2.ComputeCentroid = function (points) {
+        var centroid = new Vector2(0, 0);
+        var signedArea = 0.0;
+        var x0 = 0.0; // Current vertex X
+        var y0 = 0.0; // Current vertex Y
+        var x1 = 0.0; // Next vertex X
+        var y1 = 0.0; // Next vertex Y
+        var a = 0.0; // Partial signed area
         // For all vertices except last
-        let i = 0;
-        let l = 0;
+        var i = 0;
+        var l = 0;
         for (i = 0, l = points.length - 1; i < l; ++i) {
             x0 = points[i].x;
             y0 = points[i].y;
@@ -275,36 +298,38 @@ export class Vector2 {
         centroid.x /= (6.0 * signedArea);
         centroid.y /= (6.0 * signedArea);
         return centroid;
-    }
-    static ComputeCenterOfMass(points) {
+    };
+    Vector2.ComputeCenterOfMass = function (points) {
         // use doubles if appropriate
-        let xsum = 0.0;
-        let ysum = 0.0;
-        let area = 0.0;
-        for (let i = 0; i < points.length - 1; i++) {
+        var xsum = 0.0;
+        var ysum = 0.0;
+        var area = 0.0;
+        for (var i = 0; i < points.length - 1; i++) {
             // I'm not a c++ guy... do you need to use pointers? You make the call here
-            let p0 = points[i];
-            let p1 = points[i + 1];
-            let areaSum = (p0.x * p1.y) - (p1.x * p0.y);
+            var p0 = points[i];
+            var p1 = points[i + 1];
+            var areaSum = (p0.x * p1.y) - (p1.x * p0.y);
             xsum += (p0.x + p1.x) * areaSum;
             ysum += (p0.y + p1.y) * areaSum;
             area += areaSum;
         }
-        let centMassX = xsum / (area * 6);
-        let centMassY = ysum / (area * 6);
+        var centMassX = xsum / (area * 6);
+        var centMassY = ysum / (area * 6);
         return new Vector2(centMassX, centMassY);
-    }
-    static ComputeArea(points) {
-        let area = 0;
+    };
+    Vector2.ComputeArea = function (points) {
+        var area = 0;
         // For all vertices except last
-        for (let i = 0, j = points.length - 1; i < points.length; j = i++) {
-            let p1 = points[j];
-            let p2 = points[i];
+        for (var i = 0, j = points.length - 1; i < points.length; j = i++) {
+            var p1 = points[j];
+            var p2 = points[i];
             area = area + (p2.x + p1.x) * (p2.y - p1.y);
         }
         return area * 0.5;
-    }
-}
+    };
+    return Vector2;
+}());
+export { Vector2 };
 // static 
 Vector2.UnitX = new Vector2(1, 0);
 Vector2.UnitY = new Vector2(0, 1);

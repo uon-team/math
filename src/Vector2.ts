@@ -194,8 +194,11 @@ export class Vector2 {
      * @param alpha
      */
     lerp(v: Vector2, alpha: number) {
-        this.x += (v.x - this.x) * alpha;
-        this.y += (v.y - this.y) * alpha;
+        //this.x += (v.x - this.x) * alpha;
+        //this.y += (v.y - this.y) * alpha;
+
+        this.x = (1 - alpha) * this.x + alpha * v.x;
+        this.y = (1 - alpha) * this.y + alpha * v.y;
 
         return this;
     }
@@ -241,10 +244,10 @@ export class Vector2 {
 
     }
 
-     /**
-     * Get the maximum value between this vector and another
-     * @param v
-     */
+    /**
+    * Get the maximum value between this vector and another
+    * @param v
+    */
     max(v: Vector2) {
 
         if (this.x < v.x) {
@@ -254,6 +257,19 @@ export class Vector2 {
         if (this.y < v.y) {
             this.y = v.y;
         }
+
+        return this;
+
+    }
+
+    /**
+     * Transform this vector into it's perpendicular
+     */
+    perpendicular() {
+
+        var x = this.x;
+        this.x = -this.y;
+        this.y = x;
 
         return this;
 
@@ -299,7 +315,7 @@ export class Vector2 {
      * @param array
      * @param offset
      */
-    toArray(array?: any[], offset?: number) {
+    toArray(array?: Array<number> | Float32Array, offset?: number) {
 
         if (array === undefined)
             array = [];
@@ -329,10 +345,27 @@ export class Vector2 {
 
     }
 
+    static Add(p1: Vector2, p2: Vector2) {
+        return p1.clone().add(p2);
+    }
+
+    static Sub(p1: Vector2, p2: Vector2) {
+        return p1.clone().subtract(p2);
+    }
+
+    static Middle(p1: Vector2, p2: Vector2) {
+        return this.Add(p1, p2).multiplyScalar(0.5);
+    }
+
+    static Angle(p1: Vector2, p2: Vector2) {
+        return Math.atan2(p2.x - p1.x, p2.y - p1.y);
+    }
+
+
     static ComputeCentroid(points: Vector2[]) {
 
 
-        let centroid =  new Vector2(0, 0);
+        let centroid = new Vector2(0, 0);
         let signedArea = 0.0;
         let x0 = 0.0; // Current vertex X
         let y0 = 0.0; // Current vertex Y
@@ -401,8 +434,8 @@ export class Vector2 {
     static ComputeArea(points: Vector2[]) {
 
 
-        let area = 0;       
-        
+        let area = 0;
+
         // For all vertices except last
         for (let i = 0, j = points.length - 1; i < points.length; j = i++) {
 

@@ -5,21 +5,22 @@
  * @ignore
  */
 import { Vector3 } from './Vector3';
-const TEMP_VEC3 = new Vector3();
+var TEMP_VEC3 = new Vector3();
 /**
  * @memberOf uon.math
  */
-export class Matrix3 {
+var Matrix3 = (function () {
     /**
      * @constructs
      */
-    constructor() {
+    function Matrix3() {
         this.elements = new Float32Array([
             1, 0, 0,
             0, 1, 0,
-            0, 0, 1]);
+            0, 0, 1
+        ]);
     }
-    set(n11, n12, n13, n21, n22, n23, n31, n32, n33) {
+    Matrix3.prototype.set = function (n11, n12, n13, n21, n22, n23, n31, n32, n33) {
         var te = this.elements;
         te[0] = n11;
         te[3] = n12;
@@ -31,26 +32,26 @@ export class Matrix3 {
         te[5] = n32;
         te[8] = n33;
         return this;
-    }
-    identity() {
+    };
+    Matrix3.prototype.identity = function () {
         this.set(1, 0, 0, 0, 1, 0, 0, 0, 1);
         return this;
-    }
-    copy(m) {
+    };
+    Matrix3.prototype.copy = function (m) {
         this.elements.set(m.elements);
         return this;
-    }
-    determinant() {
+    };
+    Matrix3.prototype.determinant = function () {
         var te = this.elements;
         var a = te[0], b = te[1], c = te[2], d = te[3], e = te[4], f = te[5], g = te[6], h = te[7], i = te[8];
         return a * e * i - a * f * h - b * d * i + b * f * g
             + c * d * h - c * e * g;
-    }
+    };
     /**
      * Copy the inverse of a Matrix4 into this one
      * @param matrix
      */
-    inverse(matrix) {
+    Matrix3.prototype.inverse = function (matrix) {
         var me = matrix.elements;
         var te = this.elements;
         te[0] = me[10] * me[5] - me[6] * me[9];
@@ -72,17 +73,17 @@ export class Matrix3 {
         }
         this.multiplyScalar(1.0 / det);
         return this;
-    }
+    };
     /**
      * Get a Normal matrix from a matrix 4
      * @param m
      */
-    getNormalMatrix(m) {
+    Matrix3.prototype.getNormalMatrix = function (m) {
         this.inverse(m).transpose();
         return this;
-    }
-    transpose() {
-        let tmp, m = this.elements;
+    };
+    Matrix3.prototype.transpose = function () {
+        var tmp, m = this.elements;
         tmp = m[1];
         m[1] = m[3];
         m[3] = tmp;
@@ -93,8 +94,8 @@ export class Matrix3 {
         m[5] = m[7];
         m[7] = tmp;
         return this;
-    }
-    multiplyScalar(s) {
+    };
+    Matrix3.prototype.multiplyScalar = function (s) {
         var te = this.elements;
         te[0] *= s;
         te[3] *= s;
@@ -106,17 +107,19 @@ export class Matrix3 {
         te[5] *= s;
         te[8] *= s;
         return this;
-    }
-    fromArray(array) {
+    };
+    Matrix3.prototype.fromArray = function (array) {
         this.elements.set(array);
         return this;
-    }
-    toArray() {
+    };
+    Matrix3.prototype.toArray = function () {
         return Array.from(this.elements);
-    }
-    clone() {
+    };
+    Matrix3.prototype.clone = function () {
         return new Matrix3().fromArray(this.elements);
-    }
-}
+    };
+    return Matrix3;
+}());
+export { Matrix3 };
 ;
 //# sourceMappingURL=Matrix3.js.map

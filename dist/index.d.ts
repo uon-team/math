@@ -1,7 +1,9 @@
 export { AABB } from './src/AABB';
+export { Color } from './src/Color';
 export { Frustum } from './src/Frustum';
 export { Matrix3 } from './src/Matrix3';
 export { Matrix4 } from './src/Matrix4';
+export { Path2 } from './src/Path2';
 export { Plane } from './src/Plane';
 export { Quaternion } from './src/Quaternion';
 export { Ray } from './src/Ray';

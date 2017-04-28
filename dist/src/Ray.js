@@ -5,59 +5,59 @@
  * @ignore
  */
 import { Vector3 } from './Vector3';
-const TEMP_VEC3 = new Vector3();
+var TEMP_VEC3 = new Vector3();
 /**
  * @memberOf uon.math
  */
-export class Ray {
+var Ray = (function () {
     /**
      * @constructs
      */
-    constructor(origin, dir) {
+    function Ray(origin, dir) {
         this.origin = (origin !== undefined) ? origin : new Vector3();
         this.dir = (dir !== undefined) ? dir : new Vector3();
     }
     /**
      * Assign new values to this Ray
      */
-    set(origin, dir) {
+    Ray.prototype.set = function (origin, dir) {
         this.origin.copy(origin);
         this.dir.copy(dir);
         return this;
-    }
+    };
     /**
      * Computes the position of a point along the Ray
      */
-    at(t, output) {
+    Ray.prototype.at = function (t, output) {
         var result = output || new Vector3();
         return result.copy(this.dir).multiplyScalar(t).add(this.origin);
-    }
+    };
     /**
      * Test for equaity
      */
-    equals(ray) {
+    Ray.prototype.equals = function (ray) {
         return ray.origin.equals(this.origin) && ray.dir.equals(this.dir);
-    }
+    };
     /**
      * Make a copy of this ray
      */
-    clone() {
+    Ray.prototype.clone = function () {
         return new Ray().copy(this);
-    }
+    };
     /**
      * Copy values from another Ray
      */
-    copy(ray) {
+    Ray.prototype.copy = function (ray) {
         this.origin.copy(ray.origin);
         this.dir.copy(ray.dir);
         return this;
-    }
+    };
     /**
      * Test for intersection with an aabb
      */
-    intersectBox(box, output) {
+    Ray.prototype.intersectBox = function (box, output) {
         // http://www.scratchapixel.com/lessons/3d-basic-lessons/lesson-7-intersecting-simple-shapes/ray-box-intersection/
-        let tmin, tmax, tymin, tymax, tzmin, tzmax;
+        var tmin, tmax, tymin, tymax, tzmin, tzmax;
         var invdirx = 1 / this.dir.x, invdiry = 1 / this.dir.y, invdirz = 1 / this.dir.z;
         var origin = this.origin;
         if (invdirx >= 0) {
@@ -102,11 +102,11 @@ export class Ray {
         if (tmax < 0)
             return null;
         return this.at(tmin >= 0 ? tmin : tmax, output);
-    }
+    };
     /**
      * Test for intersection with a sphere
      */
-    intersectSphere(sphere, output) {
+    Ray.prototype.intersectSphere = function (sphere, output) {
         var v1 = TEMP_VEC3;
         v1.copy(sphere.center).subtract(this.origin);
         var tca = v1.dot(this.dir);
@@ -129,11 +129,11 @@ export class Ray {
             return this.at(t1, output);
         // else t0 is in front of the ray, so return the first collision point scaled by t0 
         return this.at(t0, output);
-    }
+    };
     /**
      * Compute the distance from a plane
      */
-    distanceToPlane(plane) {
+    Ray.prototype.distanceToPlane = function (plane) {
         var denominator = plane.normal.dot(this.dir);
         if (denominator == 0) {
             // line is coplanar, return origin
@@ -146,27 +146,29 @@ export class Ray {
         var t = -(this.origin.dot(plane.normal) + plane.constant) / denominator;
         // Return if the ray never intersects the plane
         return t >= 0 ? t : null;
-    }
+    };
     /**
      * Test for plane intersection
      */
-    intersectPlane(plane, output) {
+    Ray.prototype.intersectPlane = function (plane, output) {
         var t = this.distanceToPlane(plane);
         if (t === null) {
             return null;
         }
         return this.at(t, output);
-    }
+    };
     /**
      * Transforms the ray with a Matrix4
      */
-    applyMatrix4(matrix4) {
+    Ray.prototype.applyMatrix4 = function (matrix4) {
         this.dir.add(this.origin).applyMatrix4(matrix4);
         this.origin.applyMatrix4(matrix4);
         this.dir.subtract(this.origin);
         this.dir.normalize();
         return this;
-    }
-}
+    };
+    return Ray;
+}());
+export { Ray };
 ;
 //# sourceMappingURL=Ray.js.map

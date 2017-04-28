@@ -6,14 +6,14 @@
  */
 import { Vector3 } from './Vector3';
 import { Matrix3 } from './Matrix3';
-const f32 = Math.fround;
-const TEMP_VEC30 = new Vector3();
-const TEMP_VEC31 = new Vector3();
-const TEMP_MAT30 = new Matrix3();
+var f32 = Math.fround;
+var TEMP_VEC30 = new Vector3();
+var TEMP_VEC31 = new Vector3();
+var TEMP_MAT30 = new Matrix3();
 /**
  * @memberOf uon.math
  */
-export class Plane {
+var Plane = (function () {
     /**
      * A plane is defined by a normal vector and a constant
      *
@@ -21,39 +21,39 @@ export class Plane {
      * @param {Vector3} normal
      * @param {Number} constant
      */
-    constructor(normal, constant) {
+    function Plane(normal, constant) {
         this.normal = (normal !== undefined) ? normal : new Vector3(1, 0, 0);
         this.constant = (constant !== undefined) ? f32(constant) : f32(0);
     }
     /**
      * Assign new values to this plane
      */
-    set(normal, constant) {
+    Plane.prototype.set = function (normal, constant) {
         this.normal.copy(normal);
         this.constant = f32(constant);
         return this;
-    }
+    };
     /**
      * Assign new values to the is plane
      */
-    setComponents(x, y, z, w) {
+    Plane.prototype.setComponents = function (x, y, z, w) {
         this.normal.set(x, y, z);
         this.constant = w;
         return this;
-    }
+    };
     /**
      * Not sure aboutn this one
      * TODO: Figure it out
      */
-    setFromNormalAndCoplanarPoint(normal, point) {
+    Plane.prototype.setFromNormalAndCoplanarPoint = function (normal, point) {
         this.normal.copy(normal);
         this.constant = -point.dot(this.normal);
         return this;
-    }
+    };
     /**
      * Computes a plane from 3 points
      */
-    setFromCoplanarPoints(a, b, c) {
+    Plane.prototype.setFromCoplanarPoints = function (a, b, c) {
         var normal = TEMP_VEC30.copy(c)
             .subtract(b)
             .cross(TEMP_VEC31.copy(a).subtract(b))
@@ -62,59 +62,59 @@ export class Plane {
         // plane)?
         this.setFromNormalAndCoplanarPoint(normal, a);
         return this;
-    }
+    };
     /**
      * Copy values from another plane
      */
-    copy(plane) {
+    Plane.prototype.copy = function (plane) {
         this.normal.copy(plane.normal);
         this.constant = plane.constant;
         return this;
-    }
+    };
     /**
      * Normalize this plane
      */
-    normalize() {
+    Plane.prototype.normalize = function () {
         // Note: will lead to a divide by zero if the plane is invalid.
         var inverseNormalLength = 1.0 / this.normal.length();
         this.normal.multiplyScalar(inverseNormalLength);
         this.constant *= inverseNormalLength;
         return this;
-    }
+    };
     /**
      * Inverse this plane along its normal axis
      */
-    negate() {
+    Plane.prototype.negate = function () {
         this.constant *= -1;
         this.normal.negate();
         return this;
-    }
+    };
     /**
      * Computes the distance from a point to this plane
      */
-    distanceToPoint(point) {
+    Plane.prototype.distanceToPoint = function (point) {
         return this.normal.dot(point) + this.constant;
-    }
+    };
     /**
      * Computes the distance from sphere to this plane
      */
-    distanceToSphere(sphere) {
+    Plane.prototype.distanceToSphere = function (sphere) {
         return this.distanceToPoint(sphere.center) - sphere.radius;
-    }
+    };
     /**
      * Project a point on this plane
      */
-    projectPoint(point, output) {
+    Plane.prototype.projectPoint = function (point, output) {
         return this.orthoPoint(point, output).subtract(point).negate();
-    }
+    };
     /**
      * Computes a vector perpendicular(in axis of the normal vector) to this plane
      */
-    orthoPoint(point, output) {
+    Plane.prototype.orthoPoint = function (point, output) {
         var perpendicularMagnitude = this.distanceToPoint(point);
         var result = output || new Vector3();
         return result.copy(this.normal).multiplyScalar(perpendicularMagnitude);
-    }
+    };
     /**
      *
      */
@@ -156,14 +156,14 @@ export class Plane {
     /**
      * Computes the center point of the plane
      */
-    coplanarPoint(output) {
+    Plane.prototype.coplanarPoint = function (output) {
         var result = output || new Vector3();
         return result.copy(this.normal).multiplyScalar(-this.constant);
-    }
+    };
     /**
      * Transform this plane with a Matrix4
      */
-    applyMatrix4(matrix) {
+    Plane.prototype.applyMatrix4 = function (matrix) {
         // compute new normal based on theory here:
         // http://www.songho.ca/opengl/gl_normaltransform.html
         var normal_matrix = TEMP_MAT30.getNormalMatrix(matrix);
@@ -172,27 +172,29 @@ export class Plane {
         new_coplanar_point.applyMatrix4(matrix);
         this.setFromNormalAndCoplanarPoint(new_normal, new_coplanar_point);
         return this;
-    }
+    };
     /**
      * Translate this plane
      */
-    translate(offset) {
+    Plane.prototype.translate = function (offset) {
         this.constant = this.constant - offset.dot(this.normal);
         return this;
-    }
+    };
     /**
      * Test for equality
      */
-    equals(plane) {
+    Plane.prototype.equals = function (plane) {
         return plane.normal.equals(this.normal)
             && (plane.constant == this.constant);
-    }
+    };
     /**
      * Create a copy of this plane
      */
-    clone() {
+    Plane.prototype.clone = function () {
         return new Plane().copy(this);
-    }
-}
+    };
+    return Plane;
+}());
+export { Plane };
 ;
 //# sourceMappingURL=Plane.js.map

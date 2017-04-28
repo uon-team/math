@@ -10,13 +10,13 @@ import { Plane } from './Plane';
  *
  * @memberOf uon.math
  */
-export class Frustum {
+var Frustum = (function () {
     /**
      * A Frustum is defined by six planes
      *
      * @constructs
      */
-    constructor() {
+    function Frustum() {
         this.planes = [];
         for (var i = 0; i < 6; i++) {
             this.planes.push(arguments[i] || new Plane());
@@ -25,7 +25,7 @@ export class Frustum {
     /**
      * Set the six planes of this frustum
      */
-    set(p0, p1, p2, p3, p4, p5) {
+    Frustum.prototype.set = function (p0, p1, p2, p3, p4, p5) {
         var planes = this.planes;
         planes[0].copy(p0);
         planes[1].copy(p1);
@@ -34,21 +34,21 @@ export class Frustum {
         planes[4].copy(p4);
         planes[5].copy(p5);
         return this;
-    }
+    };
     /**
      * Copy values from another frustum
      */
-    copy(frustum) {
+    Frustum.prototype.copy = function (frustum) {
         var planes = this.planes;
         for (var i = 0; i < 6; i++) {
             planes[i].copy(frustum.planes[i]);
         }
         return this;
-    }
+    };
     /**
      * Compute plane values from a view-projection matrix
      */
-    setFromMatrix(m) {
+    Frustum.prototype.setFromMatrix = function (m) {
         var planes = this.planes;
         var me = m.elements;
         var me0 = me[0], me1 = me[1], me2 = me[2], me3 = me[3];
@@ -62,13 +62,13 @@ export class Frustum {
         planes[4].setComponents(me3 - me2, me7 - me6, me11 - me10, me15 - me14).normalize();
         planes[5].setComponents(me3 + me2, me7 + me6, me11 + me10, me15 + me14).normalize();
         return this;
-    }
+    };
     /**
      * Test for intersection with a sphere
      *
      * @returns {Boolean}
      */
-    intersectsSphere(sphere) {
+    Frustum.prototype.intersectsSphere = function (sphere) {
         var planes = this.planes;
         var center = sphere.center;
         var negRadius = -sphere.radius;
@@ -79,13 +79,13 @@ export class Frustum {
             }
         }
         return true;
-    }
+    };
     /**
      * Test for intersection with a box
      *
      * @returns {Boolean}
      */
-    intersectsBox(box) {
+    Frustum.prototype.intersectsBox = function (box) {
         var p1 = new Vector3(), p2 = new Vector3();
         var planes = this.planes;
         for (var i = 0; i < 6; i++) {
@@ -104,14 +104,14 @@ export class Frustum {
             }
         }
         return true;
-    }
+    };
     /**
      * Test for containment of a point
      *
      * @returns {Boolean} True if the point is inside the frustum, false
      *          otherwise
      */
-    containsPoint(point) {
+    Frustum.prototype.containsPoint = function (point) {
         var planes = this.planes;
         for (var i = 0; i < 6; i++) {
             if (planes[i].distanceToPoint(point) < 0) {
@@ -119,13 +119,15 @@ export class Frustum {
             }
         }
         return true;
-    }
+    };
     /**
      * Creates a copy of this frustum
      */
-    clone() {
+    Frustum.prototype.clone = function () {
         return new Frustum().copy(this);
-    }
-}
+    };
+    return Frustum;
+}());
+export { Frustum };
 ;
 //# sourceMappingURL=Frustum.js.map

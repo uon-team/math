@@ -28,5 +28,5 @@ export declare class Quaternion {
     fromAxisAngle(axis: Vector3, angle: number): this;
     setFromUnitVectors(vFrom: Vector3, vTo: Vector3): this;
     setFromRotationMatrix(m: Matrix4): this;
-    static Slerp(q1: Quaternion, q2: Quaternion, qr: Quaternion, lambda: number): void;
+    static Slerp(qa: Quaternion, qb: Quaternion, qm: Quaternion, lambda: number): Quaternion;
 }

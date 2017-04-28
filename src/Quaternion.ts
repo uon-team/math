@@ -283,9 +283,9 @@ export class Quaternion {
 
     }
 
-    static Slerp(q1: Quaternion, q2: Quaternion, qr: Quaternion, lambda: number) {
+    static Slerp(qa: Quaternion, qb: Quaternion, qm: Quaternion, lambda: number) {
 
-        let dotproduct = q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
+      /*  let dotproduct = q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
         let theta: number,
             st: number,
             sut: number,
@@ -294,15 +294,15 @@ export class Quaternion {
             coeff2: number;
 
         // algorithm adapted from Shoemake's paper
-        lambda = lambda / 2.0;
+        let l = lambda / 2.0;
 
         theta = Math.acos(dotproduct);
         if (theta < 0.0)
             theta = -theta;
 
         st = Math.sin(theta);
-        sut = Math.sin(lambda * theta);
-        sout = Math.sin((1 - lambda) * theta);
+        sut = Math.sin(l * theta);
+        sout = Math.sin((1 - l) * theta);
         coeff1 = sout / st;
         coeff2 = sut / st;
 
@@ -311,7 +311,37 @@ export class Quaternion {
         qr.z = coeff1 * q1.z + coeff2 * q2.z;
         qr.w = coeff1 * q1.w + coeff2 * q2.w;
 
-        qr.normalize();
+        qr.normalize();*/
+
+
+        // Calculate angle between them.
+        let cosHalfTheta = qa.w * qb.w + qa.x * qb.x + qa.y * qb.y + qa.z * qb.z;
+        // if qa=qb or qa=-qb then theta = 0 and we can return qa
+        if (Math.abs(cosHalfTheta) >= 1.0) {
+            qm.w = qa.w; qm.x = qa.x; qm.y = qa.y; qm.z = qa.z;
+            return qm;
+        }
+        // Calculate temporary values.
+        let halfTheta = Math.acos(cosHalfTheta);
+        let sinHalfTheta = Math.sqrt(1.0 - cosHalfTheta * cosHalfTheta);
+        // if theta = 180 degrees then result is not fully defined
+        // we could rotate around any axis normal to qa or qb
+        if (Math.abs(sinHalfTheta) < 0.001) { // fabs is floating point absolute
+            qm.w = (qa.w * 0.5 + qb.w * 0.5);
+            qm.x = (qa.x * 0.5 + qb.x * 0.5);
+            qm.y = (qa.y * 0.5 + qb.y * 0.5);
+            qm.z = (qa.z * 0.5 + qb.z * 0.5);
+            return qm;
+        }
+        let ratioA = Math.sin((1 - lambda) * halfTheta) / sinHalfTheta;
+        let ratioB = Math.sin(lambda * halfTheta) / sinHalfTheta;
+        //calculate Quaternion.
+        qm.w = (qa.w * ratioA + qb.w * ratioB);
+        qm.x = (qa.x * ratioA + qb.x * ratioB);
+        qm.y = (qa.y * ratioA + qb.y * ratioB);
+        qm.z = (qa.z * ratioA + qb.z * ratioB);
+        return qm;
+
     }
 
 };
