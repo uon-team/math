@@ -421,4 +421,16 @@ export class Color {
         return new Color(this.r, this.g, this.b, this.a);
     }
 
+    static Lerp(v0: Color, v1: Color, t: number, out: Color) {
+
+        let x = (1 - t) * v0.r + t * v1.r;
+        let y = (1 - t) * v0.g + t * v1.g;
+        let z = (1 - t) * v0.b + t * v1.b;
+        let w = (1 - t) * v0.a + t * v1.a;
+
+        out.setRGBA(x, y, z, w);
+
+
+    }
+
 };

@@ -50,7 +50,25 @@ export declare class Vector3 {
     clone(): Vector3;
     copy(x: Vector3): this;
     fromArray(array: number[], offset?: number): this;
-    toArray(array?: Array<number> | Float32Array, offset?: number): Float32Array | number[];
+    toArray(array?: Array<number> | Float32Array, offset?: number): number[] | Float32Array;
     toFloatArray(): Float32Array;
+    /**
+     * Utility function for adding 2 vectors together, returns a new instance of Vector2
+     * @param p1
+     * @param p2
+     */
+    static Add(p1: Vector3, p2: Vector3): Vector3;
+    /**
+     * Subtract a vector from another
+     * @param p1
+     * @param p2
+     */
+    static Sub(p1: Vector3, p2: Vector3): Vector3;
+    /**
+     * Get the middle point between 2 vectors
+     * @param p1
+     * @param p2
+     */
+    static Middle(p1: Vector3, p2: Vector3): Vector3;
     static Lerp(v0: Vector3, v1: Vector3, t: number, out: Vector3): void;
 }

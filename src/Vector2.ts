@@ -5,9 +5,13 @@
  * @ignore
  */
 
+import { IsNearEqual } from './Utils';
+
 const ZERO_F32 = Math.fround(0.0);
 const ONE_F32 = Math.fround(1.0);
 const f32 = Math.fround;
+
+const TWO_PI = Math.PI * 2;
 
 /**
  *  A representation of a 2D vector
@@ -68,6 +72,19 @@ export class Vector2 {
 
     }
 
+    /**
+     * Test for near equality given an espsilon
+     * @param v
+     * @param epsilon
+     */
+    nearEquals(v: Vector2, epsilon?: number) {
+        return (IsNearEqual(v.x, this.x, epsilon) && IsNearEqual(v.y, this.y, epsilon));
+    }
+
+
+    /**
+     * Negate x and y
+     */
     negate() {
 
         this.x = -this.x;
@@ -180,6 +197,22 @@ export class Vector2 {
         return a.x * a.x + a.y * a.y;
     }
 
+     /**
+      * Computes the distance between this point and another
+      * @param v
+      */
+    distance(v: Vector2) {
+        return Math.sqrt(this.distanceSq(v));
+    }
+
+    /**
+     * Computes the distance between this point and another
+     * @param v
+     */
+    distanceSq(v: Vector2) {
+        return TEMP_VEC.copy(v).subtract(this).lengthSq();
+    }
+
     /**
      * Normalizes this vector
      */
@@ -203,6 +236,12 @@ export class Vector2 {
         return this;
     }
 
+
+    /**
+     * Rotate this vector around an origin
+     * @param angle
+     * @param origin
+     */
     rotate(angle: number, origin: Vector2) {
 
         let rot_sin = Math.sin(angle);
@@ -219,6 +258,34 @@ export class Vector2 {
         this.add(origin);
 
         return this;
+
+    }
+
+    /**
+     * Compute the absolute angle [0-2PI]
+     * @param vec
+     */
+    getAngle(vec: Vector2) {
+        let angle = this.getSignedAngle(vec);
+
+        if (angle < 0) {
+            angle += TWO_PI;
+        }
+
+        return angle;
+    }
+
+    /**
+     * Compute the signed angle between this vector and another
+     * @param vec
+     */
+    getSignedAngle(vec: Vector2) {
+
+        let dot = this.x * vec.x + this.y * vec.y;
+        let det = this.x * vec.y - this.y * vec.x;
+        let angle = Math.atan2(det, dot);
+
+        return angle;
 
     }
 
@@ -273,6 +340,18 @@ export class Vector2 {
 
         return this;
 
+    }
+
+
+    /**
+     * Project a vector on this one, vec is modified
+     * @param vec
+     */
+    project(vec: Vector2) {
+        let dot = this.dot(vec); // a.u
+        let mod = vec.length(); // |u|
+        mod *= mod; // |u|^2
+        return vec.multiplyScalar(dot / mod);
     }
 
     /**
@@ -345,20 +424,49 @@ export class Vector2 {
 
     }
 
+    toString() {
+        return this.x + ', ' + this.y;
+    }
+
+    /**
+     * Utility function for adding 2 vectors together, returns a new instance of Vector2
+     * @param p1
+     * @param p2
+     */
     static Add(p1: Vector2, p2: Vector2) {
         return p1.clone().add(p2);
     }
 
+    /**
+     * Subtract a vector from another
+     * @param p1
+     * @param p2
+     */
     static Sub(p1: Vector2, p2: Vector2) {
         return p1.clone().subtract(p2);
     }
 
+    /**
+     * Get the middle point between 2 vectors
+     * @param p1
+     * @param p2
+     */
     static Middle(p1: Vector2, p2: Vector2) {
         return this.Add(p1, p2).multiplyScalar(0.5);
     }
 
+    /**
+     * Compute the angle between 2 vectors
+     * @param p1
+     * @param p2
+     */
     static Angle(p1: Vector2, p2: Vector2) {
         return Math.atan2(p2.x - p1.x, p2.y - p1.y);
+    }
+
+    static GetTriangleArea(p: Vector2, q: Vector2, r: Vector2) {
+
+        return (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
     }
 
 
@@ -408,13 +516,11 @@ export class Vector2 {
 
     static ComputeCenterOfMass(points: Vector2[]): Vector2 {
 
-        // use doubles if appropriate
         let xsum = 0.0;
         let ysum = 0.0;
         let area = 0.0;
         for (let i = 0; i < points.length - 1; i++) {
 
-            // I'm not a c++ guy... do you need to use pointers? You make the call here
             let p0 = points[i];
             let p1 = points[i + 1];
 
@@ -447,4 +553,25 @@ export class Vector2 {
         return area * 0.5;
     }
 
+    static ComputeSignedArea(points: Vector2[]) {
+
+        let total_area = 0;
+       //let points = this.points;
+        let j;
+
+        for (let i = 0; i < points.length - 1; ++i) {
+            j = i + 1;
+            total_area += ((points[i].x - points[j].x) * (points[j].y + (points[i].y - points[j].y) / 2));
+        }
+
+        // need to do points[point.length-1] and points[0].
+        j = points.length - 1;
+        total_area += ((points[j].x - points[0].x) * (points[0].y + (points[j].y - points[0].y) / 2));
+
+        return total_area;
+    }
+
 };
+
+
+var TEMP_VEC = new Vector2();

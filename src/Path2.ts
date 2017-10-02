@@ -3,11 +3,11 @@ import { Vector2 } from './Vector2';
 import { Rectangle } from './Rectangle';
 
 const CUSP_LIMIT = 0;
-const ANGLE_TOLERANCE = 0;
-const DISTANCE_TOLERANCE_SQUARED = 0.0125;
-const CURVE_DISTANCE_EPSILON = 1e-30;
-const CURVE_COLINEAR_EPSILON = 1e-30;
-const CURVE_ANGLE_TOLERANCE_EPSILON = 0.01;
+const ANGLE_TOLERANCE = 0.000035;
+const DISTANCE_TOLERANCE_SQUARED = 0.00005;
+const CURVE_DISTANCE_EPSILON = 1e-52;
+const CURVE_COLINEAR_EPSILON = 1e-52;
+const CURVE_ANGLE_TOLERANCE_EPSILON = 0.00005;
 
 
 enum SegmentType {
@@ -122,8 +122,38 @@ export class Path2 {
 
     }
 
-    arc() {
+    arc(x: number, y: number, radius: number, start: number, end: number, clockwise: boolean) {
 
+        var dist = Math.abs(start - end);
+
+        if (!clockwise && start > end)
+            dist = 2 * Math.PI - dist
+        else if (clockwise && end > start)
+            dist = 2 * Math.PI - dist
+
+        //approximate the # of steps using the cube root of the radius
+        let steps = Math.max(6, Math.floor(6 * Math.pow(radius, 1 / 3) * (dist / (Math.PI))))
+
+        //ensure we have at least 3 steps..
+        steps = Math.max(steps, 3)
+
+        var f = dist / (steps),
+            t = start
+
+        //modify direction
+        f *= clockwise ? -1 : 1
+
+        for (var i = 0; i < steps + 1; i++) {
+            var cs = Math.cos(t),
+                sn = Math.sin(t)
+
+            var nx = x + cs * radius,
+                ny = y + sn * radius
+
+            this.segmentTypes.push(SegmentType.Linear);
+            this.vertices.push(new Vector2(nx, ny));
+            t += f
+        }
     }
 
     /**
@@ -150,6 +180,25 @@ export class Path2 {
      * @param point
      */
     isInside(point: Vector2) {
+
+        let i, j = 0;
+        let c = false;
+
+        let px = point.x;
+        let py = point.y;
+
+        for (i = 0, j = this.vertices.length - 1; i < this.vertices.length; j = i++) {
+            let p1 = this.vertices[i];
+            let p2 = this.vertices[j];
+            if (((p1.y > py) != (p2.y > py)) &&
+                (px < (p1.x - p2.x) * (py - p1.y) / (p1.y - p2.y) + p1.x)) {
+                c = !c;
+            }
+
+        }
+
+        return c;
+
 
     }
 

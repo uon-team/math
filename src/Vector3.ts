@@ -353,6 +353,34 @@ export class Vector3 {
 
     }
 
+    /**
+     * Utility function for adding 2 vectors together, returns a new instance of Vector2
+     * @param p1
+     * @param p2
+     */
+    static Add(p1: Vector3, p2: Vector3) {
+        return p1.clone().add(p2);
+    }
+
+    /**
+     * Subtract a vector from another
+     * @param p1
+     * @param p2
+     */
+    static Sub(p1: Vector3, p2: Vector3) {
+        return p1.clone().subtract(p2);
+    }
+
+    /**
+     * Get the middle point between 2 vectors
+     * @param p1
+     * @param p2
+     */
+    static Middle(p1: Vector3, p2: Vector3) {
+        return this.Add(p1, p2).multiplyScalar(0.5);
+    }
+
+
     static Lerp(v0: Vector3, v1: Vector3, t: number, out: Vector3) {
 
         let x = (1 - t) * v0.x + t * v1.x;

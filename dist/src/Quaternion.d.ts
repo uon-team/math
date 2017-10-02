@@ -1,5 +1,6 @@
 import { Vector3 } from './Vector3';
 import { Matrix4 } from './Matrix4';
+import { Euler } from './Euler';
 /**
  * @memberOf uon.math
  */
@@ -28,5 +29,6 @@ export declare class Quaternion {
     fromAxisAngle(axis: Vector3, angle: number): this;
     setFromUnitVectors(vFrom: Vector3, vTo: Vector3): this;
     setFromRotationMatrix(m: Matrix4): this;
+    toEuler(out?: Euler): Euler;
     static Slerp(qa: Quaternion, qb: Quaternion, qm: Quaternion, lambda: number): Quaternion;
 }

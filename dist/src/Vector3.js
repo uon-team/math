@@ -231,6 +231,30 @@ var Vector3 = (function () {
         this._cache[2] = this.z;
         return this._cache;
     };
+    /**
+     * Utility function for adding 2 vectors together, returns a new instance of Vector2
+     * @param p1
+     * @param p2
+     */
+    Vector3.Add = function (p1, p2) {
+        return p1.clone().add(p2);
+    };
+    /**
+     * Subtract a vector from another
+     * @param p1
+     * @param p2
+     */
+    Vector3.Sub = function (p1, p2) {
+        return p1.clone().subtract(p2);
+    };
+    /**
+     * Get the middle point between 2 vectors
+     * @param p1
+     * @param p2
+     */
+    Vector3.Middle = function (p1, p2) {
+        return this.Add(p1, p2).multiplyScalar(0.5);
+    };
     Vector3.Lerp = function (v0, v1, t, out) {
         var x = (1 - t) * v0.x + t * v1.x;
         var y = (1 - t) * v0.y + t * v1.y;

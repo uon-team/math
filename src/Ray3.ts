@@ -17,7 +17,7 @@ const TEMP_VEC3 = new Vector3();
 /**
  * @memberOf uon.math
  */
-export class Ray {
+export class Ray3 {
 
     public origin: Vector3;
     public dir: Vector3;
@@ -57,7 +57,7 @@ export class Ray {
 	/**
 	 * Test for equaity
 	 */
-    equals(ray: Ray) {
+    equals(ray: Ray3) {
 
         return ray.origin.equals(this.origin) && ray.dir.equals(this.dir);
 
@@ -68,14 +68,14 @@ export class Ray {
 	 */
     clone() {
 
-        return new Ray().copy(this);
+        return new Ray3().copy(this);
 
     }
 
 	/**
 	 * Copy values from another Ray
 	 */
-    copy(ray: Ray) {
+    copy(ray: Ray3) {
 
         this.origin.copy(ray.origin);
         this.dir.copy(ray.dir);

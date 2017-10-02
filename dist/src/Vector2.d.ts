@@ -24,6 +24,15 @@ export declare class Vector2 {
      * @param v
      */
     equals(v: Vector2): boolean;
+    /**
+     * Test for near equality given an espsilon
+     * @param v
+     * @param epsilon
+     */
+    nearEquals(v: Vector2, epsilon?: number): boolean;
+    /**
+     * Negate x and y
+     */
     negate(): this;
     /**
      * Adds a vector2 to this one
@@ -69,6 +78,16 @@ export declare class Vector2 {
      */
     lengthSq(): number;
     /**
+     * Computes the distance between this point and another
+     * @param v
+     */
+    distance(v: Vector2): number;
+    /**
+     * Computes the distance between this point and another
+     * @param v
+     */
+    distanceSq(v: Vector2): number;
+    /**
      * Normalizes this vector
      */
     normalize(): this;
@@ -78,7 +97,22 @@ export declare class Vector2 {
      * @param alpha
      */
     lerp(v: Vector2, alpha: number): this;
+    /**
+     * Rotate this vector around an origin
+     * @param angle
+     * @param origin
+     */
     rotate(angle: number, origin: Vector2): this;
+    /**
+     * Compute the absolute angle [0-2PI]
+     * @param vec
+     */
+    getAngle(vec: Vector2): number;
+    /**
+     * Compute the signed angle between this vector and another
+     * @param vec
+     */
+    getSignedAngle(vec: Vector2): number;
     /**
      * Get the minimum value between this vector and another
      * @param v
@@ -93,6 +127,11 @@ export declare class Vector2 {
      * Transform this vector into it's perpendicular
      */
     perpendicular(): this;
+    /**
+     * Project a vector on this one, vec is modified
+     * @param vec
+     */
+    project(vec: Vector2): Vector2;
     /**
      * Clone this vector
      */
@@ -113,16 +152,39 @@ export declare class Vector2 {
      * @param array
      * @param offset
      */
-    toArray(array?: Array<number> | Float32Array, offset?: number): Float32Array | number[];
+    toArray(array?: Array<number> | Float32Array, offset?: number): number[] | Float32Array;
     /**
      * Return values in a Float32Array
      */
     toFloatArray(): Float32Array;
+    toString(): string;
+    /**
+     * Utility function for adding 2 vectors together, returns a new instance of Vector2
+     * @param p1
+     * @param p2
+     */
     static Add(p1: Vector2, p2: Vector2): Vector2;
+    /**
+     * Subtract a vector from another
+     * @param p1
+     * @param p2
+     */
     static Sub(p1: Vector2, p2: Vector2): Vector2;
+    /**
+     * Get the middle point between 2 vectors
+     * @param p1
+     * @param p2
+     */
     static Middle(p1: Vector2, p2: Vector2): Vector2;
+    /**
+     * Compute the angle between 2 vectors
+     * @param p1
+     * @param p2
+     */
     static Angle(p1: Vector2, p2: Vector2): number;
+    static GetTriangleArea(p: Vector2, q: Vector2, r: Vector2): number;
     static ComputeCentroid(points: Vector2[]): Vector2;
     static ComputeCenterOfMass(points: Vector2[]): Vector2;
     static ComputeArea(points: Vector2[]): number;
+    static ComputeSignedArea(points: Vector2[]): number;
 }

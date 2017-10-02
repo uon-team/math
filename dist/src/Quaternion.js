@@ -6,6 +6,7 @@
  */
 "use strict";
 import { Vector3 } from './Vector3';
+import { Euler } from './Euler';
 var TEMP_VEC3 = new Vector3();
 var ZERO_F32 = Math.fround(0);
 var ONE_F32 = Math.fround(0);
@@ -193,34 +194,25 @@ var Quaternion = (function () {
         }
         return this;
     };
+    Quaternion.prototype.toEuler = function (out) {
+        out = out || new Euler();
+        var ysqr = this.y * this.y;
+        // roll (x-axis rotation)
+        var t0 = 2.0 * (this.w * this.x + this.y * this.z);
+        var t1 = 1.0 - 2.0 * (this.x * this.x + ysqr);
+        out.roll = Math.atan2(t0, t1);
+        // pitch (y-axis rotation)
+        var t2 = 2.0 * (this.w * this.y - this.z * this.x);
+        t2 = t2 > 1.0 ? 1.0 : t2;
+        t2 = t2 < -1.0 ? -1.0 : t2;
+        out.pitch = Math.asin(t2);
+        // yaw (z-axis rotation)
+        var t3 = 2.0 * (this.w * this.z + this.x * this.y);
+        var t4 = 1.0 - 2.0 * (ysqr + this.z * this.z);
+        out.yaw = Math.atan2(t3, t4);
+        return out;
+    };
     Quaternion.Slerp = function (qa, qb, qm, lambda) {
-        /*  let dotproduct = q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
-          let theta: number,
-              st: number,
-              sut: number,
-              sout: number,
-              coeff1: number,
-              coeff2: number;
-  
-          // algorithm adapted from Shoemake's paper
-          let l = lambda / 2.0;
-  
-          theta = Math.acos(dotproduct);
-          if (theta < 0.0)
-              theta = -theta;
-  
-          st = Math.sin(theta);
-          sut = Math.sin(l * theta);
-          sout = Math.sin((1 - l) * theta);
-          coeff1 = sout / st;
-          coeff2 = sut / st;
-  
-          qr.x = coeff1 * q1.x + coeff2 * q2.x;
-          qr.y = coeff1 * q1.y + coeff2 * q2.y;
-          qr.z = coeff1 * q1.z + coeff2 * q2.z;
-          qr.w = coeff1 * q1.w + coeff2 * q2.w;
-  
-          qr.normalize();*/
         // Calculate angle between them.
         var cosHalfTheta = qa.w * qb.w + qa.x * qb.x + qa.y * qb.y + qa.z * qb.z;
         // if qa=qb or qa=-qb then theta = 0 and we can return qa

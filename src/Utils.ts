@@ -7,6 +7,7 @@
 
 const RAD_TO_DEG: number = 180 / Math.PI;
 const DEG_TO_RAD: number = Math.PI / 180;
+const EPSILON: number = 10e-3;
 
 /**
 * Converts a degree angle to radians
@@ -33,4 +34,21 @@ export function ToDegrees(rad: number) {
 */
 export function IsPowerOfTwo(val: number) {
     return (val & (val - 1)) === 0 && val !== 0;
+}
+
+/**
+ * Test for equality of floating point numbers
+ * @param a
+ * @param b
+ */
+export function IsNearEqual(a: number, b: number, epsilon?: number) {
+
+    epsilon = epsilon || EPSILON;
+    return a > b - epsilon && a < b + epsilon;
+}
+
+
+export function GetSign(val: number) {
+    return val < 0 ? -1 : 1;
+
 }
