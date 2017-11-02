@@ -1,12 +1,15 @@
 UON Math Library
 =======
 
-A Object-Oriented 3D Math library written in ES6
+A vector math and geometry library written in TypeScript
 
 ## Usage
 
+Coming soon(tm).
 
 
 ## TODOs
 
+- Document
+- Write tests
 

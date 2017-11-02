@@ -2,13 +2,12 @@
 
 export { AABB } from './src/AABB';
 export { Color } from './src/Color';
-export { Euler } from './src/Euler';
 export { Frustum } from './src/Frustum';
 export { Matrix3 } from './src/Matrix3';
 export { Matrix4 } from './src/Matrix4';
 export { Path2 } from './src/Path2';
 export { Plane } from './src/Plane';
-export { Quaternion } from './src/Quaternion';
+export { Quaternion, Euler } from './src/Quaternion';
 export { Ray3 } from './src/Ray3';
 export { Rectangle } from './src/Rectangle';
 export { Sphere } from './src/Sphere';

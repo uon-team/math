@@ -1,16 +1,14 @@
 {
-  "name": "uon.math",
-  "version": "0.1.7",
-  "description": "A 3D math library",
+  "name": "@uon/math",
+  "version": "0.2.1",
+  "description": "A vector math and geometry library written in TypeScript",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "dependencies": {
-
+  "scripts": {
+    "prepublishOnly": "tsc -p ./ --outDir dist/"
   },
-  "devDependencies": {
-    "chai": "^3.5.0",
-    "mocha": "^3.2.0"
-  },
+  "dependencies": {},
+  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/uon-team/uon.math.git"
@@ -23,6 +21,7 @@
   },
   "keywords": [
     "math",
+    "geometry",
     "uon",
     "3d"
   ]

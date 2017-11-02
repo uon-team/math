@@ -2,7 +2,7 @@
   "compilerOptions": {
     "moduleResolution": "node",
     "module": "es2015",
-    "target": "es5",
+    "target": "es2015",
     "noImplicitAny": true,
     "sourceMap": true,
     "declaration": true,
@@ -17,5 +17,5 @@
     "typings/global",
     "typings/global.d.ts"
   ],
-  "compileOnSave": true
+  "compileOnSave": false
 }

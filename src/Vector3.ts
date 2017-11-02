@@ -58,6 +58,12 @@ export class Vector3 {
 
     }
 
+	/**
+	 * Set this vector's components
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
     set(x: number, y: number, z: number) {
 
         this.x = f32(x);
@@ -68,11 +74,18 @@ export class Vector3 {
 
     }
 
+	/**
+	 * Test for equality with another vector
+	 * @param v
+	 */
     equals(v: Vector3) {
 
         return ((v.x === this.x) && (v.y === this.y) && (v.z === this.z));
     }
 
+	/**
+	 * Negate all components
+	 */
     negate() {
 
         this.x = -this.x;
@@ -82,6 +95,10 @@ export class Vector3 {
 
     }
 
+	/**
+	 * Add another vector to this one
+	 * @param v
+	 */
     add(v: Vector3) {
 
         this.x += v.x;
@@ -90,6 +107,10 @@ export class Vector3 {
         return this;
     }
 
+	/**
+	 * Subtract another vector from this one
+	 * @param v
+	 */
     subtract(v: Vector3) {
 
         this.x -= v.x;
@@ -98,6 +119,10 @@ export class Vector3 {
         return this;
     }
 
+	/**
+	 * Multiply this vector by another
+	 * @param v
+	 */
     multiply(v: Vector3) {
 
         this.x *= v.x;
@@ -106,6 +131,10 @@ export class Vector3 {
         return this;
     }
 
+	/**
+	 * Multiply this vector by a scalar value
+	 * @param s
+	 */
     multiplyScalar(s: number) {
 
         this.x *= s;
@@ -115,6 +144,10 @@ export class Vector3 {
 
     }
 
+	/**
+	 * Divide this vector by another
+	 * @param v
+	 */
     divide(v: Vector3) {
 
         this.x /= v.x;
@@ -124,6 +157,10 @@ export class Vector3 {
 
     }
 
+	/**
+	 * Divice this vector by a scalar value
+	 * @param scalar
+	 */
     divideScalar(scalar: number) {
 
         if (scalar !== 0) {
@@ -141,11 +178,19 @@ export class Vector3 {
 
     }
 
+	/**
+	 * Compute a dot product between this vector and another
+	 * @param v
+	 */
     dot(v: Vector3) {
 
         return this.x * v.x + this.y * v.y + this.z * v.z;
     }
 
+	/**
+	 * Compute the cross product of this vector an another
+	 * @param v
+	 */
     cross(v: Vector3) {
 
         var x = this.x, y = this.y, z = this.z;
@@ -158,6 +203,10 @@ export class Vector3 {
 
     }
 
+	/**
+	 * Apply a rotation matrix to this vector
+	 * @param m
+	 */
     applyMatrix3(m: Matrix3) {
 
         var x = this.x;
@@ -174,6 +223,10 @@ export class Vector3 {
 
     }
 
+	/**
+	 * Apply a transformation matrix to this vector
+	 * @param m
+	 */
     applyMatrix4(m: Matrix4) {
 
         var x = this.x, y = this.y, z = this.z;
@@ -189,6 +242,10 @@ export class Vector3 {
 
     }
 
+	/**
+	 * Apply a projection matrix to this
+	 * @param m
+	 */
     applyMatrix4Proj(m: Matrix4) {
 
         var x = this.x, y = this.y, z = this.z;
@@ -381,6 +438,13 @@ export class Vector3 {
     }
 
 
+	/**
+	 * Do a linear interpolation between 2 vectors
+	 * @param v0
+	 * @param v1
+	 * @param t
+	 * @param out
+	 */
     static Lerp(v0: Vector3, v1: Vector3, t: number, out: Vector3) {
 
         let x = (1 - t) * v0.x + t * v1.x;

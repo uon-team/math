@@ -27,6 +27,7 @@ export class Matrix4 {
     private static TEMP = new Matrix4();
 
 	/**
+	 * Creates a new instance of a 4x4 matrix initialized to identity
 	 * @constructs
 	 */
     constructor() {
@@ -41,6 +42,25 @@ export class Matrix4 {
         ]);
     }
 
+	/**
+	 * Sets all components of the matrix
+	 * @param n11
+	 * @param n12
+	 * @param n13
+	 * @param n14
+	 * @param n21
+	 * @param n22
+	 * @param n23
+	 * @param n24
+	 * @param n31
+	 * @param n32
+	 * @param n33
+	 * @param n34
+	 * @param n41
+	 * @param n42
+	 * @param n43
+	 * @param n44
+	 */
     set(n11: number, n12: number, n13: number, n14: number,
         n21: number, n22: number, n23: number, n24: number,
         n31: number, n32: number, n33: number, n34: number,
@@ -69,6 +89,9 @@ export class Matrix4 {
 
     }
 
+	/**
+	 * Reset this matrix to identity
+	 */
     identity() {
 
         this.set(
@@ -84,6 +107,10 @@ export class Matrix4 {
 
     }
 
+	/**
+	 * Copy elements of another matrix
+	 * @param m
+	 */
     copy(m: Matrix4) {
 
         this.elements.set(m.elements);
@@ -655,9 +682,9 @@ export class Matrix4 {
 
     }
 
-    static Multiply(a: Matrix4, b: Matrix4) {
+    static Multiply(a: Matrix4, b: Matrix4, out?: Matrix4) {
 
-        let result = new Matrix4();
+        let result = out || new Matrix4();
 
         var ae = a.elements;
         var be = b.elements;

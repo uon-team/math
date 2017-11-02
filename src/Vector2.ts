@@ -464,12 +464,23 @@ export class Vector2 {
         return Math.atan2(p2.x - p1.x, p2.y - p1.y);
     }
 
+
+	/**
+	 * Compute the signed area of a triangle
+	 * @param p
+	 * @param q
+	 * @param r
+	 */
     static GetTriangleArea(p: Vector2, q: Vector2, r: Vector2) {
 
         return (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
     }
 
 
+	/**
+	 * Compute the centroid of a set of points
+	 * @param points
+	 */
     static ComputeCentroid(points: Vector2[]) {
 
 
@@ -537,6 +548,11 @@ export class Vector2 {
         return new Vector2(centMassX, centMassY);
     }
 
+
+	/**
+	 * Compute the signed area of a set of points
+	 * @param points
+	 */
     static ComputeArea(points: Vector2[]) {
 
 
