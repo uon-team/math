@@ -12,7 +12,7 @@ const EPSILON: number = 10e-3;
 /**
 * Converts a degree angle to radians
 * @param {Number} deg
-* @returns {Number}
+* @returns {Number} 
 */
 export function ToRadians(deg: number) {
     return deg * DEG_TO_RAD;

@@ -17,5 +17,5 @@
     "typings/global",
     "typings/global.d.ts"
   ],
-  "compileOnSave": false
+  "compileOnSave": true
 }
