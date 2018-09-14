@@ -1,18 +1,13 @@
 /**
  * @file Vector3
- * @see uon.math.Vector3
  * @author Gabriel Roy <gab@uon.io>
  * @ignore
  */
 
-import {Matrix3} from './Matrix3';
-import {Matrix4} from './Matrix4';
-import {Quaternion} from './Quaternion';
-
-const ZERO_F32 = Math.fround(0);
-const ONE_F32 = Math.fround(1);
-const f32 = Math.fround;
-
+import { Matrix3 } from './Matrix3';
+import { Matrix4 } from './Matrix4';
+import { Quaternion } from './Quaternion';
+import { f32, ZERO_F32, ONE_F32 } from './Utils';
 
 
 /**

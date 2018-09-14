@@ -5,23 +5,21 @@
  * @ignore
  */
 
-import {Vector3} from './Vector3'
-import {Plane} from './Plane'
-import {Sphere} from './Sphere'
-import {AABB} from './AABB'
-import {Matrix4} from './Matrix4'
+import { Vector3 } from './Vector3'
+import { Plane } from './Plane'
+import { Sphere } from './Sphere'
+import { Box3 } from './Box3'
+import { Matrix4 } from './Matrix4'
 
 /**
- * 
- * @memberOf uon.math
+ * A Frustum is defined by six planes
  */
 export class Frustum {
 
 
-    public planes: Plane[];
+    readonly planes: Plane[];
+
 	/**
-	 * A Frustum is defined by six planes
-	 * 
 	 * @constructs
 	 */
     constructor() {
@@ -124,9 +122,8 @@ export class Frustum {
 	/**
 	 * Test for intersection with a box
 	 * 
-	 * @returns {Boolean}
 	 */
-    intersectsBox(box: AABB) {
+    intersectsBox(box: Box3) {
 
         var p1 = new Vector3(),
             p2 = new Vector3();
@@ -148,7 +145,6 @@ export class Frustum {
             var d2 = plane.distanceToPoint(p2);
 
             // if both outside plane, no intersection
-
             if (d1 < 0 && d2 < 0) {
 
                 return false;
@@ -165,8 +161,7 @@ export class Frustum {
 	/**
 	 * Test for containment of a point
 	 * 
-	 * @returns {Boolean} True if the point is inside the frustum, false
-	 *          otherwise
+	 * @returns True if the point is inside the frustum, false otherwise
 	 */
     containsPoint(point: Vector3) {
 

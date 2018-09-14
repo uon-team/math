@@ -6,11 +6,11 @@
  */
 
 import { Vector3 } from './Vector3';
-import { AABB } from './AABB';
+import { Box3 } from './Box3';
 import { Matrix4 } from './Matrix4';
+import { f32 } from './Utils';
 
-const f32 = Math.fround;
-const TEMP_AABB = new AABB();
+const TEMP_AABB = new Box3();
 
 /**
  * A sphere is defined by a point and a radius
@@ -40,7 +40,6 @@ export class Sphere {
 	 * 
 	 * @param center The origin of the sphere to create
 	 * @param radius The radius of the sphere
-	 * @returns {this}
 	 */
 	set(center: Vector3, radius: number) {
 
@@ -55,16 +54,12 @@ export class Sphere {
 	 * Reset the sphere values and encapsulate all the points
 	 * 
 	 * @param points A collection of Vector3
-	 * @param [center] If defined the origin of the sphere will be
+	 * @param center If defined the origin of the sphere will be
 	 *            set with this value
 	 */
 	setFromPoints(points: Vector3[], center?: Vector3) {
 
 		var box = TEMP_AABB;
-
-
-
-		this.center;
 
 		if (center !== undefined) {
 
@@ -180,9 +175,9 @@ export class Sphere {
 	/**
 	 * Computes an axis-aligned bounding-box around this sphere
 	 */
-	getBoundingBox(output: AABB) {
+	getBoundingBox(output: Box3) {
 
-		var box = output || new AABB();
+		var box = output || new Box3();
 
 		box.set(this.center, this.center);
 		box.scale(this.radius);

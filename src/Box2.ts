@@ -5,9 +5,9 @@
  * @ignore
  */
 
-import {Vector2} from './Vector2';
+import { Vector2 } from './Vector2';
 
-export class Rectangle {
+export class Box2 {
 
     public min: Vector2;
     public max: Vector2;
@@ -23,7 +23,7 @@ export class Rectangle {
     }
 
     /**
-	 * Asign new values to this box
+	 * Assign new values to this box
 	 */
     set(min: Vector2, max: Vector2) {
 
@@ -66,7 +66,7 @@ export class Rectangle {
 	/**
 	 * Test for equality with another box
 	 */
-    equals(box: Rectangle) {
+    equals(box: Box2) {
 
         return box.min.equals(this.min) && box.max.equals(this.max);
 
@@ -118,10 +118,10 @@ export class Rectangle {
 	/**
 	 * Test if a box is contained within this one
 	 * 
-	 * @param {Rectangle} box
+	 * @param {Box2} box
 	 * @returns {Boolean}
 	 */
-    containsBox(box: Rectangle) {
+    containsBox(box: Box2) {
 
         if ((this.min.x <= box.min.x) && (box.max.x <= this.max.x)
             && (this.min.y <= box.min.y) && (box.max.y <= this.max.y)) {
@@ -137,9 +137,9 @@ export class Rectangle {
 	/**
 	 * Test for intersection with another box
 	 * 
-	 * @param {Rectangle} box
+	 * @param {Box2} box
 	 */
-    intersects(box: Rectangle) {
+    intersects(box: Box2) {
         if (box.max.x < this.min.x || box.min.x > this.max.x
             || box.max.y < this.min.y || box.min.y > this.max.y) {
 
@@ -175,7 +175,7 @@ export class Rectangle {
 	/**
 	 * Expand this box to contain another box
 	 */
-    merge(box: Rectangle) {
+    merge(box: Box2) {
 
         this.min.min(box.min);
         this.max.max(box.max);
@@ -189,14 +189,14 @@ export class Rectangle {
 	 */
     clone() {
 
-        return new Rectangle().copy(this);
+        return new Box2().copy(this);
 
     }
 
 	/**
 	 * Copy values form another box
 	 */
-    copy(box: Rectangle) {
+    copy(box: Box2) {
 
         this.min.copy(box.min);
         this.max.max(box.max);

@@ -5,8 +5,8 @@
  * @ignore
  */
 
-import {Vector3} from './Vector3';
-import {Matrix4} from './Matrix4';
+import { Vector3 } from './Vector3';
+import { Matrix4 } from './Matrix4';
 
 const TEMP_VEC3 = new Vector3();
 
@@ -17,7 +17,9 @@ const TEMP_VEC3 = new Vector3();
 export class Matrix3 {
 
 
-    public elements: Float32Array;
+    readonly elements: Float32Array;
+
+
 	/**
 	 * @constructs
 	 */
@@ -33,7 +35,7 @@ export class Matrix3 {
         n21: number, n22: number, n23: number,
         n31: number, n32: number, n33: number) {
 
-        var te = this.elements;
+        const te = this.elements;
 
         te[0] = n11;
         te[3] = n12;
@@ -71,9 +73,9 @@ export class Matrix3 {
 
     determinant() {
 
-        var te = this.elements;
+        const te = this.elements;
 
-        var a = te[0], b = te[1], c = te[2], d = te[3], e = te[4], f = te[5], g = te[6], h = te[7], i = te[8];
+        const a = te[0], b = te[1], c = te[2], d = te[3], e = te[4], f = te[5], g = te[6], h = te[7], i = te[8];
 
         return a * e * i - a * f * h - b * d * i + b * f * g
             + c * d * h - c * e * g;
@@ -86,8 +88,8 @@ export class Matrix3 {
      */
     inverse(matrix: Matrix4) {
 
-        var me = matrix.elements;
-        var te = this.elements;
+        const me = matrix.elements;
+        const te = this.elements;
 
         te[0] = me[10] * me[5] - me[6] * me[9];
         te[1] = -me[10] * me[1] + me[2] * me[9];
@@ -149,7 +151,7 @@ export class Matrix3 {
 
     multiplyScalar(s: number) {
 
-        var te = this.elements;
+        const te = this.elements;
 
         te[0] *= s;
         te[3] *= s;
@@ -175,7 +177,18 @@ export class Matrix3 {
 
     toArray() {
 
-        return Array.from(this.elements);
+        let result: number[] = new Array(9);
+        for (let i = 0; i < 9; ++i) {
+            result.push(this.elements[i]);
+        }
+
+        return result;
+
+    }
+
+    toFloatArray() {
+
+        return this.elements;
 
     }
 

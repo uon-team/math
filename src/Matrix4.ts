@@ -5,10 +5,10 @@
  * @ignore
  */
 
-import {Vector3} from './Vector3';
-import {Quaternion} from './Quaternion';
+import { Vector3 } from './Vector3';
+import { Quaternion } from './Quaternion';
 
-import {ToRadians} from './Utils';
+import { ToRadians } from './Utils';
 
 var TEMP_VEC30 = new Vector3();
 var TEMP_VEC31 = new Vector3();
@@ -331,8 +331,10 @@ export class Matrix4 {
      */
     scale(v: Vector3) {
 
-        var te = this.elements;
-        var x = v.x, y = v.y, z = v.z;
+        const te = this.elements;
+        const x = v.x,
+            y = v.y,
+            z = v.z;
 
         te[0] *= x;
         te[4] *= y;
@@ -359,11 +361,11 @@ export class Matrix4 {
      */
     lookAt(eye: Vector3, target: Vector3, up: Vector3) {
 
-        var x = TEMP_VEC31.copy(up);
-        var y = TEMP_VEC32.set(0, 0, 0);
-        var z = TEMP_VEC33.copy(eye);
+        const x = TEMP_VEC31.copy(up);
+        const y = TEMP_VEC32.set(0, 0, 0);
+        const z = TEMP_VEC33.copy(eye);
 
-        var te = this.elements;
+        const te = this.elements;
 
         z.subtract(target).normalize();
 
@@ -402,14 +404,14 @@ export class Matrix4 {
         bottom: number, top: number,
         near: number, far: number) {
 
-        var te = this.elements;
-        var x = 2 * near / (right - left);
-        var y = 2 * near / (top - bottom);
+        const te = this.elements;
+        const x = 2 * near / (right - left);
+        const y = 2 * near / (top - bottom);
 
-        var a = (right + left) / (right - left);
-        var b = (top + bottom) / (top - bottom);
-        var c = -(far + near) / (far - near);
-        var d = -2 * far * near / (far - near);
+        const a = (right + left) / (right - left);
+        const b = (top + bottom) / (top - bottom);
+        const c = -(far + near) / (far - near);
+        const d = -2 * far * near / (far - near);
 
         te[0] = x;
         te[4] = 0;
@@ -434,10 +436,10 @@ export class Matrix4 {
 
     makePerspective(fov: number, aspect: number, near: number, far: number) {
 
-        var ymax = near * Math.tan(ToRadians(fov * 0.5));
-        var ymin = -ymax;
-        var xmin = ymin * aspect;
-        var xmax = ymax * aspect;
+        const ymax = near * Math.tan(ToRadians(fov * 0.5));
+        const ymin = -ymax;
+        const xmin = ymin * aspect;
+        const xmax = ymax * aspect;
 
         return this.makeFrustum(xmin, xmax, ymin, ymax, near, far);
 
@@ -447,14 +449,14 @@ export class Matrix4 {
         top: number, bottom: number,
         near: number, far: number) {
 
-        var te = this.elements;
-        var w = right - left;
-        var h = top - bottom;
-        var p = far - near;
+        const te = this.elements;
+        const w = right - left;
+        const h = top - bottom;
+        const p = far - near;
 
-        var x = (right + left) / w;
-        var y = (top + bottom) / h;
-        var z = (far + near) / p;
+        const x = (right + left) / w;
+        const y = (top + bottom) / h;
+        const z = (far + near) / p;
 
         te[0] = 2 / w;
         te[4] = 0;
@@ -479,13 +481,13 @@ export class Matrix4 {
 
     makeRotationFromQuaternion(q: Quaternion) {
 
-        var te = this.elements;
+        const te = this.elements;
 
-        var x = q.x, y = q.y, z = q.z, w = q.w;
-        var x2 = x + x, y2 = y + y, z2 = z + z;
-        var xx = x * x2, xy = x * y2, xz = x * z2;
-        var yy = y * y2, yz = y * z2, zz = z * z2;
-        var wx = w * x2, wy = w * y2, wz = w * z2;
+        const x = q.x, y = q.y, z = q.z, w = q.w;
+        const x2 = x + x, y2 = y + y, z2 = z + z;
+        const xx = x * x2, xy = x * y2, xz = x * z2;
+        const yy = y * y2, yz = y * z2, zz = z * z2;
+        const wx = w * x2, wy = w * y2, wz = w * z2;
 
         te[0] = 1 - (yy + zz);
         te[4] = xy - wz;
@@ -519,11 +521,11 @@ export class Matrix4 {
         // Based on
         // http://www.gamedev.net/reference/articles/article1199.asp
 
-        var c = Math.cos(angle);
-        var s = Math.sin(angle);
-        var t = 1 - c;
-        var x = axis.x, y = axis.y, z = axis.z;
-        var tx = t * x, ty = t * y;
+        const c = Math.cos(angle);
+        const s = Math.sin(angle);
+        const t = 1 - c;
+        const x = axis.x, y = axis.y, z = axis.z;
+        const tx = t * x, ty = t * y;
 
         this.set(
 
@@ -563,12 +565,12 @@ export class Matrix4 {
 
     getScale() {
 
-        let vector = TEMP_VEC30;
-        let te = this.elements;
+        const vector = TEMP_VEC30;
+        const te = this.elements;
 
-        let sx = vector.set(te[0], te[1], te[2]).length();
-        let sy = vector.set(te[4], te[5], te[6]).length();
-        let sz = vector.set(te[8], te[9], te[10]).length();
+        const sx = vector.set(te[0], te[1], te[2]).length();
+        const sy = vector.set(te[4], te[5], te[6]).length();
+        const sz = vector.set(te[8], te[9], te[10]).length();
 
         return new Vector3(sx, sy, sz);
     }
@@ -652,7 +654,7 @@ export class Matrix4 {
         matrix.elements[9] *= invSZ;
         matrix.elements[10] *= invSZ;
 
-        quaternion.setFromRotationMatrix(matrix);
+        quaternion.fromRotationMatrix(matrix);
 
         scale.x = sx;
         scale.y = sy;
@@ -672,7 +674,18 @@ export class Matrix4 {
 
     toArray() {
 
-        return Array.from(this.elements);
+        let result: number[] = new Array(16);
+        for (let i = 0; i < 16; ++i) {
+            result.push(this.elements[i]);
+        }
+
+        return result;
+
+    }
+
+    toFloatArray() {
+
+        return this.elements;
 
     }
 

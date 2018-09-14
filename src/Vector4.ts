@@ -1,16 +1,11 @@
 /**
  * @file Vector4
- * @see uon.math.Vector4
  * @author Gabriel Roy <gab@uon.io>
  * @ignore
  */
-//const Matrix4 = require('./Matrix4');
 
 
-const ZERO_F32 = Math.fround(0);
-const ONE_F32 = Math.fround(1);
-const f32 = Math.fround;
-
+import { f32, ZERO_F32, ONE_F32 } from './Utils';
 
 /**
  * An representation of a 4D vector
@@ -26,12 +21,12 @@ export class Vector4 {
 
 
     // static 
-    public static UnitX: Vector4 = new Vector4(1, 0, 0);
-    public static UnitY: Vector4 = new Vector4(0, 1, 0);
-    public static UnitZ: Vector4 = new Vector4(0, 0, 1);
-    public static UnitW: Vector4 = new Vector4(0, 0, 0, 1);
-    public static One: Vector4 = new Vector4(1, 1, 1);
-    public static Zero: Vector4 = new Vector4(0, 0, 0, 0);
+    public static readonly UnitX: Vector4 = new Vector4(1, 0, 0);
+    public static readonly UnitY: Vector4 = new Vector4(0, 1, 0);
+    public static readonly UnitZ: Vector4 = new Vector4(0, 0, 1);
+    public static readonly UnitW: Vector4 = new Vector4(0, 0, 0, 1);
+    public static readonly One: Vector4 = new Vector4(1, 1, 1);
+    public static readonly Zero: Vector4 = new Vector4(0, 0, 0, 0);
 
 	/**
 	 * @constructs

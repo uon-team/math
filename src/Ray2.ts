@@ -6,7 +6,6 @@
  */
 
 import { Vector2 } from './Vector2';
-import { Segment2 } from './Segment2';
 import { IsNearEqual } from './Utils';
 
 const TEMP_VEC2 = new Vector2();
@@ -21,7 +20,7 @@ export interface Ray2IntersectionResult {
 
 
 /**
- * @memberOf uon.math
+ * Represents a ray in 2D
  */
 export class Ray2 {
 
@@ -94,21 +93,21 @@ export class Ray2 {
      * Intersect a segment with this ray
      * @param segment
      */
-    intersectSegment(segment: Segment2): Ray2IntersectionResult {
+    intersectSegment(p1: Vector2, p2: Vector2): Ray2IntersectionResult {
 
-        
+
         let x = this.origin.x;
         let y = this.origin.y;
         let dx = this.dir.x;
         let dy = this.dir.y;
-        let x1 = segment.p1.x;
-        let y1 = segment.p1.y;
-        let x2 = segment.p2.x;
-        let y2 = segment.p2.y;
-       
+        let x1 = p1.x;
+        let y1 = p1.y;
+        let x2 = p2.x;
+        let y2 = p2.y;
 
 
-        var r, s, d;
+
+        let r: number, s: number, d: number;
 
         if (dy / dx != (y2 - y1) / (x2 - x1)) {
             d = ((dx * (y2 - y1)) - dy * (x2 - x1));
@@ -120,10 +119,8 @@ export class Ray2 {
                 }
             }
         }
+
         return null;
-
-        
-
 
     }
 

@@ -1,14 +1,14 @@
 {
   "name": "@uon/math",
-  "version": "0.2.2",
-  "description": "A vector math and geometry library written in TypeScript",
+  "version": "0.3.0",
+  "description": "A linear algebra library written in TypeScript",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "scripts": {
-    "prepublishOnly": "tsc -p ./ --outDir dist/"
-  },
+  "scripts": {},
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "tslib": "^1.9.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/uon-team/uon.math.git"

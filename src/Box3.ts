@@ -1,18 +1,16 @@
 /**
- * @file AABB
- * @see uon.math.AABB
+ * @file Box3
  * @author Gabriel Roy <gab@uon.io>
  * @ignore
  */
 
 
-import {Vector3} from "./Vector3";
+import { Vector3 } from "./Vector3";
 
 /**
  * 3D axis aligned bounding box
- * @memberOf uon.math
  */
-export class AABB {
+export class Box3 {
 
 
     public min: Vector3;
@@ -20,8 +18,6 @@ export class AABB {
 
 	/**
 	 * An axis-aligned bounding-box
-	 * 
-	 * 
 	 */
     constructor(min?: Vector3, max?: Vector3) {
 
@@ -76,7 +72,7 @@ export class AABB {
 	/**
 	 * Test for equality with another box
 	 */
-    equals(box: AABB) {
+    equals(box: Box3) {
 
         return box.min.equals(this.min) && box.max.equals(this.max);
 
@@ -84,8 +80,6 @@ export class AABB {
 
 	/**
 	 * Computes the center of the box and return its value
-	 * 
-	 * @returns {uon.math.Vector3}
 	 */
     getCenter(output?: Vector3) {
 
@@ -97,7 +91,6 @@ export class AABB {
 	/**
 	 * Computes the size of the box for each axis
 	 * 
-	 * @returns {uon.math.Vector3}
 	 */
     getSize(output?: Vector3) {
 
@@ -109,8 +102,7 @@ export class AABB {
 	/**
 	 * Test for containment
 	 * 
-	 * @param {uon.math.Vector3}
-	 *            point
+	 * @param point
 	 */
     containsPoint(point: Vector3) {
 
@@ -129,11 +121,9 @@ export class AABB {
 	/**
 	 * Test if a box is contained within this one
 	 * 
-	 * @param {uon.math.AABB}
-	 *            box
-	 * @returns {Boolean}
+	 * @param box
 	 */
-    containsBox(box: AABB) {
+    containsBox(box: Box3) {
 
         if ((this.min.x <= box.min.x) && (box.max.x <= this.max.x)
             && (this.min.y <= box.min.y) && (box.max.y <= this.max.y)
@@ -150,10 +140,9 @@ export class AABB {
 	/**
 	 * Test for intersection with another box
 	 * 
-	 * @param {uon.math.AABB}
-	 *            box
+	 * @param  box
 	 */
-    intersects(box: AABB) {
+    intersects(box: Box3) {
         if (box.max.x < this.min.x || box.min.x > this.max.x
             || box.max.y < this.min.y || box.min.y > this.max.y
             || box.max.z < this.min.z || box.min.z > this.max.z) {
@@ -190,7 +179,7 @@ export class AABB {
 	/**
 	 * Expand this box to contain another box
 	 */
-    merge(box: AABB) {
+    merge(box: Box3) {
 
         this.min.min(box.min);
         this.max.max(box.max);
@@ -204,14 +193,14 @@ export class AABB {
 	 */
     clone() {
 
-        return new AABB().copy(this);
+        return new Box3().copy(this);
 
     }
 
 	/**
 	 * Copy values form another box
 	 */
-    copy(box: AABB) {
+    copy(box: Box3) {
 
         this.min.copy(box.min);
         this.max.max(box.max);

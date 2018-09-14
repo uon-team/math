@@ -5,13 +5,9 @@
  * @ignore
  */
 
-import { IsNearEqual } from './Utils';
+import { IsNearEqual, f32, ZERO_F32, TWO_PI } from './Utils';
 
-const ZERO_F32 = Math.fround(0.0);
-const ONE_F32 = Math.fround(1.0);
-const f32 = Math.fround;
 
-const TWO_PI = Math.PI * 2;
 
 /**
  *  A representation of a 2D vector
@@ -197,10 +193,10 @@ export class Vector2 {
         return a.x * a.x + a.y * a.y;
     }
 
-     /**
-      * Computes the distance between this point and another
-      * @param v
-      */
+    /**
+     * Computes the distance between this point and another
+     * @param v
+     */
     distance(v: Vector2) {
         return Math.sqrt(this.distanceSq(v));
     }
@@ -572,7 +568,7 @@ export class Vector2 {
     static ComputeSignedArea(points: Vector2[]) {
 
         let total_area = 0;
-       //let points = this.points;
+        //let points = this.points;
         let j;
 
         for (let i = 0; i < points.length - 1; ++i) {

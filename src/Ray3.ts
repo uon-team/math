@@ -6,7 +6,7 @@
  */
 
 import { Vector3 } from './Vector3';
-import { AABB } from './AABB';
+import { Box3 } from './Box3';
 import { Plane } from './Plane';
 import { Sphere } from './Sphere';
 import { Matrix4 } from './Matrix4';
@@ -15,7 +15,7 @@ const TEMP_VEC3 = new Vector3();
 
 
 /**
- * @memberOf uon.math
+ * Represents a ray in 3D 
  */
 export class Ray3 {
 
@@ -87,7 +87,7 @@ export class Ray3 {
 	/**
 	 * Test for intersection with an aabb
 	 */
-    intersectBox(box: AABB, output?: Vector3) {
+    intersectBox(box: Box3, output?: Vector3) {
 
         // http://www.scratchapixel.com/lessons/3d-basic-lessons/lesson-7-intersecting-simple-shapes/ray-box-intersection/
 

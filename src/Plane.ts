@@ -5,12 +5,13 @@
  * @ignore
  */
 
-import {Vector3} from './Vector3';
-import {Sphere} from './Sphere';
-import {Matrix3} from './Matrix3';
-import {Matrix4} from './Matrix4';
+import { Vector3 } from './Vector3';
+import { Sphere } from './Sphere';
+import { Matrix3 } from './Matrix3';
+import { Matrix4 } from './Matrix4';
+import { f32 } from './Utils';
 
-const f32 = Math.fround;
+
 const TEMP_VEC30 = new Vector3();
 const TEMP_VEC31 = new Vector3();
 const TEMP_MAT30 = new Matrix3();
@@ -176,41 +177,41 @@ export class Plane {
 	/**
 	 * 
 	 */
-   /* intersectLine(line, output) {
-
-        var v1 = TEMP_VEC30;
-
-        var result = output || new Vector3();
-
-        var direction = line.delta(v1);
-
-        var denominator = this.normal.dot(direction);
-
-        if (denominator == 0) {
-
-            // line is coplanar, return origin
-            if (this.distanceToPoint(line.start) == 0) {
-
-                return result.copy(line.start);
-
-            }
-
-            // Unsure if this is the correct method to handle this case.
-            return undefined;
-
-        }
-
-        var t = -(line.start.dot(this.normal) + this.constant) / denominator;
-
-        if (t < 0 || t > 1) {
-
-            return undefined;
-
-        }
-
-        return result.copy(direction).multiplyScalar(t).add(line.start);
-
-    }*/
+    /* intersectLine(line, output) {
+ 
+         var v1 = TEMP_VEC30;
+ 
+         var result = output || new Vector3();
+ 
+         var direction = line.delta(v1);
+ 
+         var denominator = this.normal.dot(direction);
+ 
+         if (denominator == 0) {
+ 
+             // line is coplanar, return origin
+             if (this.distanceToPoint(line.start) == 0) {
+ 
+                 return result.copy(line.start);
+ 
+             }
+ 
+             // Unsure if this is the correct method to handle this case.
+             return undefined;
+ 
+         }
+ 
+         var t = -(line.start.dot(this.normal) + this.constant) / denominator;
+ 
+         if (t < 0 || t > 1) {
+ 
+             return undefined;
+ 
+         }
+ 
+         return result.copy(direction).multiplyScalar(t).add(line.start);
+ 
+     }*/
 
 	/**
 	 * Computes the center point of the plane
