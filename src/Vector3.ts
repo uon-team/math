@@ -1,8 +1,3 @@
-/**
- * @file Vector3
- * @author Gabriel Roy <gab@uon.io>
- * @ignore
- */
 
 import { Matrix3 } from './Matrix3';
 import { Matrix4 } from './Matrix4';

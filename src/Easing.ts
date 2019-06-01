@@ -1,9 +1,4 @@
-﻿/**
- * @file Easing
- * @author Gabriel Roy <gab@uon.io>
- * @ignore
- */
-
+﻿
 const c = 1;
 const b = 0;
 const PI_OVER_2 = Math.PI / 2;

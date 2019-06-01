@@ -1,0 +1,8 @@
+{
+    "name": "math",
+    "projectType": "library",
+    "entry": "src/index.ts",
+    "options": {
+        "outputPath": "dist"
+    }
+}

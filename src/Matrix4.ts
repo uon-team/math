@@ -1,9 +1,3 @@
-/**
- * @file Matrix4
- * @see uon.math.Matrix4
- * @author Gabriel Roy <gab@uon.io>
- * @ignore
- */
 
 import { Vector3 } from './Vector3';
 import { Quaternion } from './Quaternion';
@@ -208,11 +202,7 @@ export class Matrix4 {
             * te[12];
 
         if (det == 0) {
-
-            var msg = "Matrix4.inverse(): can't invert matrix, determinant is 0";
-            console.warn(msg);
-            this.identity();
-            return this;
+            throw new Error('cannot inverse, determinant is zero');
         }
 
         this.multiplyScalar(1 / det);

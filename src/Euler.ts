@@ -1,7 +1,7 @@
 
 import { Vector3 } from './Vector3';
 import { Vector4 } from './Vector4';
-import { f32, ZERO_F32 } from './Utils';
+import { f32, ZERO_F32, EPSILON } from './Utils';
 
 const TEMP_VEC3 = new Vector3();
 
@@ -63,7 +63,7 @@ export class Euler {
         let z = c1 * s2 * c3 - s1 * c2 * s3;
         // let angle = 2 * Math.acos(w);
         let norm = x * x + y * y + z * z;
-        if (norm < 0.001) { // when all euler angles are zero angle =0 so
+        if (norm < EPSILON) { // when all euler angles are zero angle =0 so
             // we can set axis to anything to avoid divide by zero
             x = 1;
             y = z = 0;

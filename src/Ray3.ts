@@ -1,9 +1,4 @@
-/**
- * @file Ray
- * @see uon.math.Ray
- * @author Gabriel Roy <gab@uon.io>
- * @ignore
- */
+
 
 import { Vector3 } from './Vector3';
 import { Box3 } from './Box3';

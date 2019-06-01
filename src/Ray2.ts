@@ -1,10 +1,3 @@
-/**
- * @file Ray
- * @see uon.math.Ray
- * @author Gabriel Roy <gab@uon.io>
- * @ignore
- */
-
 import { Vector2 } from './Vector2';
 import { IsNearEqual } from './Utils';
 

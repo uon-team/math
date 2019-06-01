@@ -1,13 +1,7 @@
-/**
- * @file Math utils are defined within this file
- * @see uon.math
- * @author Gabriel Roy <gab@uon.io>
- * @ignore
- */
 
-const RAD_TO_DEG: number = 180 / Math.PI;
-const DEG_TO_RAD: number = Math.PI / 180;
-const EPSILON: number = 10e-3;
+export const RAD_TO_DEG: number = 180 / Math.PI;
+export const DEG_TO_RAD: number = Math.PI / 180;
+export const EPSILON: number = Number.EPSILON;
 
 /**
  * Implementation of Math.fround()
@@ -68,9 +62,7 @@ export function IsPowerOfTwo(val: number) {
  * @param a
  * @param b
  */
-export function IsNearEqual(a: number, b: number, epsilon?: number) {
-
-    epsilon = epsilon || EPSILON;
+export function IsNearEqual(a: number, b: number, epsilon: number = EPSILON) {
     return a > b - epsilon && a < b + epsilon;
 }
 

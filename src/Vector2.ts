@@ -1,12 +1,5 @@
-/**
- * @file Vector2
- * @see uon.math.Vector2
- * @author Gabriel Roy <gab@uon.io>
- * @ignore
- */
 
 import { IsNearEqual, f32, ZERO_F32, TWO_PI } from './Utils';
-
 
 
 /**

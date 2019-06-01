@@ -1,12 +1,9 @@
-﻿/**
- * @file Ray
- * @see uon.math.Ray
- * @author Gabriel Roy <gab@uon.io>
- * @ignore
- */
-
+﻿
 import { Vector2 } from './Vector2';
 
+/**
+ * A 2D axis-aligned bounding box
+ */
 export class Box2 {
 
     public min: Vector2;
@@ -75,7 +72,6 @@ export class Box2 {
 	/**
 	 * Computes the center of the box and return its value
 	 * 
-	 * @returns {uon.math.Vector3}
 	 */
     getCenter(output?: Vector2) {
 
@@ -87,7 +83,6 @@ export class Box2 {
 	/**
 	 * Computes the size of the box for each axis
 	 * 
-	 * @returns {uon.math.Vector3}
 	 */
     getSize(output?: Vector2) {
 
@@ -99,8 +94,6 @@ export class Box2 {
 	/**
 	 * Test for containment
 	 * 
-	 * @param {uon.math.Vector3}
-	 *            point
 	 */
     containsPoint(point: Vector2) {
 
@@ -118,8 +111,6 @@ export class Box2 {
 	/**
 	 * Test if a box is contained within this one
 	 * 
-	 * @param {Box2} box
-	 * @returns {Boolean}
 	 */
     containsBox(box: Box2) {
 
@@ -137,7 +128,6 @@ export class Box2 {
 	/**
 	 * Test for intersection with another box
 	 * 
-	 * @param {Box2} box
 	 */
     intersects(box: Box2) {
         if (box.max.x < this.min.x || box.min.x > this.max.x

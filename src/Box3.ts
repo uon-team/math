@@ -1,8 +1,3 @@
-/**
- * @file Box3
- * @author Gabriel Roy <gab@uon.io>
- * @ignore
- */
 
 
 import { Vector3 } from "./Vector3";

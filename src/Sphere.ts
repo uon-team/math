@@ -1,9 +1,3 @@
-/**
- * @file Sphere
- * @see uon.math.Sphere
- * @author Gabriel Roy <gab@uon.io>
- * @ignore
- */
 
 import { Vector3 } from './Vector3';
 import { Box3 } from './Box3';

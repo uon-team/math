@@ -1,9 +1,3 @@
-/**
- * @file Frustum
- * @see uon.math.Frustum
- * @author Gabriel Roy <gab@uon.io>
- * @ignore
- */
 
 import { Vector3 } from './Vector3'
 import { Plane } from './Plane'

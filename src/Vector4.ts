@@ -1,8 +1,3 @@
-/**
- * @file Vector4
- * @author Gabriel Roy <gab@uon.io>
- * @ignore
- */
 
 
 import { f32, ZERO_F32, ONE_F32 } from './Utils';

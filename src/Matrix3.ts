@@ -1,9 +1,4 @@
-/**
- * @file Matrix3
- * @see uon.math.Matrix3
- * @author Gabriel Roy <gab@uon.io>
- * @ignore
- */
+
 
 import { Vector3 } from './Vector3';
 import { Matrix4 } from './Matrix4';
@@ -101,17 +96,12 @@ export class Matrix3 {
         te[7] = -me[9] * me[0] + me[1] * me[8];
         te[8] = me[5] * me[0] - me[1] * me[4];
 
-        var det = me[0] * te[0] + me[1] * te[3] + me[2] * te[6];
+        const det = me[0] * te[0] + me[1] * te[3] + me[2] * te[6];
 
         // no inverse
 
         if (det === 0) {
-
-            var msg = "Matrix3.inverse(): can't invert matrix, determinant is 0";
-            console.warn(msg);
-            this.identity();
-            return this;
-
+            throw new Error('cannot inverse, determinant is zero');
         }
 
         this.multiplyScalar(1.0 / det);
