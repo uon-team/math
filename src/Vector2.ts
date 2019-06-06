@@ -23,7 +23,7 @@ export class Vector2 {
 	 */
     constructor(x?: any, y?: number) {
 
-        var v = this;
+        const v = this;
         if (arguments.length == 2) {
             v.x = f32(x);
             v.y = f32(y);
@@ -182,7 +182,7 @@ export class Vector2 {
      * Computes the vector squared length 
      */
     lengthSq() {
-        var a = this;
+        const a = this;
         return a.x * a.x + a.y * a.y;
     }
 
@@ -206,7 +206,7 @@ export class Vector2 {
      * Normalizes this vector
      */
     normalize() {
-        var len = this.length();
+        const len = this.length();
         return this.divideScalar(len);
     }
 
@@ -216,8 +216,6 @@ export class Vector2 {
      * @param alpha
      */
     lerp(v: Vector2, alpha: number) {
-        //this.x += (v.x - this.x) * alpha;
-        //this.y += (v.y - this.y) * alpha;
 
         this.x = (1 - alpha) * this.x + alpha * v.x;
         this.y = (1 - alpha) * this.y + alpha * v.y;
@@ -233,16 +231,14 @@ export class Vector2 {
      */
     rotate(angle: number, origin: Vector2) {
 
-        let rot_sin = Math.sin(angle);
-        let rot_cos = Math.cos(angle);
-
-
+        const rot_sin = Math.sin(angle);
+        const rot_cos = Math.cos(angle);
         this.subtract(origin);
 
-        let new_x = rot_cos * this.x - rot_sin * this.y;
-        let new_y = rot_sin * this.x + rot_cos * this.y;
-
-        this.set(new_x, new_y);
+        this.set(
+            rot_cos * this.x - rot_sin * this.y,
+            rot_sin * this.x + rot_cos * this.y
+        );
 
         this.add(origin);
 
@@ -270,11 +266,10 @@ export class Vector2 {
      */
     getSignedAngle(vec: Vector2) {
 
-        let dot = this.x * vec.x + this.y * vec.y;
-        let det = this.x * vec.y - this.y * vec.x;
-        let angle = Math.atan2(det, dot);
+        const dot = this.x * vec.x + this.y * vec.y;
+        const det = this.x * vec.y - this.y * vec.x;
 
-        return angle;
+        return Math.atan2(det, dot);
 
     }
 
@@ -337,7 +332,7 @@ export class Vector2 {
      * @param vec
      */
     project(vec: Vector2) {
-        let dot = this.dot(vec); // a.u
+        const dot = this.dot(vec); // a.u
         let mod = vec.length(); // |u|
         mod *= mod; // |u|^2
         return vec.multiplyScalar(dot / mod);
@@ -366,10 +361,7 @@ export class Vector2 {
      * @param array
      * @param offset
      */
-    fromArray(array: number[], offset?: number) {
-
-        if (offset === undefined)
-            offset = 0;
+    fromArray(array: number[], offset: number = 0) {
 
         this.x = array[offset];
         this.y = array[offset + 1];
@@ -383,12 +375,10 @@ export class Vector2 {
      * @param array
      * @param offset
      */
-    toArray(array?: Array<number> | Float32Array, offset?: number) {
+    toArray(array?: Array<number> | Float32Array, offset: number = 0) {
 
         if (array === undefined)
             array = [];
-        if (offset === undefined)
-            offset = 0;
 
         array[offset] = this.x;
         array[offset + 1] = this.y;
@@ -474,7 +464,7 @@ export class Vector2 {
 
 
         let centroid = new Vector2(0, 0);
-        let signedArea = 0.0;
+        let signed_area = 0.0;
         let x0 = 0.0; // Current vertex X
         let y0 = 0.0; // Current vertex Y
         let x1 = 0.0; // Next vertex X
@@ -490,7 +480,7 @@ export class Vector2 {
             x1 = points[i + 1].x;
             y1 = points[i + 1].y;
             a = x0 * y1 - x1 * y0;
-            signedArea += a;
+            signed_area += a;
             centroid.x += (x0 + x1) * a;
             centroid.y += (y0 + y1) * a;
         }
@@ -502,13 +492,13 @@ export class Vector2 {
         x1 = points[0].x;
         y1 = points[0].y;
         a = x0 * y1 - x1 * y0;
-        signedArea += a;
+        signed_area += a;
         centroid.x += (x0 + x1) * a;
         centroid.y += (y0 + y1) * a;
 
-        signedArea *= 0.5;
-        centroid.x /= (6.0 * signedArea);
-        centroid.y /= (6.0 * signedArea);
+        signed_area *= 0.5;
+        centroid.x /= (6.0 * signed_area);
+        centroid.y /= (6.0 * signed_area);
 
         return centroid;
 

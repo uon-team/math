@@ -131,8 +131,8 @@ export class Color {
 
         } else {
 
-            var p = l <= 0.5 ? l * (1 + s) : l + s - (l * s);
-            var q = (2 * l) - p;
+            const p = l <= 0.5 ? l * (1 + s) : l + s - (l * s);
+            const q = (2 * l) - p;
 
             this.r = hue2rgb(q, p, h + 1 / 3);
             this.g = hue2rgb(q, p, h);
@@ -154,7 +154,7 @@ export class Color {
 
         if (/^rgb\((\d+), ?(\d+), ?(\d+)\)$/i.test(style)) {
 
-            var color = /^rgb\((\d+), ?(\d+), ?(\d+)\)$/i.exec(style);
+            const color = /^rgb\((\d+), ?(\d+), ?(\d+)\)$/i.exec(style);
 
             this.r = Math.min(255, parseInt(color[1], 10)) / 255;
             this.g = Math.min(255, parseInt(color[2], 10)) / 255;
@@ -168,7 +168,7 @@ export class Color {
 
         if (/^rgb\((\d+)\%, ?(\d+)\%, ?(\d+)\%\)$/i.test(style)) {
 
-            var color = /^rgb\((\d+)\%, ?(\d+)\%, ?(\d+)\%\)$/i.exec(style);
+            const color = /^rgb\((\d+)\%, ?(\d+)\%, ?(\d+)\%\)$/i.exec(style);
 
             this.r = Math.min(100, parseInt(color[1], 10)) / 100;
             this.g = Math.min(100, parseInt(color[2], 10)) / 100;
@@ -182,7 +182,7 @@ export class Color {
 
         if (/^\#([0-9a-f]{6})$/i.test(style)) {
 
-            var color = /^\#([0-9a-f]{6})$/i.exec(style);
+            const color = /^\#([0-9a-f]{6})$/i.exec(style);
 
             this.setHex(parseInt(color[1], 16));
 
@@ -194,7 +194,7 @@ export class Color {
 
         if (/^\#([0-9a-f])([0-9a-f])([0-9a-f])$/i.test(style)) {
 
-            var color = /^\#([0-9a-f])([0-9a-f])([0-9a-f])$/i.exec(style);
+            const color = /^\#([0-9a-f])([0-9a-f])([0-9a-f])$/i.exec(style);
 
             this.setHex(parseInt(color[1] + color[1] + color[2] + color[2] + color[3] + color[3], 16));
 
@@ -254,7 +254,7 @@ export class Color {
 	 */
     convertGammaToLinear() {
 
-        var r = this.r, g = this.g, b = this.b;
+        const r = this.r, g = this.g, b = this.b;
 
         this.r = r * r;
         this.g = g * g;
@@ -303,17 +303,17 @@ export class Color {
 
         // h,s,l ranges are in 0.0 - 1.0
 
-        var hsl = target || { h: 0, s: 0, l: 0 };
+        const hsl = target || { h: 0, s: 0, l: 0 };
 
-        var r = this.r,
+        const r = this.r,
             g = this.g,
             b = this.b;
 
-        var max = Math.max(r, g, b);
-        var min = Math.min(r, g, b);
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
 
-        var hue, saturation;
-        var lightness = (min + max) / 2.0;
+        let hue: number, saturation: number;
+        const lightness = (min + max) / 2.0;
 
         if (min === max) {
 
@@ -322,7 +322,7 @@ export class Color {
 
         } else {
 
-            var delta = max - min;
+            const delta = max - min;
 
             saturation = lightness <= 0.5 ? delta / (max + min) : delta / (2 - max - min);
 
@@ -363,7 +363,7 @@ export class Color {
 	 */
     offsetHSL(h: number, s: number, l: number) {
 
-        var hsl = this.getHSL();
+        const hsl = this.getHSL();
 
         hsl.h += h; hsl.s += s; hsl.l += l;
 
@@ -451,10 +451,10 @@ export class Color {
 	 */
     lerp(color: Color, alpha: number) {
 
-		this.r = (1 - alpha) * this.r + alpha * color.r;
-		this.g = (1 - alpha) * this.g + alpha * color.g;
-		this.b = (1 - alpha) * this.b + alpha * color.b;
-		this.a = (1 - alpha) * this.a + alpha * color.a;
+        this.r = (1 - alpha) * this.r + alpha * color.r;
+        this.g = (1 - alpha) * this.g + alpha * color.g;
+        this.b = (1 - alpha) * this.b + alpha * color.b;
+        this.a = (1 - alpha) * this.a + alpha * color.a;
 
         return this;
 
@@ -491,17 +491,15 @@ export class Color {
 	 * @param offset
 	 * @param copyAlpha
 	 */
-    toArray(array: any, offset?: number, copyAlpha?: boolean) {
+    toArray(array: any, offset: number = 0) {
 
         if (array === undefined)
             array = [];
-        if (offset === undefined)
-            offset = 0;
 
         array[offset] = this.r;
         array[offset + 1] = this.g;
         array[offset + 2] = this.b;
-        if (/*copyAlpha ===*/ true) array[offset + 3] = this.a;
+        array[offset + 3] = this.a;
         return array;
 
     }
@@ -511,7 +509,7 @@ export class Color {
 	 */
     toFloatArray() {
 
-        if(this._cache == null) {
+        if (this._cache == null) {
             this._cache = new Float32Array(4);
         }
 

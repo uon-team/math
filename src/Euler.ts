@@ -24,7 +24,7 @@ export class Euler {
     constructor(pitch?: any, roll?: number, yaw?: number) {
 
 
-        let v = this;
+        const v = this;
         if (arguments.length == 3) {
             v.pitch = f32(pitch);
             v.roll = f32(roll);

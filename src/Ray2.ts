@@ -24,8 +24,8 @@ export class Ray2 {
 	 * @constructs
 	 */
     constructor(origin?: Vector2, dir?: Vector2) {
-        this.origin = (origin !== undefined) ? origin : new Vector2();
-        this.dir = (dir !== undefined) ? dir : new Vector2();
+        this.origin = (origin !== undefined) ? origin.clone() : new Vector2();
+        this.dir = (dir !== undefined) ? dir.clone() : new Vector2();
 
     }
 
@@ -46,7 +46,7 @@ export class Ray2 {
 	 */
     at(t: number, output?: Vector2) {
 
-        var result = output || new Vector2();
+        const result = output || new Vector2();
 
         return result.copy(this.dir).multiplyScalar(t).add(this.origin);
 

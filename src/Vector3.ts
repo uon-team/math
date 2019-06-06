@@ -31,7 +31,7 @@ export class Vector3 {
     constructor(x?: any, y?: number, z?: number) {
 
 
-        var v = this;
+        const v = this;
         if (arguments.length == 3) {
             v.x = f32(x);
             v.y = f32(y);
@@ -154,7 +154,7 @@ export class Vector3 {
     divideScalar(scalar: number) {
 
         if (scalar !== 0) {
-            var inv = 1 / scalar;
+            const inv = 1 / scalar;
             this.x *= inv;
             this.y *= inv;
             this.z *= inv;
@@ -183,7 +183,9 @@ export class Vector3 {
 	 */
     cross(v: Vector3) {
 
-        var x = this.x, y = this.y, z = this.z;
+        const x = this.x,
+            y = this.y,
+            z = this.z;
 
         this.x = y * v.z - z * v.y;
         this.y = z * v.x - x * v.z;
@@ -199,11 +201,11 @@ export class Vector3 {
 	 */
     applyMatrix3(m: Matrix3) {
 
-        var x = this.x;
-        var y = this.y;
-        var z = this.z;
+        const x = this.x,
+            y = this.y,
+            z = this.z;
 
-        var e = m.elements;
+        const e = m.elements;
 
         this.x = e[0] * x + e[3] * y + e[6] * z;
         this.y = e[1] * x + e[4] * y + e[7] * z;
@@ -219,14 +221,14 @@ export class Vector3 {
 	 */
     applyMatrix4(m: Matrix4) {
 
-        var x = this.x, y = this.y, z = this.z;
+        const x = this.x, y = this.y, z = this.z;
 
-        var e = m.elements;
+        const e = m.elements;
 
         this.x = e[0] * x + e[4] * y + e[8] * z + e[12];
         this.y = e[1] * x + e[5] * y + e[9] * z + e[13];
         this.z = e[2] * x + e[6] * y + e[10] * z + e[14];
-        var w = e[3] * x + e[7] * y + e[11] * z + e[15];
+        const w = e[3] * x + e[7] * y + e[11] * z + e[15];
 
         return this.divideScalar(w);
 
@@ -238,11 +240,12 @@ export class Vector3 {
 	 */
     applyMatrix4Proj(m: Matrix4) {
 
-        var x = this.x, y = this.y, z = this.z;
+        const x = this.x, y = this.y, z = this.z;
 
-        var e = m.elements;
-        var d = 1 / (e[3] * x + e[7] * y + e[11] * z + e[15]); // perspective
-        // divide
+        const e = m.elements;
+
+        // perspective divide
+        const d = 1 / (e[3] * x + e[7] * y + e[11] * z + e[15]);
 
         this.x = (e[0] * x + e[4] * y + e[8] * z + e[12]) * d;
         this.y = (e[1] * x + e[5] * y + e[9] * z + e[13]) * d;
@@ -254,19 +257,19 @@ export class Vector3 {
 
     applyQuaternion(q: Quaternion) {
 
-        var x = this.x;
-        var y = this.y;
-        var z = this.z;
+        const x = this.x,
+            y = this.y,
+            z = this.z;
 
-        var qx = q.x;
-        var qy = q.y;
-        var qz = q.z;
-        var qw = q.w;
+        const qx = q.x;
+        const qy = q.y;
+        const qz = q.z;
+        const qw = q.w;
 
-        var ix = qw * x + qy * z - qz * y;
-        var iy = qw * y + qz * x - qx * z;
-        var iz = qw * z + qx * y - qy * x;
-        var iw = -qx * x - qy * y - qz * z;
+        const ix = qw * x + qy * z - qz * y;
+        const iy = qw * y + qz * x - qx * z;
+        const iz = qw * z + qx * y - qy * x;
+        const iw = -qx * x - qy * y - qz * z;
 
         this.x = ix * qw + iw * -qx + iy * -qz - iz * -qy;
         this.y = iy * qw + iw * -qy + iz * -qx - ix * -qz;
@@ -284,9 +287,9 @@ export class Vector3 {
 
     distanceToSquared(v: Vector3) {
 
-        var dx = this.x - v.x;
-        var dy = this.y - v.y;
-        var dz = this.z - v.z;
+        const dx = this.x - v.x;
+        const dy = this.y - v.y;
+        const dz = this.z - v.z;
 
         return dx * dx + dy * dy + dz * dz;
 
@@ -299,23 +302,23 @@ export class Vector3 {
 
     lengthSq() {
 
-        var a = this;
+        const a = this;
         return a.x * a.x + a.y * a.y + a.z * a.z;
     }
 
     normalize() {
 
-        var len = this.length();
+        const len = this.length();
         return this.divideScalar(len);
     }
 
     lerp(v: Vector3, alpha: number) {
 
-        this.x += (v.x - this.x) * alpha;
-        this.y += (v.y - this.y) * alpha;
-        this.z += (v.z - this.z) * alpha;
+        const inv_a = 1 - alpha;
 
-
+        this.x = inv_a * this.x + alpha * v.x;
+        this.y = inv_a * this.y + alpha * v.y;
+        this.z = inv_a * this.z + alpha * v.z;
 
         return this;
     }
@@ -359,10 +362,7 @@ export class Vector3 {
         return this;
     }
 
-    fromArray(array: number[], offset?: number) {
-
-        if (offset === undefined)
-            offset = 0;
+    fromArray(array: number[], offset: number = 0) {
 
         this.x = array[offset];
         this.y = array[offset + 1];
@@ -371,12 +371,10 @@ export class Vector3 {
 
     }
 
-    toArray(array?: Array<number> | Float32Array, offset?: number) {
+    toArray(array?: Array<number> | Float32Array, offset: number = 0) {
 
         if (array === undefined)
             array = [];
-        if (offset === undefined)
-            offset = 0;
 
         array[offset] = this.x;
         array[offset + 1] = this.y;
@@ -390,7 +388,6 @@ export class Vector3 {
         if (this._cache == null) {
             this._cache = new Float32Array(3);
         }
-
 
         this._cache[0] = this.x;
         this._cache[1] = this.y;

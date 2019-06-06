@@ -24,7 +24,7 @@ export class Sphere {
 	 */
 	constructor(center?: Vector3, radius?: number) {
 
-		this.center = (center !== undefined) ? center : new Vector3();
+		this.center = (center !== undefined) ? center.clone() : new Vector3();
 		this.radius = (radius !== undefined) ? f32(radius) : f32(0);
 	}
 
@@ -53,7 +53,7 @@ export class Sphere {
 	 */
 	setFromPoints(points: Vector3[], center?: Vector3) {
 
-		var box = TEMP_AABB;
+		const box = TEMP_AABB;
 
 		if (center !== undefined) {
 
@@ -65,7 +65,7 @@ export class Sphere {
 
 		}
 
-		var max_radius_sq = 0;
+		let max_radius_sq = 0;
 
 		for (var i = 0, il = points.length; i < il; i++) {
 
@@ -137,7 +137,7 @@ export class Sphere {
 	 */
 	intersectsSphere(sphere: Sphere): boolean {
 
-		var radius_sum = this.radius + sphere.radius;
+		const radius_sum = this.radius + sphere.radius;
 
 		return sphere.center.distanceToSquared(this.center) <= (radius_sum * radius_sum);
 
@@ -148,11 +148,11 @@ export class Sphere {
 	 */
 	clampPoint(point: Vector3, output?: Vector3) {
 
-		var radius = this.radius,
+		const radius = this.radius,
 			center = this.center,
 			delta_length_sq = this.center.distanceToSquared(point);
 
-		var result = output || new Vector3();
+		const result = output || new Vector3();
 		result.copy(point);
 
 		if (delta_length_sq > (radius * radius)) {
@@ -169,9 +169,9 @@ export class Sphere {
 	/**
 	 * Computes an axis-aligned bounding-box around this sphere
 	 */
-	getBoundingBox(output: Box3) {
+	getBoundingBox(output?: Box3) {
 
-		var box = output || new Box3();
+		const box = output || new Box3();
 
 		box.set(this.center, this.center);
 		box.scale(this.radius);
@@ -186,7 +186,7 @@ export class Sphere {
 	applyMatrix4(matrix: Matrix4) {
 
 
-		let scale = matrix.getScale();
+		const scale = matrix.getScale();
 
 		this.center.applyMatrix4(matrix);
 		this.radius = this.radius * Math.max(scale.x, scale.y, scale.z);

@@ -17,10 +17,10 @@ export class Box3 {
     constructor(min?: Vector3, max?: Vector3) {
 
         this.min = (min !== undefined) ?
-            min : new Vector3(Infinity, Infinity, Infinity);
+            min.clone() : new Vector3(Infinity, Infinity, Infinity);
 
         this.max = (max !== undefined) ?
-            max : new Vector3(-Infinity, -Infinity, -Infinity);
+            max.clone() : new Vector3(-Infinity, -Infinity, -Infinity);
     }
 
 	/**
@@ -42,7 +42,7 @@ export class Box3 {
 
         this.empty();
 
-        for (var i = 0, il = points.length; i < il; i++) {
+        for (let i = 0, il = points.length; i < il; i++) {
 
             this.expand(points[i]);
 
@@ -78,7 +78,7 @@ export class Box3 {
 	 */
     getCenter(output?: Vector3) {
 
-        var result = output || new Vector3();
+        const result = output || new Vector3();
         return result.copy(this.min).add(this.max).multiplyScalar(0.5);
 
     }
@@ -89,7 +89,7 @@ export class Box3 {
 	 */
     getSize(output?: Vector3) {
 
-        var result = output || new Vector3();
+        const result = output || new Vector3();
         return result.copy(this.max).subtract(this.min);
 
     }
@@ -101,9 +101,9 @@ export class Box3 {
 	 */
     containsPoint(point: Vector3) {
 
-        if (point.x < this.min.x || point.x > this.max.x
-            || point.y < this.min.y || point.y > this.max.y
-            || point.z < this.min.z || point.z > this.max.z) {
+        if (point.x < this.min.x || point.x > this.max.x ||
+            point.y < this.min.y || point.y > this.max.y ||
+            point.z < this.min.z || point.z > this.max.z) {
 
             return false;
 
@@ -138,9 +138,9 @@ export class Box3 {
 	 * @param  box
 	 */
     intersects(box: Box3) {
-        if (box.max.x < this.min.x || box.min.x > this.max.x
-            || box.max.y < this.min.y || box.min.y > this.max.y
-            || box.max.z < this.min.z || box.min.z > this.max.z) {
+        if (box.max.x < this.min.x || box.min.x > this.max.x ||
+            box.max.y < this.min.y || box.min.y > this.max.y ||
+            box.max.z < this.min.z || box.min.z > this.max.z) {
 
             return false;
 

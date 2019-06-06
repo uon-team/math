@@ -1,6 +1,6 @@
 
 import { Vector3 } from './Vector3';
-import { Vector4 } from './Vector4';
+
 import { Matrix4 } from './Matrix4';
 import { Euler } from './Euler';
 import { f32, ZERO_F32, ONE_F32, EPSILON } from './Utils';
@@ -24,24 +24,23 @@ export class Quaternion {
 	 */
     constructor(x?: any, y?: number, z?: number, w?: number) {
 
-
-        var v = this;
+        const v = this;
         if (arguments.length >= 3) {
-            this.x = f32(x);
-            this.y = f32(y);
-            this.z = f32(z);
-            this.w = w !== undefined ? f32(w) : ONE_F32;
+            v.x = f32(x);
+            v.y = f32(y);
+            v.z = f32(z);
+            v.w = w !== undefined ? f32(w) : ONE_F32;
 
         } else if (Array.isArray(x)) {
-            this.x = f32(x[0]) || ZERO_F32;
-            this.y = f32(x[1]) || ZERO_F32;
-            this.z = f32(x[2]) || ZERO_F32;
-            this.w = f32(x[3]) || ZERO_F32;
+            v.x = f32(x[0]) || ZERO_F32;
+            v.y = f32(x[1]) || ZERO_F32;
+            v.z = f32(x[2]) || ZERO_F32;
+            v.w = f32(x[3]) || ZERO_F32;
         } else if (x instanceof Quaternion) {
-            this.x = x.x;
-            this.y = x.y;
-            this.z = x.z;
-            this.z = x.w;
+            v.x = x.x;
+            v.y = x.y;
+            v.z = x.z;
+            v.z = x.w;
         }
 
     }
@@ -93,7 +92,7 @@ export class Quaternion {
 
     inverse(result?: Quaternion) {
 
-        var l = this.length();
+        const l = this.length();
         result = result || this;
         //result.negate(result);
         result.x /= l;
@@ -105,7 +104,7 @@ export class Quaternion {
 
     normalize() {
 
-        var l = this.length();
+        let l = this.length();
 
         if (l === 0) {
             this.x = 0;
@@ -113,7 +112,8 @@ export class Quaternion {
             this.z = 0;
             this.w = 1;
 
-        } else {
+        }
+        else {
             l = 1 / l;
 
             this.x = this.x * l;
@@ -149,10 +149,10 @@ export class Quaternion {
 
     multiply(b: Quaternion) {
 
-        var a = this;
+        const a = this;
 
-        var qax = a.x, qay = a.y, qaz = a.z, qaw = a.w;
-        var qbx = b.x, qby = b.y, qbz = b.z, qbw = b.w;
+        const qax = a.x, qay = a.y, qaz = a.z, qaw = a.w;
+        const qbx = b.x, qby = b.y, qbz = b.z, qbw = b.w;
 
         this.x = qax * qbw + qaw * qbx + qay * qbz - qaz * qby;
         this.y = qay * qbw + qaw * qby + qaz * qbx - qax * qbz;
@@ -177,19 +177,18 @@ export class Quaternion {
 
     }
 
+
+    /**
+     * Sets the quaternion from 2 normalized axis vectors
+     * @param vFrom normalized vector
+     * @param vTo normalized vector
+     */
     fromUnitVectors(vFrom: Vector3, vTo: Vector3) {
 
-        // http://lolengine.net/blog/2014/02/24/quaternion-from-two-vectors-final
-
-        // assumes direction vectors vFrom and vTo are
-        // normalized
-
-        let v1 = TEMP_VEC3;
-        let EPS = 0.000001;
-
+        const v1 = TEMP_VEC3;
         let r = vFrom.dot(vTo) + 1;
 
-        if (r < EPS) {
+        if (r < EPSILON) {
 
             r = 0;
 
@@ -220,6 +219,11 @@ export class Quaternion {
 
     }
 
+
+    /**
+     * Sets the quaternion from a rotation matrix
+     * @param m 
+     */
     fromRotationMatrix(m: Matrix4) {
 
         // http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/index.htm
@@ -292,6 +296,10 @@ export class Quaternion {
         return this;
     }
 
+    /**
+     * Get the euler representation of this quaternion
+     * @param out 
+     */
     toEuler(out?: Euler) {
 
         out = out || new Euler();
@@ -332,9 +340,9 @@ export class Quaternion {
         const half_theta = Math.acos(cos_half_theta);
         const sin_half_theta = Math.sqrt(1.0 - cos_half_theta * cos_half_theta);
 
-        // if theta = 180 degrees then result is not fully defined
+        // if theta = PI then result is not fully defined
         // we could rotate around any axis normal to qa or qb
-        if (Math.abs(sin_half_theta) < EPSILON) { // fabs is floating point absolute
+        if (Math.abs(sin_half_theta) < EPSILON) {
             qm.w = (qa.w * 0.5 + qb.w * 0.5);
             qm.x = (qa.x * 0.5 + qb.x * 0.5);
             qm.y = (qa.y * 0.5 + qb.y * 0.5);

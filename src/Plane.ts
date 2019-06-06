@@ -24,8 +24,8 @@ export class Plane {
 	 * A plane is defined by a normal vector and a constant
 	 * 
 	 * @constructs
-	 * @param {Vector3} normal
-	 * @param {Number} constant
+	 * @param normal
+	 * @param constant
 	 */
     constructor(normal?: Vector3, constant?: number) {
 
@@ -76,13 +76,11 @@ export class Plane {
 	 */
     setFromCoplanarPoints(a: Vector3, b: Vector3, c: Vector3) {
 
-        var normal = TEMP_VEC30.copy(c)
+        const normal = TEMP_VEC30.copy(c)
             .subtract(b)
             .cross(TEMP_VEC31.copy(a).subtract(b))
             .normalize();
 
-        // Q: should an error be thrown if normal is zero (e.g. degenerate
-        // plane)?
 
         this.setFromNormalAndCoplanarPoint(normal, a);
 
@@ -109,9 +107,9 @@ export class Plane {
 
         // Note: will lead to a divide by zero if the plane is invalid.
 
-        var inverseNormalLength = 1.0 / this.normal.length();
-        this.normal.multiplyScalar(inverseNormalLength);
-        this.constant *= inverseNormalLength;
+        const inverse_norm_len = 1.0 / this.normal.length();
+        this.normal.multiplyScalar(inverse_norm_len);
+        this.constant *= inverse_norm_len;
 
         return this;
 
@@ -161,10 +159,10 @@ export class Plane {
 	 */
     orthoPoint(point: Vector3, output?: Vector3) {
 
-        var perpendicularMagnitude = this.distanceToPoint(point);
+        const perpendicular_mag = this.distanceToPoint(point);
 
-        var result = output || new Vector3();
-        return result.copy(this.normal).multiplyScalar(perpendicularMagnitude);
+        const result = output || new Vector3();
+        return result.copy(this.normal).multiplyScalar(perpendicular_mag);
 
     }
 
@@ -212,7 +210,7 @@ export class Plane {
 	 */
     coplanarPoint(output?: Vector3) {
 
-        var result = output || new Vector3();
+        const result = output || new Vector3();
         return result.copy(this.normal).multiplyScalar(-this.constant);
 
     }
@@ -226,10 +224,10 @@ export class Plane {
 
         // compute new normal based on theory here:
         // http://www.songho.ca/opengl/gl_normaltransform.html
-        var normal_matrix = TEMP_MAT30.getNormalMatrix(matrix);
-        var new_normal = TEMP_VEC30.copy(this.normal).applyMatrix3(normal_matrix);
+        const normal_matrix = TEMP_MAT30.copyInverseOf(matrix).transpose();
+        const new_normal = TEMP_VEC30.copy(this.normal).applyMatrix3(normal_matrix);
 
-        var new_coplanar_point = this.coplanarPoint(TEMP_VEC31);
+        const new_coplanar_point = this.coplanarPoint(TEMP_VEC31);
         new_coplanar_point.applyMatrix4(matrix);
 
         this.setFromNormalAndCoplanarPoint(new_normal, new_coplanar_point);

@@ -46,6 +46,9 @@ export class Matrix3 {
 
     }
 
+    /**
+     * Sets this matrix as the identity matrix
+     */
     identity() {
 
         this.set(
@@ -58,6 +61,10 @@ export class Matrix3 {
 
     }
 
+    /**
+     * Copy values from another Matrix3
+     * @param m 
+     */
     copy(m: Matrix3) {
 
         this.elements.set(m.elements);
@@ -66,6 +73,9 @@ export class Matrix3 {
 
     }
 
+    /**
+     * Calculate determinant
+     */
     determinant() {
 
         const te = this.elements;
@@ -81,7 +91,7 @@ export class Matrix3 {
      * Copy the inverse of a Matrix4 into this one
      * @param matrix
      */
-    inverse(matrix: Matrix4) {
+    copyInverseOf(matrix: Matrix4) {
 
         const me = matrix.elements;
         const te = this.elements;
@@ -110,17 +120,8 @@ export class Matrix3 {
     }
 
     /**
-     * Get a Normal matrix from a matrix 4
-     * @param m
+     * Transpose this matrix
      */
-    getNormalMatrix(m: Matrix4) {
-
-        this.inverse(m).transpose();
-
-        return this;
-
-    }
-
     transpose() {
 
         let tmp: number,
@@ -139,6 +140,10 @@ export class Matrix3 {
         return this;
     }
 
+    /**
+     * Multiply the matrix by a scalar value
+     * @param s 
+     */
     multiplyScalar(s: number) {
 
         const te = this.elements;
@@ -157,6 +162,10 @@ export class Matrix3 {
 
     }
 
+    /**
+     * Copy values from an array into this matrix
+     * @param array 
+     */
     fromArray(array: ArrayLike<number>) {
 
         this.elements.set(array);
@@ -165,23 +174,29 @@ export class Matrix3 {
 
     }
 
-    toArray() {
+    toArray(out?: Array<number>) {
 
-        let result: number[] = new Array(9);
+        let result: number[] = out || new Array(9);
         for (let i = 0; i < 9; ++i) {
-            result.push(this.elements[i]);
+            result[i] = (this.elements[i]);
         }
 
         return result;
 
     }
 
+    /**
+     * Get the underlying buffer
+     */
     toFloatArray() {
 
         return this.elements;
 
     }
 
+    /**
+     * Clone this matrix
+     */
     clone() {
 
         return new Matrix3().fromArray(this.elements);

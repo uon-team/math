@@ -1,7 +1,12 @@
 
 export const RAD_TO_DEG: number = 180 / Math.PI;
 export const DEG_TO_RAD: number = Math.PI / 180;
-export const EPSILON: number = Number.EPSILON;
+
+/**
+ * Approximated epsilon value for single precision float
+ * For double it would be 2^-52
+ */
+export const EPSILON: number = Math.pow(2, -23); 
 
 /**
  * Implementation of Math.fround()

@@ -28,24 +28,24 @@ export class Vector4 {
 	 */
     constructor(x?: any, y?: number, z?: number, w?: number) {
 
-
+        const v = this;
         if (arguments.length >= 3) {
-            this.x = f32(x);
-            this.y = f32(y);
-            this.z = f32(z);
-            this.w = w !== undefined ? f32(w) : ONE_F32;
+            v.x = f32(x);
+            v.y = f32(y);
+            v.z = f32(z);
+            v.w = w !== undefined ? f32(w) : ONE_F32;
 
         } else if (Array.isArray(x)) {
-            this.x = f32(x[0]);
-            this.y = f32(x[1]);
-            this.z = f32(x[2]);
-            this.w = f32(x[3]);
+            v.x = f32(x[0]);
+            v.y = f32(x[1]);
+            v.z = f32(x[2]);
+            v.w = f32(x[3]);
 
         } else if (x instanceof Vector4) {
-            this.x = x.x;
-            this.y = x.y;
-            this.z = x.z;
-            this.z = x.w;
+            v.x = x.x;
+            v.y = x.y;
+            v.z = x.z;
+            v.z = x.w;
         }
 
     }
@@ -121,7 +121,7 @@ export class Vector4 {
 
     divideScalar(scalar: number) {
         if (scalar !== 0) {
-            var inv = 1 / scalar;
+            const inv = 1 / scalar;
             this.x *= inv;
             this.y *= inv;
             this.z *= inv;
@@ -146,20 +146,24 @@ export class Vector4 {
     }
 
     lengthSq() {
-        var a = this;
+        const a = this;
         return a.x * a.x + a.y * a.y + a.z * a.z + a.w * a.w;
     }
 
     normalize() {
-        var len = this.length();
+        const len = this.length();
         return this.divideScalar(len);
     }
 
     lerp(v: Vector4, alpha: number) {
-        this.x += (v.x - this.x) * alpha;
-        this.y += (v.y - this.y) * alpha;
-        this.z += (v.z - this.z) * alpha;
-        this.w += (v.w - this.w) * alpha;
+
+        const inv_a = 1 - alpha;
+
+        this.x = inv_a * this.x + alpha * v.x;
+        this.y = inv_a * this.y + alpha * v.y;
+        this.z = inv_a * this.z + alpha * v.z;
+        this.w = inv_a * this.w + alpha * v.w;
+
         return this;
     }
 
@@ -203,10 +207,7 @@ export class Vector4 {
         return this;
     }
 
-    fromArray(array: number[], offset?: number) {
-
-        if (offset === undefined)
-            offset = 0;
+    fromArray(array: number[], offset: number = 0) {
 
         this.x = array[offset];
         this.y = array[offset + 1];
@@ -216,12 +217,10 @@ export class Vector4 {
 
     }
 
-    toArray(array?: any[], offset?: number) {
+    toArray(array?: any[], offset: number = 0) {
 
         if (array === undefined)
             array = [];
-        if (offset === undefined)
-            offset = 0;
 
         array[offset] = this.x;
         array[offset + 1] = this.y;

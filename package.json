@@ -3,11 +3,9 @@
   "version": "0.9.0",
   "description": "A linear algebra library written in TypeScript",
   "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "scripts": {},
   "dependencies": {},
   "devDependencies": {
-    "tslib": "^1.9.0"
   },
   "repository": {
     "type": "git",

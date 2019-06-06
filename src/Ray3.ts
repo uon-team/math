@@ -21,8 +21,8 @@ export class Ray3 {
 	 * @constructs
 	 */
     constructor(origin?: Vector3, dir?: Vector3) {
-        this.origin = (origin !== undefined) ? origin : new Vector3();
-        this.dir = (dir !== undefined) ? dir : new Vector3();
+        this.origin = (origin !== undefined) ? origin.clone() : new Vector3();
+        this.dir = (dir !== undefined) ? dir.clone() : new Vector3();
 
     }
 
@@ -43,7 +43,7 @@ export class Ray3 {
 	 */
     at(t: number, output?: Vector3) {
 
-        var result = output || new Vector3();
+        const result = output || new Vector3();
 
         return result.copy(this.dir).multiplyScalar(t).add(this.origin);
 
@@ -88,11 +88,11 @@ export class Ray3 {
 
         let tmin: number, tmax: number, tymin: number, tymax: number, tzmin: number, tzmax: number;
 
-        var invdirx = 1 / this.dir.x,
+        const invdirx = 1 / this.dir.x,
             invdiry = 1 / this.dir.y,
             invdirz = 1 / this.dir.z;
 
-        var origin = this.origin;
+        const origin = this.origin;
 
         if (invdirx >= 0) {
 
@@ -155,26 +155,24 @@ export class Ray3 {
 	 */
     intersectSphere(sphere: Sphere, output?: Vector3) {
 
-        var v1 = TEMP_VEC3;
+        const v1 = TEMP_VEC3;
 
 
         v1.copy(sphere.center).subtract(this.origin);
 
-        var tca = v1.dot(this.dir);
-
-        var d2 = v1.dot(v1) - tca * tca;
-
-        var radius2 = sphere.radius * sphere.radius;
+        const tca = v1.dot(this.dir);
+        const d2 = v1.dot(v1) - tca * tca;
+        const radius2 = sphere.radius * sphere.radius;
 
         if (d2 > radius2) return null;
 
-        var thc = Math.sqrt(radius2 - d2);
+        const thc = Math.sqrt(radius2 - d2);
 
         // t0 = first intersect point - entrance on front of sphere
-        var t0 = tca - thc;
+        const t0 = tca - thc;
 
         // t1 = second intersect point - exit point on back of sphere
-        var t1 = tca + thc;
+        const t1 = tca + thc;
 
         // test to see if both t0 and t1 are behind the ray - if so, return null
         if (t0 < 0 && t1 < 0) return null;
@@ -194,7 +192,7 @@ export class Ray3 {
 	 */
     distanceToPlane(plane: Plane) {
 
-        var denominator = plane.normal.dot(this.dir);
+        const denominator = plane.normal.dot(this.dir);
         if (denominator == 0) {
 
             // line is coplanar, return origin
@@ -210,7 +208,7 @@ export class Ray3 {
 
         }
 
-        var t = - (this.origin.dot(plane.normal) + plane.constant) / denominator;
+        const t = - (this.origin.dot(plane.normal) + plane.constant) / denominator;
 
         // Return if the ray never intersects the plane
 
@@ -223,7 +221,7 @@ export class Ray3 {
 	 */
     intersectPlane(plane: Plane, output?: Vector3) {
 
-        var t = this.distanceToPlane(plane);
+        const t = this.distanceToPlane(plane);
 
         if (t === null) {
 

@@ -198,7 +198,7 @@ export class Matrix4 {
         te[15] = n12 * n23 * n31 - n13 * n22 * n31 + n13 * n21 * n32
             - n11 * n23 * n32 - n12 * n21 * n33 + n11 * n22 * n33;
 
-        var det = n11 * te[0] + n21 * te[4] + n31 * te[8] + n41
+        const det = n11 * te[0] + n21 * te[4] + n31 * te[8] + n41
             * te[12];
 
         if (det == 0) {
@@ -247,18 +247,18 @@ export class Matrix4 {
      */
     multiply(mat: Matrix4) {
 
-        var mat2 = this.elements;
-        var mat1 = mat.elements;
+        const mat2 = this.elements;
+        const mat1 = mat.elements;
 
-        var a00 = mat1[0], a01 = mat1[1], a02 = mat1[2], a03 = mat1[3];
-        var a10 = mat1[4], a11 = mat1[5], a12 = mat1[6], a13 = mat1[7];
-        var a20 = mat1[8], a21 = mat1[9], a22 = mat1[10], a23 = mat1[11];
-        var a30 = mat1[12], a31 = mat1[13], a32 = mat1[14], a33 = mat1[15];
+        const a00 = mat1[0], a01 = mat1[1], a02 = mat1[2], a03 = mat1[3];
+        const a10 = mat1[4], a11 = mat1[5], a12 = mat1[6], a13 = mat1[7];
+        const a20 = mat1[8], a21 = mat1[9], a22 = mat1[10], a23 = mat1[11];
+        const a30 = mat1[12], a31 = mat1[13], a32 = mat1[14], a33 = mat1[15];
 
-        var b00 = mat2[0], b01 = mat2[1], b02 = mat2[2], b03 = mat2[3];
-        var b10 = mat2[4], b11 = mat2[5], b12 = mat2[6], b13 = mat2[7];
-        var b20 = mat2[8], b21 = mat2[9], b22 = mat2[10], b23 = mat2[11];
-        var b30 = mat2[12], b31 = mat2[13], b32 = mat2[14], b33 = mat2[15];
+        const b00 = mat2[0], b01 = mat2[1], b02 = mat2[2], b03 = mat2[3];
+        const b10 = mat2[4], b11 = mat2[5], b12 = mat2[6], b13 = mat2[7];
+        const b20 = mat2[8], b21 = mat2[9], b22 = mat2[10], b23 = mat2[11];
+        const b30 = mat2[12], b31 = mat2[13], b32 = mat2[14], b33 = mat2[15];
 
         mat2[0] = b00 * a00 + b01 * a10 + b02 * a20 + b03 * a30,
             mat2[1] = b00 * a01 + b01 * a11 + b02 * a21 + b03 * a31,
@@ -292,7 +292,7 @@ export class Matrix4 {
      */
     multiplyScalar(s: number) {
 
-        var te = this.elements;
+        const te = this.elements;
 
         te[0] *= s;
         te[4] *= s;
@@ -567,7 +567,7 @@ export class Matrix4 {
 
     setTranslation(v: Vector3) {
 
-        var te = this.elements;
+        const te = this.elements;
 
         te[12] = v.x;
         te[13] = v.y;
@@ -579,7 +579,7 @@ export class Matrix4 {
 
     getTranslation(v?: Vector3) {
 
-        var te = this.elements;
+        const te = this.elements;
         v = v || new Vector3();
 
         v.x = te[12];
@@ -602,17 +602,17 @@ export class Matrix4 {
 
     decompose(translation: Vector3, quaternion: Quaternion, scale: Vector3) {
 
-        var vector = TEMP_VEC30;
-        var matrix = Matrix4.TEMP;
+        const vector = TEMP_VEC30;
+        const matrix = Matrix4.TEMP;
 
-        var te = this.elements;
+        const te = this.elements;
 
-        var sx = vector.set(te[0], te[1], te[2]).length();
-        var sy = vector.set(te[4], te[5], te[6]).length();
-        var sz = vector.set(te[8], te[9], te[10]).length();
+        let sx = vector.set(te[0], te[1], te[2]).length();
+        let sy = vector.set(te[4], te[5], te[6]).length();
+        let sz = vector.set(te[8], te[9], te[10]).length();
 
         // if determine is negative, we need to invert one scale
-        var det = this.determinant();
+        const det = this.determinant();
         if (det < 0) {
             sx = -sx;
         }
@@ -628,21 +628,21 @@ export class Matrix4 {
         // incomplete so we
         // can't use .copy()
 
-        var invSX = 1 / sx;
-        var invSY = 1 / sy;
-        var invSZ = 1 / sz;
+        const inv_sx = 1 / sx;
+        const inv_sy = 1 / sy;
+        const inv_sz = 1 / sz;
 
-        matrix.elements[0] *= invSX;
-        matrix.elements[1] *= invSX;
-        matrix.elements[2] *= invSX;
+        matrix.elements[0] *= inv_sx;
+        matrix.elements[1] *= inv_sx;
+        matrix.elements[2] *= inv_sx;
 
-        matrix.elements[4] *= invSY;
-        matrix.elements[5] *= invSY;
-        matrix.elements[6] *= invSY;
+        matrix.elements[4] *= inv_sy;
+        matrix.elements[5] *= inv_sy;
+        matrix.elements[6] *= inv_sy;
 
-        matrix.elements[8] *= invSZ;
-        matrix.elements[9] *= invSZ;
-        matrix.elements[10] *= invSZ;
+        matrix.elements[8] *= inv_sz;
+        matrix.elements[9] *= inv_sz;
+        matrix.elements[10] *= inv_sz;
 
         quaternion.fromRotationMatrix(matrix);
 
@@ -662,11 +662,11 @@ export class Matrix4 {
 
     }
 
-    toArray() {
+    toArray(out?: number[], offset: number = 0) {
 
-        let result: number[] = new Array(16);
+        const result: number[] = out || new Array(16);
         for (let i = 0; i < 16; ++i) {
-            result.push(this.elements[i]);
+            result[offset + i] = (this.elements[i]);
         }
 
         return result;
@@ -689,19 +689,19 @@ export class Matrix4 {
 
         let result = out || new Matrix4();
 
-        var ae = a.elements;
-        var be = b.elements;
-        var te = result.elements;
+        const ae = a.elements;
+        const be = b.elements;
+        const te = result.elements;
 
-        var a11 = ae[0], a12 = ae[4], a13 = ae[8], a14 = ae[12];
-        var a21 = ae[1], a22 = ae[5], a23 = ae[9], a24 = ae[13];
-        var a31 = ae[2], a32 = ae[6], a33 = ae[10], a34 = ae[14];
-        var a41 = ae[3], a42 = ae[7], a43 = ae[11], a44 = ae[15];
+        const a11 = ae[0], a12 = ae[4], a13 = ae[8], a14 = ae[12];
+        const a21 = ae[1], a22 = ae[5], a23 = ae[9], a24 = ae[13];
+        const a31 = ae[2], a32 = ae[6], a33 = ae[10], a34 = ae[14];
+        const a41 = ae[3], a42 = ae[7], a43 = ae[11], a44 = ae[15];
 
-        var b11 = be[0], b12 = be[4], b13 = be[8], b14 = be[12];
-        var b21 = be[1], b22 = be[5], b23 = be[9], b24 = be[13];
-        var b31 = be[2], b32 = be[6], b33 = be[10], b34 = be[14];
-        var b41 = be[3], b42 = be[7], b43 = be[11], b44 = be[15];
+        const b11 = be[0], b12 = be[4], b13 = be[8], b14 = be[12];
+        const b21 = be[1], b22 = be[5], b23 = be[9], b24 = be[13];
+        const b31 = be[2], b32 = be[6], b33 = be[10], b34 = be[14];
+        const b41 = be[3], b42 = be[7], b43 = be[11], b44 = be[15];
 
         te[0] = a11 * b11 + a12 * b21 + a13 * b31 + a14 * b41;
         te[4] = a11 * b12 + a12 * b22 + a13 * b32 + a14 * b42;

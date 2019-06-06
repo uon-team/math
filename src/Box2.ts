@@ -10,13 +10,14 @@ export class Box2 {
     public max: Vector2;
 
 
+
     constructor(min?: Vector2, max?: Vector2) {
 
         this.min = (min !== undefined) ?
-            min : new Vector2(Infinity, Infinity);
+            min.clone() : new Vector2(Infinity, Infinity);
 
         this.max = (max !== undefined) ?
-            max : new Vector2(-Infinity, -Infinity);
+            max.clone() : new Vector2(-Infinity, -Infinity);
     }
 
     /**
@@ -38,7 +39,7 @@ export class Box2 {
 
         this.empty();
 
-        for (var i = 0, il = points.length; i < il; i++) {
+        for (let i = 0, il = points.length; i < il; i++) {
 
             this.expand(points[i]);
 
@@ -75,7 +76,7 @@ export class Box2 {
 	 */
     getCenter(output?: Vector2) {
 
-        var result = output || new Vector2();
+        const result = output || new Vector2();
         return result.copy(this.min).add(this.max).multiplyScalar(0.5);
 
     }
@@ -86,7 +87,7 @@ export class Box2 {
 	 */
     getSize(output?: Vector2) {
 
-        var result = output || new Vector2();
+        const result = output || new Vector2();
         return result.copy(this.max).subtract(this.min);
 
     }
@@ -97,8 +98,8 @@ export class Box2 {
 	 */
     containsPoint(point: Vector2) {
 
-        if (point.x < this.min.x || point.x > this.max.x
-            || point.y < this.min.y || point.y > this.max.y) {
+        if (point.x < this.min.x || point.x > this.max.x || 
+            point.y < this.min.y || point.y > this.max.y) {
 
             return false;
 
