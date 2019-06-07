@@ -174,11 +174,15 @@ export class Matrix3 {
 
     }
 
-    toArray(out?: Array<number>) {
+    /**
+     * Copy this matrix's values into an array
+     * @param out 
+     */
+    toArray(out?: Array<number>, offset: number = 0) {
 
         let result: number[] = out || new Array(9);
         for (let i = 0; i < 9; ++i) {
-            result[i] = (this.elements[i]);
+            result[offset + i] = (this.elements[i]);
         }
 
         return result;

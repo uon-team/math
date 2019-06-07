@@ -43,6 +43,7 @@ export class Ray2 {
 
 	/**
 	 * Computes the position of a point along the Ray
+     * @param t the distance along the ray from the origin
 	 */
     at(t: number, output?: Vector2) {
 

@@ -3,7 +3,7 @@ import { Vector3 } from './Vector3';
 
 import { Matrix4 } from './Matrix4';
 import { Euler } from './Euler';
-import { f32, ZERO_F32, ONE_F32, EPSILON } from './Utils';
+import { f32, ZERO_F32, ONE_F32, EPSILON, IsNearEqual } from './Utils';
 
 const TEMP_VEC3 = new Vector3();
 
@@ -45,6 +45,13 @@ export class Quaternion {
 
     }
 
+    /**
+     * Set all values of this quaternion
+     * @param x 
+     * @param y 
+     * @param z 
+     * @param w 
+     */
     set(x: number, y: number, z: number, w: number) {
 
         this.x = f32(x);
@@ -56,18 +63,38 @@ export class Quaternion {
 
     }
 
+
+    /**
+     * Test for equality
+     * @param v 
+     */
     equals(v: Quaternion) {
 
         return ((v.x === this.x) && (v.y === this.y)
             && (v.z === this.z) && (v.w === this.w));
     }
 
-    negate() {
+    /**
+     * Test for near equality
+     * @param v 
+     */
+    nearEquals(v: Quaternion, espilon: number = EPSILON) {
 
-        this.x = -this.x;
-        this.y = -this.y;
-        this.z = -this.z;
-        this.w = -this.w;
+        return (IsNearEqual(v.x, this.x, espilon) &&
+            IsNearEqual(v.y, this.y, espilon) &&
+            IsNearEqual(v.z, this.z, espilon) &&
+            IsNearEqual(v.w, this.w, espilon));
+    }
+
+    /**
+     * Negate all values of this quaternion
+     */
+    negate() {
+        const t = this;
+        t.x = -t.x;
+        t.y = -t.y;
+        t.z = -t.z;
+        t.w = -t.w;
         return this;
 
     }
@@ -78,6 +105,10 @@ export class Quaternion {
     }
 
 
+    /**
+     * Copy values from {q} into this one
+     * @param q 
+     */
     copy(q: Quaternion) {
 
         this.set(q.x, q.y, q.z, q.w);
@@ -85,11 +116,18 @@ export class Quaternion {
         return this;
     }
 
+    /**
+     * Creates a copy of this quaternion
+     */
     clone() {
 
         return new Quaternion(this);
     }
 
+    /**
+     * Compute the inverse of this quaternion
+     * @param result If defined, the result will be stored on it, on this otherwise 
+     */
     inverse(result?: Quaternion) {
 
         const l = this.length();
@@ -102,51 +140,67 @@ export class Quaternion {
         return this.conjugate().normalize();
     }
 
+    /**
+     * Normalize this quaternion
+     */
     normalize() {
 
-        let l = this.length();
+        const t = this;
+        let l = t.length();
 
         if (l === 0) {
-            this.x = 0;
-            this.y = 0;
-            this.z = 0;
-            this.w = 1;
+            t.x = 0;
+            t.y = 0;
+            t.z = 0;
+            t.w = 1;
 
         }
         else {
             l = 1 / l;
 
-            this.x = this.x * l;
-            this.y = this.y * l;
-            this.z = this.z * l;
-            this.w = this.w * l;
+            t.x = t.x * l;
+            t.y = t.y * l;
+            t.z = t.z * l;
+            t.w = t.w * l;
 
         }
 
         return this;
     }
 
+    /**
+     * Compute the length of this quaternion
+     */
     length() {
 
-        return Math.sqrt(this.x * this.x + this.y * this.y
-            + this.z * this.z + this.w * this.w);
+        const t = this;
+        return Math.sqrt(t.x * t.x + t.y * t.y + t.z * t.z + t.w * t.w);
     }
 
+    /**
+     * Compute the squared length of this quaternion
+     */
     lengthSq() {
 
-        return this.x * this.x + this.y * this.y + this.z
-            * this.z + this.w * this.w;
+        const t = this;
+        return t.x * t.x + t.y * t.y + t.z * t.z + t.w * t.w;
     }
+
 
     conjugate() {
 
-        this.x = -this.x;
-        this.y = -this.y;
-        this.z = -this.z;
+        const t = this;
+        t.x = -t.x;
+        t.y = -t.y;
+        t.z = -t.z;
 
         return this;
     }
 
+    /**
+     * Multiply this quaternion with another
+     * @param b 
+     */
     multiply(b: Quaternion) {
 
         const a = this;
@@ -154,14 +208,20 @@ export class Quaternion {
         const qax = a.x, qay = a.y, qaz = a.z, qaw = a.w;
         const qbx = b.x, qby = b.y, qbz = b.z, qbw = b.w;
 
-        this.x = qax * qbw + qaw * qbx + qay * qbz - qaz * qby;
-        this.y = qay * qbw + qaw * qby + qaz * qbx - qax * qbz;
-        this.z = qaz * qbw + qaw * qbz + qax * qby - qay * qbx;
-        this.w = qaw * qbw - qax * qbx - qay * qby - qaz * qbz;
+        a.x = qax * qbw + qaw * qbx + qay * qbz - qaz * qby;
+        a.y = qay * qbw + qaw * qby + qaz * qbx - qax * qbz;
+        a.z = qaz * qbw + qaw * qbz + qax * qby - qay * qbx;
+        a.w = qaw * qbw - qax * qbx - qay * qby - qaz * qbz;
 
         return this;
     }
 
+
+    /**
+     * Sets this quaternion's value with axis and angle
+     * @param axis 
+     * @param angle 
+     */
     fromAxisAngle(axis: Vector3, angle: number) {
 
         var half_angle = angle * 0.5, sinus = Math
@@ -230,7 +290,7 @@ export class Quaternion {
 
         // assumes the upper 3x3 of m is a pure rotation matrix
         // (i.e, unscaled)
-
+        const t = this;
         let s: number;
         let te = m.elements,
             m11 = te[0], m12 = te[4], m13 = te[8], m21 = te[1], m22 = te[5], m23 = te[9], m31 = te[2], m32 = te[6], m33 = te[10],
@@ -241,37 +301,37 @@ export class Quaternion {
 
             s = 0.5 / Math.sqrt(trace + 1.0);
 
-            this.w = 0.25 / s;
-            this.x = (m32 - m23) * s;
-            this.y = (m13 - m31) * s;
-            this.z = (m21 - m12) * s;
+            t.w = 0.25 / s;
+            t.x = (m32 - m23) * s;
+            t.y = (m13 - m31) * s;
+            t.z = (m21 - m12) * s;
 
         } else if (m11 > m22 && m11 > m33) {
 
             s = 2.0 * Math.sqrt(1.0 + m11 - m22 - m33);
 
-            this.w = (m32 - m23) / s;
-            this.x = 0.25 * s;
-            this.y = (m12 + m21) / s;
-            this.z = (m13 + m31) / s;
+            t.w = (m32 - m23) / s;
+            t.x = 0.25 * s;
+            t.y = (m12 + m21) / s;
+            t.z = (m13 + m31) / s;
 
         } else if (m22 > m33) {
 
             s = 2.0 * Math.sqrt(1.0 + m22 - m11 - m33);
 
-            this.w = (m13 - m31) / s;
-            this.x = (m12 + m21) / s;
-            this.y = 0.25 * s;
-            this.z = (m23 + m32) / s;
+            t.w = (m13 - m31) / s;
+            t.x = (m12 + m21) / s;
+            t.y = 0.25 * s;
+            t.z = (m23 + m32) / s;
 
         } else {
 
             s = 2.0 * Math.sqrt(1.0 + m33 - m11 - m22);
 
-            this.w = (m21 - m12) / s;
-            this.x = (m13 + m31) / s;
-            this.y = (m23 + m32) / s;
-            this.z = 0.25 * s;
+            t.w = (m21 - m12) / s;
+            t.x = (m13 + m31) / s;
+            t.y = (m23 + m32) / s;
+            t.z = 0.25 * s;
 
         }
 
@@ -279,6 +339,10 @@ export class Quaternion {
 
     }
 
+    /**
+     * Sets this quaternion with euler angles
+     * @param euler 
+     */
     fromEuler(euler: Euler) {
 
         let t0 = Math.cos(euler.yaw * 0.5);
@@ -327,6 +391,13 @@ export class Quaternion {
     }
 
 
+    /**
+     * Compute a spherical interpolation
+     * @param qa 
+     * @param qb 
+     * @param qm the resulting quaternion
+     * @param lambda 
+     */
     static Slerp(qa: Quaternion, qb: Quaternion, qm: Quaternion, lambda: number) {
 
         // Calculate angle between them.

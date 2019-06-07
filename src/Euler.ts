@@ -44,6 +44,10 @@ export class Euler {
 
     }
 
+    /**
+     * 
+     * @param out 
+     */
     toAxisAngle(out?: Vector4) {
 
         out = out || new Vector4();

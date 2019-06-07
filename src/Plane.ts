@@ -220,8 +220,6 @@ export class Plane {
 	 */
     applyMatrix4(matrix: Matrix4) {
 
-
-
         // compute new normal based on theory here:
         // http://www.songho.ca/opengl/gl_normaltransform.html
         const normal_matrix = TEMP_MAT30.copyInverseOf(matrix).transpose();

@@ -1,7 +1,7 @@
 ﻿
 /*!
 *******************************************************************************
-@uon/engine
+@uon/math
 Copyright (C) 2018 uon-team
 MIT Licensed
 *********************************************************************************
@@ -29,4 +29,10 @@ export * from './Vector4';
 
 export * from './Ray2';
 export * from './Ray3';
+
+export * from './Segment2';
+export * from './Segment3';
+
+export * from './Line2';
+export * from './Line3';
 

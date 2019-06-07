@@ -38,29 +38,13 @@ export class Matrix4 {
 
 	/**
 	 * Sets all components of the matrix
-	 * @param n11
-	 * @param n12
-	 * @param n13
-	 * @param n14
-	 * @param n21
-	 * @param n22
-	 * @param n23
-	 * @param n24
-	 * @param n31
-	 * @param n32
-	 * @param n33
-	 * @param n34
-	 * @param n41
-	 * @param n42
-	 * @param n43
-	 * @param n44
 	 */
     set(n11: number, n12: number, n13: number, n14: number,
         n21: number, n22: number, n23: number, n24: number,
         n31: number, n32: number, n33: number, n34: number,
         n41: number, n42: number, n43: number, n44: number) {
 
-        var te = this.elements;
+        const te = this.elements;
 
         te[0] = n11;
         te[4] = n12;
@@ -118,12 +102,12 @@ export class Matrix4 {
      */
     determinant() {
 
-        var te = this.elements;
+        const te = this.elements;
 
-        var n11 = te[0], n12 = te[4], n13 = te[8], n14 = te[12];
-        var n21 = te[1], n22 = te[5], n23 = te[9], n24 = te[13];
-        var n31 = te[2], n32 = te[6], n33 = te[10], n34 = te[14];
-        var n41 = te[3], n42 = te[7], n43 = te[11], n44 = te[15];
+        const n11 = te[0], n12 = te[4], n13 = te[8], n14 = te[12];
+        const n21 = te[1], n22 = te[5], n23 = te[9], n24 = te[13];
+        const n31 = te[2], n32 = te[6], n33 = te[10], n34 = te[14];
+        const n41 = te[3], n42 = te[7], n43 = te[11], n44 = te[15];
 
         // TODO: make this more efficient
         // ( based on
@@ -157,13 +141,13 @@ export class Matrix4 {
 
         // based on
         // http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/fourD/index.htm
-        let te = this.elements;
-        let me = m.elements;
+        const te = this.elements;
+        const me = m.elements;
 
-        let n11 = me[0], n12 = me[4], n13 = me[8], n14 = me[12];
-        let n21 = me[1], n22 = me[5], n23 = me[9], n24 = me[13];
-        let n31 = me[2], n32 = me[6], n33 = me[10], n34 = me[14];
-        let n41 = me[3], n42 = me[7], n43 = me[11], n44 = me[15];
+        const n11 = me[0], n12 = me[4], n13 = me[8], n14 = me[12];
+        const n21 = me[1], n22 = me[5], n23 = me[9], n24 = me[13];
+        const n31 = me[2], n32 = me[6], n33 = me[10], n34 = me[14];
+        const n41 = me[3], n42 = me[7], n43 = me[11], n44 = me[15];
 
         te[0] = n23 * n34 * n42 - n24 * n33 * n42 + n24 * n32 * n43
             - n22 * n34 * n43 - n23 * n32 * n44 + n22 * n33 * n44;
@@ -287,7 +271,7 @@ export class Matrix4 {
     }
 
     /**
-     * Scale the matrix uniformly by value s
+     * Scale the matrix uniformely by value s
      * @param s
      */
     multiplyScalar(s: number) {
@@ -344,7 +328,7 @@ export class Matrix4 {
     }
 
     /**
-     * Apply a look at transformation
+     * Make this matrix a "look at" transformation
      * @param eye
      * @param target
      * @param up
@@ -390,6 +374,15 @@ export class Matrix4 {
 
     }
 
+    /**
+     * Make this matrix a frustum projection matrix
+     * @param left 
+     * @param right 
+     * @param bottom 
+     * @param top 
+     * @param near 
+     * @param far 
+     */
     makeFrustum(left: number, right: number,
         bottom: number, top: number,
         near: number, far: number) {
@@ -424,6 +417,13 @@ export class Matrix4 {
 
     }
 
+    /**
+     * Make this matrix a perspective projection matrix
+     * @param fov 
+     * @param aspect 
+     * @param near 
+     * @param far 
+     */
     makePerspective(fov: number, aspect: number, near: number, far: number) {
 
         const ymax = near * Math.tan(ToRadians(fov * 0.5));
@@ -435,6 +435,15 @@ export class Matrix4 {
 
     }
 
+    /**
+     * Make this matrix an orthographic projection matrix
+     * @param left 
+     * @param right 
+     * @param top 
+     * @param bottom 
+     * @param near 
+     * @param far 
+     */
     makeOrthographic(left: number, right: number,
         top: number, bottom: number,
         near: number, far: number) {
@@ -469,6 +478,10 @@ export class Matrix4 {
 
     }
 
+    /**
+     * Make this matrix a pure rotation matrix (no scale) from a quaternion
+     * @param q 
+     */
     makeRotationFromQuaternion(q: Quaternion) {
 
         const te = this.elements;
@@ -506,7 +519,13 @@ export class Matrix4 {
 
     }
 
-    makeRotationAxis(axis: Vector3, angle: number) {
+
+    /**
+     * Make this matrix a pure rotation matrix from an axis and angle
+     * @param axis 
+     * @param angle 
+     */
+    makeRotationFromAxisAngle(axis: Vector3, angle: number) {
 
         // Based on
         // http://www.gamedev.net/reference/articles/article1199.asp
@@ -529,6 +548,12 @@ export class Matrix4 {
 
     }
 
+    /**
+     * Make this matrix a pure translation matrix 
+     * @param x 
+     * @param y 
+     * @param z 
+     */
     makeTranslation(x: number, y: number, z: number) {
 
         this.set(
@@ -541,6 +566,12 @@ export class Matrix4 {
 
     }
 
+    /**
+     * Make this matrix a pure scale matrix 
+     * @param x 
+     * @param y 
+     * @param z 
+     */
     makeScale(x: number, y: number, z: number) {
 
         this.set(
@@ -553,6 +584,9 @@ export class Matrix4 {
 
     }
 
+    /**
+     * Retrieve the scale component of the matrix
+     */
     getScale() {
 
         const vector = TEMP_VEC30;
@@ -565,6 +599,11 @@ export class Matrix4 {
         return new Vector3(sx, sy, sz);
     }
 
+
+    /**
+     * Sets the translation components of this matrix
+     * @param v 
+     */
     setTranslation(v: Vector3) {
 
         const te = this.elements;
@@ -577,6 +616,10 @@ export class Matrix4 {
 
     }
 
+    /**
+     * Get the translation component as Vector3 from this matrix
+     * @param v 
+     */
     getTranslation(v?: Vector3) {
 
         const te = this.elements;
@@ -590,6 +633,12 @@ export class Matrix4 {
 
     }
 
+    /**
+     * Compose a matrix from rotation, translation and scale
+     * @param translation 
+     * @param quaternion 
+     * @param scale 
+     */
     compose(translation: Vector3, quaternion: Quaternion, scale: Vector3) {
 
         this.makeRotationFromQuaternion(quaternion);
@@ -600,6 +649,12 @@ export class Matrix4 {
 
     }
 
+    /**
+     * Decompose this matrix into it's indevidual components
+     * @param translation 
+     * @param quaternion 
+     * @param scale 
+     */
     decompose(translation: Vector3, quaternion: Quaternion, scale: Vector3) {
 
         const vector = TEMP_VEC30;
@@ -622,27 +677,24 @@ export class Matrix4 {
         translation.z = te[14];
 
         // scale the rotation part
-
-        matrix.elements.set(this.elements); // at this point
-        // matrix is
-        // incomplete so we
-        // can't use .copy()
+        const mat_el = matrix.elements;
+        mat_el.set(this.elements);
 
         const inv_sx = 1 / sx;
         const inv_sy = 1 / sy;
         const inv_sz = 1 / sz;
 
-        matrix.elements[0] *= inv_sx;
-        matrix.elements[1] *= inv_sx;
-        matrix.elements[2] *= inv_sx;
+        mat_el[0] *= inv_sx;
+        mat_el[1] *= inv_sx;
+        mat_el[2] *= inv_sx;
 
-        matrix.elements[4] *= inv_sy;
-        matrix.elements[5] *= inv_sy;
-        matrix.elements[6] *= inv_sy;
+        mat_el[4] *= inv_sy;
+        mat_el[5] *= inv_sy;
+        mat_el[6] *= inv_sy;
 
-        matrix.elements[8] *= inv_sz;
-        matrix.elements[9] *= inv_sz;
-        matrix.elements[10] *= inv_sz;
+        mat_el[8] *= inv_sz;
+        mat_el[9] *= inv_sz;
+        mat_el[10] *= inv_sz;
 
         quaternion.fromRotationMatrix(matrix);
 
@@ -654,6 +706,10 @@ export class Matrix4 {
 
     }
 
+    /**
+     * Copy values from an array
+     * @param array 
+     */
     fromArray(array: ArrayLike<number>) {
 
         this.elements.set(array);
@@ -662,6 +718,11 @@ export class Matrix4 {
 
     }
 
+    /**
+     * Copy this matrix's values to an array
+     * @param out 
+     * @param offset 
+     */
     toArray(out?: number[], offset: number = 0) {
 
         const result: number[] = out || new Array(16);
@@ -673,18 +734,31 @@ export class Matrix4 {
 
     }
 
+    /**
+     * Acces to unedrlying Float32Array
+     */
     toFloatArray() {
 
         return this.elements;
 
     }
 
+    /**
+     * Returns a copy of this matrix
+     */
     clone() {
 
         return new Matrix4().fromArray(this.elements);
 
     }
 
+
+    /**
+     * Multipy 2 matrices together
+     * @param a 
+     * @param b 
+     * @param out 
+     */
     static Multiply(a: Matrix4, b: Matrix4, out?: Matrix4) {
 
         let result = out || new Matrix4();
